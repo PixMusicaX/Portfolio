@@ -13,6 +13,7 @@ export default function MusicPage() {
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
   const [transitioningGenre, setTransitioningGenre] = useState<string | null>(null);
   const [isExiting, setIsExiting] = useState(false);
+  const [isGlassVisible, setIsGlassVisible] = useState(false);
   const { setAudioState } = useAudio();
   const router = useRouter();
 
@@ -35,6 +36,15 @@ export default function MusicPage() {
   useEffect(() => {
     setAudioState("full-light");
   }, [setAudioState]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(min-width: 768px)");
+    const handleMediaChange = () => setIsGlassVisible(media.matches);
+    handleMediaChange();
+    media.addEventListener("change", handleMediaChange);
+    return () => media.removeEventListener("change", handleMediaChange);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 font-[family-name:var(--font-outfit)] selection:bg-purple-200 relative overflow-hidden">
@@ -60,12 +70,12 @@ export default function MusicPage() {
           onClick={handleBackToPortal}
           onMouseEnter={() => setIsSidebarHovered(true)}
           onMouseLeave={() => setIsSidebarHovered(false)}
-          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-zinc-500 hover:text-purple-600 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] transition-all duration-300 pointer-events-auto cursor-pointer"
+          className="group flex flex-col md:flex-col-reverse items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-zinc-500 hover:text-purple-600 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] transition-all duration-300 pointer-events-auto cursor-pointer"
         >
-          <ArrowLeft size={20} className="group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
           <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
             Back to portal
           </span>
+          <ArrowLeft size={20} className={`${isGlassVisible ? "rotate-0" : "rotate-90"} md:rotate-0 group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]`} />
         </button>
       </motion.nav>
 

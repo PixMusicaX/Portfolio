@@ -102,23 +102,26 @@ export default function Home() {
     setTimeout(() => router.push(path), 700);
   };
 
-  // --- MOBILE LAYOUT ---
+// --- MOBILE LAYOUT ---
   if (isMobile) {
     return (
-      <div className="flex flex-col h-screen w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]">
+      <div className="relative flex flex-col h-[100dvh] w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]">
 
         {/* Top: Developer */}
         <motion.div
-          // FIX: Added `w-full` to force it to stretch horizontally regardless of resize bleed
-          className="relative w-full z-10 flex flex-col justify-center items-center cursor-pointer"
+          className="relative z-10 w-full flex flex-col justify-center items-center cursor-pointer overflow-visible"
           animate={{
-            height: selectedSide === "left" ? "100%" : selectedSide === "right" ? "0%" : hoveredSide === "left" ? "65%" : hoveredSide === "right" ? "35%" : "50%",
+            width: "100%",
+            height: selectedSide === "left" ? "100dvh" : selectedSide === "right" ? "0dvh" : hoveredSide === "left" ? "65dvh" : hoveredSide === "right" ? "35dvh" : "50dvh",
             backgroundColor: hoveredSide === "left" || selectedSide === "left" ? "#0a0a0a" : "#000000",
           }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           onClick={() => !selectedSide && handleMobileTap("left", "/dev")}
         >
-          <DevBackground position="absolute" />
+          {/* Isolate background */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <DevBackground position="absolute" />
+          </div>
 
           <motion.div
             animate={{
@@ -126,7 +129,7 @@ export default function Home() {
               opacity: selectedSide ? 0 : (hoveredSide === "right" ? 0.4 : 1),
             }}
             transition={{ duration: 0.4 }}
-            className="text-white flex flex-col items-center z-10 px-6"
+            className="text-white flex flex-col items-center z-10 px-6 pointer-events-none"
           >
             <Code2 size={40} className="mb-3 opacity-80" />
             <h1 className="text-3xl font-bold tracking-tighter mb-2 bg-gradient-to-r from-white via-zinc-400 to-white bg-clip-text text-transparent text-center">
@@ -139,29 +142,45 @@ export default function Home() {
 
           {hoveredSide === "left" && !selectedSide && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute bottom-5 text-zinc-500 font-mono text-xs tracking-widest z-10"
+              className="absolute top-16 text-zinc-500 font-mono text-xs tracking-widest z-10 pointer-events-none"
             >
               TAP AGAIN TO EXPLORE [DEV]
             </motion.div>
           )}
 
-          <GaseousDivider hoveredSide={hoveredSide} align="bottom" />
+          {/* FIX 1: Show White Gases ONLY when Light Side is hovered. Also fixed the align="top" typo here! */}
+          {hoveredSide === "right" && (
+            <div className="absolute bottom-0 left-0 w-full pointer-events-none">
+              <GaseousDivider hoveredSide={hoveredSide} align="top" />
+            </div>
+          )}
         </motion.div>
 
         {/* Bottom: Music Producer */}
         <motion.div
-          // FIX: Added `w-full` here as well
           className="relative w-full overflow-hidden flex flex-col justify-center items-center cursor-pointer font-[family-name:var(--font-syne)]"
+          style={{ zIndex: 5 }}
           animate={{
-            height: selectedSide === "right" ? "100%" : selectedSide === "left" ? "0%" : hoveredSide === "right" ? "65%" : hoveredSide === "left" ? "35%" : "50%",
+            width: "100%",
+            height: selectedSide === "right" ? "100dvh" : selectedSide === "left" ? "0dvh" : hoveredSide === "right" ? "65dvh" : hoveredSide === "left" ? "35dvh" : "50dvh",
             backgroundColor: hoveredSide === "right" || selectedSide === "right" ? "#ffffff" : "#fafafa",
           }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           onClick={() => !selectedSide && handleMobileTap("right", "/music")}
         >
-          <MusicBackground position="absolute" />
+          {/* FIX 2: Show Dark Gases (Inverted Smoke) on initial load (null) AND when Dark Side is hovered */}
+          {hoveredSide !== "right" && (
+            <div className="absolute top-0 left-0 w-full pointer-events-none">
+              <GaseousDivider hoveredSide={hoveredSide} align="top" />
+            </div>
+          )}
+
+          {/* Isolate background */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <MusicBackground position="absolute" />
+          </div>
 
           <motion.div
             animate={{
@@ -169,13 +188,13 @@ export default function Home() {
               opacity: selectedSide ? 0 : (hoveredSide === "left" ? 0.4 : 1),
             }}
             transition={{ duration: 0.4 }}
-            className="text-black flex flex-col items-center z-10 px-6"
+            className="text-black flex flex-col items-center z-10 px-6 pointer-events-none"
           >
             <Music4 size={40} className="mb-3 text-purple-600" />
             <h1 className="text-3xl font-bold tracking-tight mb-2 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent pb-1 text-center">
               Music Producer
             </h1>
-            <p className="text-zinc-600 text-sm text-center max-w-xs font-medium pointer-events-none">
+            <p className="text-zinc-600 text-sm text-center max-w-xs font-medium">
               Crafting immersive soundscapes and dynamic beats.
             </p>
           </motion.div>
@@ -184,12 +203,29 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute bottom-5 text-zinc-400 text-xs tracking-[0.2em] uppercase font-bold z-10"
+              className="absolute bottom-12 text-zinc-400 text-xs tracking-[0.2em] uppercase font-bold z-10 pointer-events-none"
             >
               Tap again to explore (Audio)
             </motion.div>
           )}
         </motion.div>
+
+        {/* FIX 3: Added bg-black/0, cursor-pointer, and increased height to 120px to force mobile tap registration */}
+        {hoveredSide && !selectedSide && (
+          <div
+            className="absolute left-0 w-full h-[120px] z-[100] cursor-pointer bg-black/0"
+            style={{
+              top: hoveredSide === "left" ? "65dvh" : "35dvh",
+              transform: "translateY(-50%)"
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setHoveredSide(null);
+              setTappedSide(null);
+            }}
+          />
+        )}
 
       </div>
     );

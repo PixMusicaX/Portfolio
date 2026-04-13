@@ -6,7 +6,7 @@ interface DividerProps {
   hoveredSide: "left" | "right" | "bottom" | null;
   variant?: "default" | "music" | "dev" | "waltz" | "synthwave" | "battle" | "electronic" | "fusion" | "acoustic" | "anime" | "orchestral" | "legacy";
   className?: string;
-  align?: "left" | "right" | "bottom";
+  align?: "left" | "right" | "bottom" | "top";
 }
 
 export const GaseousDivider = ({ hoveredSide, variant = "default", className = "", align = "left" }: DividerProps) => {
@@ -364,11 +364,14 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
     document.body.dataset.hoveredSide = hoveredSide || "none";
   }, [isTurbulent, hoveredSide]);
 
+  // FIX: Injected the top-alignment logic into the ternary chain
   const alignStyle = align === "left" 
     ? { left: 0, transform: 'translateX(-50%)', top: '-10%', bottom: '-10%', width: 800 } 
     : align === "right" 
       ? { right: 0, transform: 'translateX(50%)', top: '-10%', bottom: '-10%', width: 800 } 
-      : { bottom: 0, left: '50%', transform: 'translate(-50%, 50%) rotate(-90deg)', width: 800, height: '120vw' };
+      : align === "top"
+        ? { top: 0, left: '50%', transform: 'translate(-50%, -50%) rotate(90deg)', width: 800, height: '120vw' }
+        : { bottom: 0, left: '50%', transform: 'translate(-50%, 50%) rotate(-90deg)', width: 800, height: '120vw' };
 
   return (
     <div 

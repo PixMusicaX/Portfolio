@@ -13,6 +13,7 @@ export default function DeveloperPage() {
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
   const [hoveredEdu, setHoveredEdu] = useState<string | null>(null);
   const [isExiting, setIsExiting] = useState(false);
+  const [isGlassVisible, setIsGlassVisible] = useState(false);
   const { setAudioState } = useAudio();
   const router = useRouter();
 
@@ -32,6 +33,15 @@ export default function DeveloperPage() {
   useEffect(() => {
     setAudioState("full-dark");
   }, [setAudioState]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(min-width: 768px)");
+    const handleMediaChange = () => setIsGlassVisible(media.matches);
+    handleMediaChange();
+    media.addEventListener("change", handleMediaChange);
+    return () => media.removeEventListener("change", handleMediaChange);
+  }, []);
 
   return (
     <div className="min-h-screen bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
@@ -61,7 +71,7 @@ export default function DeveloperPage() {
          <span style={{ writingMode: 'vertical-rl' }} >
             Back to portal
           </span>
-          <ArrowRight size={20} className="group-hover:translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
+          <ArrowRight size={20} className={`${isGlassVisible ? "rotate-0" : "rotate-90"} md:rotate-0 group-hover:translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]`} />
         </button>
       </motion.nav>
 
