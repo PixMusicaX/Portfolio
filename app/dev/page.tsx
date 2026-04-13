@@ -41,26 +41,24 @@ export default function DeveloperPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.2 }}
-        className="fixed right-0 top-0 bottom-0 w-16 z-50 flex flex-col items-center justify-center pointer-events-none"
+        className="fixed right-0 top-0 bottom-0 w-16 max-md:w-14 max-md:right-2 z-50 flex flex-col items-center justify-center pointer-events-none"
       >
 
         <GaseousDivider
           hoveredSide={isSidebarHovered ? "right" : null}
           variant="dev"
           align="right"
-          className={`z-[-2] transition-opacity duration-500 ease-out ${isSidebarHovered ? 'opacity-70' : 'opacity-0'}`}
-        />
-
-        {/* Parabolic Light Leak */}
-        <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-black/40 border-l border-white/5 shadow-[-20px_0_50px_rgba(255,255,255,0.05)] backdrop-blur-sm z-[-1]" />
+          className={`z-[-2] transition-opacity duration-700 ease-in-out ${isSidebarHovered ? 'opacity-70' : 'opacity-5'}`}>
+          </GaseousDivider>
+        {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
+        <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-black/40 border-l border-white/5 shadow-[-20px_0_50px_rgba(255,255,255,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
 
         <button
           onClick={handleBackToPortal}
           onMouseEnter={() => setIsSidebarHovered(true)}
           onMouseLeave={() => setIsSidebarHovered(false)}
-          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-mono tracking-widest uppercase text-zinc-500 hover:text-white hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)] transition-all duration-300 pointer-events-auto cursor-pointer"
-        >
-          <span style={{ writingMode: 'vertical-rl' }}>
+          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-mono tracking-widest uppercase text-zinc-300 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300 pointer-events-auto cursor-pointer" >
+         <span style={{ writingMode: 'vertical-rl' }} >
             Back to portal
           </span>
           <ArrowRight size={20} className="group-hover:translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
@@ -103,7 +101,7 @@ export default function DeveloperPage() {
           </motion.div>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto px-6 relative z-10 w-full">
+        <div className="max-w-4xl mx-auto px-6 pr-20 relative z-10 w-full">
 
           {/* Header Section */}
           <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 pb-32">

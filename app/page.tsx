@@ -12,10 +12,10 @@ import { useAudio } from "@/components/AudioProvider";
 export default function Home() {
   const [hoveredSide, setHoveredSide] = useState<"left" | "right" | null>(null);
   const [selectedSide, setSelectedSide] = useState<"left" | "right" | null>(null);
-  
+
   // Immovable state lockout prevents hover logic from destroying the initial track fade natively
   const [isLocked, setIsLocked] = useState(true);
-  
+
   const { setAudioState, hasEntered } = useAudio();
   const router = useRouter();
 
@@ -49,7 +49,7 @@ export default function Home() {
         requestAnimationFrame(() => {
           const w = window.innerWidth;
           const x = e.clientX;
-          
+
           let nextState: "left" | "right" | null = null;
           if (x < w * 0.35) nextState = "left";
           else if (x > w * 0.65) nextState = "right";
@@ -78,7 +78,7 @@ export default function Home() {
   const handleNavigate = (e: React.MouseEvent, side: "left" | "right", path: string) => {
     const w = window.innerWidth;
     const x = e.clientX;
-    
+
     // Strictly enforce the deadzone to lock out raw container DOM clicks
     if (side === "left" && x > w * 0.35) return;
     if (side === "right" && x < w * 0.65) return;
@@ -112,10 +112,10 @@ export default function Home() {
           className="text-white flex flex-col items-center z-10"
         >
           <Code2 size={64} className="mb-6 opacity-80" />
-          <motion.h1 
+          <motion.h1
             animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 bg-gradient-to-r from-white via-zinc-400 to-white bg-clip-text text-transparent"
+            className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 bg-gradient-to-r from-white via-zinc-400 to-white bg-clip-text text-transparent text-center"
           >
             Software Developer
           </motion.h1>
@@ -157,10 +157,10 @@ export default function Home() {
           className="text-black flex flex-col items-center z-10"
         >
           <Music4 size={64} className="mb-6 text-purple-600" />
-          <motion.h1 
+          <motion.h1
             animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-            className="text-4xl md:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent pb-2"
+            className="text-4xl md:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent pb-2 text-center"
           >
             Music Producer
           </motion.h1>

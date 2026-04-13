@@ -50,17 +50,17 @@ export default function MusicPage() {
         <GaseousDivider
           hoveredSide={isSidebarHovered ? "left" : null}
           variant="music"
-          className={`z-[-2] transition-opacity duration-500 ease-out ${isSidebarHovered ? 'opacity-70' : 'opacity-0'}`}
+          className={`z-[-2] ${isSidebarHovered ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-5'}`}
         />
 
-        {/* Parabolic Light Leak */}
-        <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-purple-500/10 shadow-[20px_0_50px_rgba(168,85,247,0.15)] backdrop-blur-sm z-[-1]" />
+        {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
+        <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-purple-500/10 shadow-[20px_0_50px_rgba(168,85,247,0.15)] backdrop-blur-sm z-[-1] hidden md:block" />
 
         <button
           onClick={handleBackToPortal}
           onMouseEnter={() => setIsSidebarHovered(true)}
           onMouseLeave={() => setIsSidebarHovered(false)}
-          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-zinc-400 hover:text-purple-600 hover:drop-shadow-[0_0_12px_rgba(168,85,247,0.8)] transition-all duration-300 pointer-events-auto cursor-pointer"
+          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-zinc-500 hover:text-purple-600 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] transition-all duration-300 pointer-events-auto cursor-pointer"
         >
           <ArrowLeft size={20} className="group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
           <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
@@ -88,7 +88,7 @@ export default function MusicPage() {
           </motion.div>
         </motion.div>
 
-        <div className="max-w-5xl mx-auto px-6 relative z-10 w-full flex flex-col">
+        <div className="max-w-5xl mx-auto px-6 pl-20 relative z-10 w-full flex flex-col">
 
           {/* Header Section */}
           <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 relative pb-32">
