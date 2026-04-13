@@ -50,7 +50,7 @@ export default function MusicPage() {
         <GaseousDivider
           hoveredSide={isSidebarHovered ? "left" : null}
           variant="music"
-          className={`z-[-2] ${isSidebarHovered ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-30'}`}
+          className={`z-[-2] ${isSidebarHovered ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-45'}`}
         />
 
         {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}

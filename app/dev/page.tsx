@@ -48,7 +48,7 @@ export default function DeveloperPage() {
           hoveredSide={isSidebarHovered ? "right" : null}
           variant="dev"
           align="right"
-          className={`z-[-2] transition-opacity duration-700 ease-in-out ${isSidebarHovered ? 'opacity-70' : 'opacity-30'}`}>
+          className={`z-[-2] transition-opacity duration-700 ease-in-out ${isSidebarHovered ? 'opacity-70' : 'opacity-45'}`}>
           </GaseousDivider>
         {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
         <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-black/40 border-l border-white/5 shadow-[-20px_0_50px_rgba(255,255,255,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
