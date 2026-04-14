@@ -2,20 +2,39 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { ArrowLeft, ArrowRight, Code, Globe, Mail, ExternalLink, Terminal, ChevronDown, Volume2, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Code, Globe, Mail, ExternalLink, Terminal, ChevronDown } from "lucide-react";
 import { DevBackground } from "@/components/Backgrounds";
 import { GaseousDivider } from "@/components/GaseousDivider";
 import { useAudio } from "@/components/AudioProvider";
+
 
 export default function DeveloperPage() {
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
   const [hoveredEdu, setHoveredEdu] = useState<string | null>(null);
   const [isExiting, setIsExiting] = useState(false);
   const [isGlassVisible, setIsGlassVisible] = useState(false);
-  const { setAudioState } = useAudio();
+  const [isMuted, setIsMuted] = useState(false);
+  const previousAudioState = useRef<string | null>(null);
+  const { setAudioState, audioState } = useAudio();
   const router = useRouter();
+
+  const handleMuteToggle = () => {
+    if (!isMuted) {
+      // Muting: Save current state, then set to silent
+      previousAudioState.current = audioState;
+      setAudioState("silent");
+    } else {
+      // Unmuting: Restore previous state if it exists, otherwise default back to full-dark
+      if (previousAudioState.current) {
+        setAudioState(previousAudioState.current as any);
+      } else {
+         setAudioState("full-dark");
+      }
+    }
+    setIsMuted(!isMuted);
+  };
 
   const handleBackToPortal = () => {
     if (isExiting) return;
@@ -44,6 +63,8 @@ export default function DeveloperPage() {
   }, []);
 
   return (
+    <>
+
     <div className="min-h-screen bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
       <DevBackground />
 
@@ -53,6 +74,8 @@ export default function DeveloperPage() {
         transition={{ duration: 1, delay: 0.2 }}
         className="fixed right-0 top-0 bottom-0 w-16 max-md:w-14 max-md:right-2 z-50 flex flex-col items-center justify-center pointer-events-none"
       >
+
+
 
         <GaseousDivider
           hoveredSide={isSidebarHovered ? "right" : null}
@@ -116,6 +139,26 @@ export default function DeveloperPage() {
           {/* Header Section */}
           <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 pb-32">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
+              {/* Mute Toggle — pill style, inline above status */}
+              <button
+                id="mute-toggle"
+                onClick={handleMuteToggle}
+                className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:border-zinc-600 transition-all duration-300 cursor-pointer"
+              >
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={isMuted ? "muted" : "unmuted"}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center"
+                  >
+                    {isMuted ? <VolumeX size={12} strokeWidth={1.5} /> : <Volume2 size={12} strokeWidth={1.5} />}
+                  </motion.span>
+                </AnimatePresence>
+                {isMuted ? "Unmute" : "Mute"}
+              </button>
               <div className="inline-flex items-center gap-3 px-3 py-1 mb-6 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 Currently Building Software
@@ -386,5 +429,6 @@ export default function DeveloperPage() {
         )}
       </AnimatePresence>
     </div>
+    </>
   );
 }
