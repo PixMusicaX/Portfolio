@@ -368,12 +368,21 @@ export default function DeveloperPage() {
       {/* Exit Transition Overlay */}
       <AnimatePresence>
         {isExiting && (
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 bg-black z-[9999] origin-right pointer-events-none"
-          />
+          isGlassVisible ? (
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed inset-0 bg-black z-[9999] origin-right pointer-events-none"
+            />
+          ) : (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "100vh", opacity: 1 }}
+              transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed bottom-0 left-0 right-0 z-[9999] bg-black origin-bottom pointer-events-none"
+            />
+          )
         )}
       </AnimatePresence>
     </div>

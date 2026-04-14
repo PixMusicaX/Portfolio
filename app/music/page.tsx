@@ -273,7 +273,7 @@ export default function MusicPage() {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "100vh", opacity: 1 }}
                   transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
-                  className={`fixed bottom-0 left-0 right-0 z-[999] pointer-events-none origin-bottom ${transitioningGenre === 'Acoustic' ? 'bg-blue-600' :
+                  className={`fixed top-0 left-0 right-0 z-[999] pointer-events-none origin-top ${transitioningGenre === 'Acoustic' ? 'bg-blue-600' :
                     transitioningGenre === 'Analog' ? 'bg-fuchsia-600' :
                       transitioningGenre === 'Orchestral' ? 'bg-rose-600' :
                         transitioningGenre === 'Hybrid' ? 'bg-amber-600' :
@@ -321,12 +321,21 @@ export default function MusicPage() {
       {/* Exit Transition Overlay */}
       <AnimatePresence>
         {isExiting && (
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 bg-white z-[9999] origin-left pointer-events-none"
-          />
+          isGlassVisible ? (
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed inset-0 bg-white z-[9999] origin-left pointer-events-none"
+            />
+          ) : (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "100vh", opacity: 1 }}
+              transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed bottom-0 left-0 right-0 z-[9999] bg-white origin-bottom pointer-events-none"
+            />
+          )
         )}
       </AnimatePresence>
     </div>
