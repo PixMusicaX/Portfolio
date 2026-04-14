@@ -246,9 +246,13 @@ export default function MusicPage() {
                     <motion.div
                       key={i}
                       onClick={() => handleGenreClick(genre.route, genre.badge)}
-                      animate={{ opacity: isFading ? 0 : 1, scale: isFading ? 0.9 : 1 }}
-                      transition={{ duration: 0.5 }}
-                      className={`block p-8 rounded-3xl bg-gradient-to-br ${genre.color} border border-white/50 shadow-sm transition-all group ${isTransitioning ? 'shadow-2xl -translate-y-2 z-50 relative' : 'hover:shadow-lg hover:-translate-y-1 cursor-pointer'}`}
+                      animate={{ 
+                        opacity: isFading ? 0 : 1, 
+                        scale: isFading ? 0.95 : 1,
+                        y: isTransitioning ? -8 : 0
+                      }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      className={`block p-8 rounded-3xl bg-gradient-to-br ${genre.color} border border-white/50 shadow-sm group ${isTransitioning ? 'shadow-2xl z-50 relative' : 'hover:shadow-lg lg:hover:-translate-y-1 cursor-pointer transition-all duration-300'}`}
                     >
                       <div className="flex justify-between items-start mb-12">
                         <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
@@ -272,7 +276,7 @@ export default function MusicPage() {
                 <motion.div
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "100vh", opacity: 1 }}
-                  transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+                  transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
                   className={`fixed top-0 left-0 right-0 z-[999] pointer-events-none origin-top ${transitioningGenre === 'Acoustic' ? 'bg-blue-600' :
                     transitioningGenre === 'Analog' ? 'bg-fuchsia-600' :
                       transitioningGenre === 'Orchestral' ? 'bg-rose-600' :
