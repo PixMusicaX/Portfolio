@@ -102,7 +102,7 @@ export default function Home() {
     setTimeout(() => router.push(path), 700);
   };
 
-  // --- MOBILE LAYOUT ---
+// --- MOBILE LAYOUT ---
   if (isMobile) {
     return (
       <div className="relative flex flex-col h-[100dvh] w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]">
@@ -144,14 +144,18 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              // Changed top-16 to top-12 to mirror bottom-12 on the music side
-              className="absolute top-12 text-zinc-500 font-mono text-xs tracking-widest z-10 pointer-events-none"
+              className="absolute top-16 text-zinc-500 font-mono text-xs tracking-widest z-10 pointer-events-none"
             >
               TAP AGAIN TO EXPLORE [DEV]
             </motion.div>
           )}
 
-          {/* Desktop transition gases removed from here — handled by shared mobile divider below */}
+          {/* FIX 1: Show White Gases ONLY when Light Side is hovered. Also fixed the align="top" typo here! */}
+          {hoveredSide === "right" && (
+            <div className="absolute bottom-0 left-0 w-full pointer-events-none">
+              <GaseousDivider hoveredSide={hoveredSide} align="top" />
+            </div>
+          )}
         </motion.div>
 
         {/* Bottom: Music Producer */}
@@ -166,7 +170,12 @@ export default function Home() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           onClick={() => !selectedSide && handleMobileTap("right", "/music")}
         >
-          {/* Desktop transition gases removed from here — handled by shared mobile divider below */}
+          {/* FIX 2: Show Dark Gases (Inverted Smoke) on initial load (null) AND when Dark Side is hovered */}
+          {hoveredSide !== "right" && (
+            <div className="absolute top-0 left-0 w-full pointer-events-none">
+              <GaseousDivider hoveredSide={hoveredSide} align="top" />
+            </div>
+          )}
 
           {/* Isolate background */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -200,21 +209,6 @@ export default function Home() {
             </motion.div>
           )}
         </motion.div>
-
-        {/* SHARED MOBILE DIVIDER: Positioned at the boundary, uses mix-blend-difference like desktop */}
-        {!selectedSide && (
-          <motion.div
-            initial={false}
-            animate={{ 
-              top: hoveredSide === "left" ? "65dvh" : hoveredSide === "right" ? "35dvh" : "50dvh",
-              opacity: selectedSide ? 0 : 1
-            }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-0 w-full z-[40] pointer-events-none"
-          >
-            <GaseousDivider hoveredSide={hoveredSide} align="top" />
-          </motion.div>
-        )}
 
         {/* FIX 3: Added bg-black/0, cursor-pointer, and increased height to 120px to force mobile tap registration */}
         {hoveredSide && !selectedSide && (
