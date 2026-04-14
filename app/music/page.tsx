@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Play, Camera, Video, Speaker, MonitorSpeaker, Mic2, Pause, ChevronDown, AudioLines, Music2, ArrowRight } from "lucide-react";
+import { ArrowLeft, Play, Speaker, MonitorSpeaker, Mic2, Pause, ChevronDown, ArrowRight } from "lucide-react";
+import { SiYoutube, SiSpotify, SiApplemusic, SiInstagram } from "react-icons/si";
 import { MusicBackground } from "@/components/Backgrounds";
 import { GaseousDivider } from "@/components/GaseousDivider";
 import { useAudio } from "@/components/AudioProvider";
@@ -109,19 +110,19 @@ export default function MusicPage() {
 
               <div className="flex flex-wrap items-center gap-4 mt-10">
                 <a href="https://www.youtube.com/@PiXMusicaX" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-red-100 hover:text-red-600 transition-colors shadow-sm" title="YouTube (PiX MusicaX)">
-                  <Video size={24} />
+                  <SiYoutube size={22} />
                 </a>
                 <a href="https://www.youtube.com/@ThemeAlter-ow2zb" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-blue-100 hover:text-blue-600 transition-colors shadow-sm" title="YouTube (Theme/Alter)">
-                  <Video size={24} />
+                  <SiYoutube size={22} />
                 </a>
                 <a href="https://open.spotify.com/artist/3h2hxcu6jLk7T4quHavrdj" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-green-100 hover:text-green-600 transition-colors shadow-sm" title="Spotify">
-                  <AudioLines size={24} />
+                  <SiSpotify size={22} />
                 </a>
                 <a href="https://music.apple.com/us/artist/pix-musicax/1511497563" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-pink-100 hover:text-pink-600 transition-colors shadow-sm" title="Apple Music">
-                  <Music2 size={24} />
+                  <SiApplemusic size={22} />
                 </a>
                 <a href="https://www.instagram.com/_pix.aki_/?__d=1%2B" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-purple-100 hover:text-purple-600 transition-colors shadow-sm" title="Instagram">
-                  <Camera size={24} />
+                  <SiInstagram size={22} />
                 </a>
               </div>
 
