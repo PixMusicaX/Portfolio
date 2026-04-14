@@ -94,10 +94,10 @@ export default function DeveloperPage() {
 
 
           <GaseousDivider
-            hoveredSide={isSidebarHovered ? "right" : null}
+            hoveredSide={(isSidebarHovered || !isGlassVisible) ? "right" : null}
             variant="dev"
             align="right"
-            className={`z-[-2] transition-opacity duration-700 ease-in-out ${isSidebarHovered ? 'opacity-70' : 'opacity-45'}`}>
+            className={`z-[-2] transition-opacity duration-700 ease-in-out ${(isSidebarHovered || !isGlassVisible) ? 'opacity-70' : 'opacity-45'}`}>
           </GaseousDivider>
           {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
           <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-black/40 border-l border-white/5 shadow-[-20px_0_50px_rgba(255,255,255,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
@@ -106,11 +106,11 @@ export default function DeveloperPage() {
             onClick={handleBackToPortal}
             onMouseEnter={() => setIsSidebarHovered(true)}
             onMouseLeave={() => setIsSidebarHovered(false)}
-            className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-mono tracking-widest uppercase text-zinc-300 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300 pointer-events-auto cursor-pointer" >
+            className={`group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-mono tracking-widest uppercase transition-all duration-300 pointer-events-auto cursor-pointer ${!isGlassVisible ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]' : 'text-zinc-300 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]'}`} >
             <span style={{ writingMode: 'vertical-rl' }} >
               Back to portal
             </span>
-            <ArrowRight size={20} className={`${isGlassVisible ? "rotate-0" : "rotate-90"} md:rotate-0 group-hover:translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]`} />
+            <ArrowRight size={20} className={`${isGlassVisible ? "rotate-0" : "rotate-90"} md:rotate-0 group-hover:translate-y-2 transition-transform duration-300 ${!isGlassVisible ? 'drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]' : 'drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]'}`} />
           </button>
         </motion.nav>
 
@@ -459,12 +459,12 @@ export default function DeveloperPage() {
                   className="fixed inset-0 bg-black z-[9999] origin-right pointer-events-none"
                 />
               ) : (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "100vh", opacity: 1 }}
-                  transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-                  className="fixed bottom-0 left-0 right-0 z-[9999] bg-black origin-bottom pointer-events-none"
-                />
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "100vh", opacity: 1 }}
+                    transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+                    className="fixed top-0 left-0 right-0 z-[9999] bg-black origin-top pointer-events-none"
+                  />
               )
             )
           }

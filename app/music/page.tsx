@@ -59,9 +59,9 @@ export default function MusicPage() {
       >
 
         <GaseousDivider
-          hoveredSide={isSidebarHovered ? "left" : null}
+          hoveredSide={(isSidebarHovered || !isGlassVisible) ? "left" : null}
           variant="music"
-          className={`z-[-2] ${isSidebarHovered ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-45'}`}
+          className={`z-[-2] ${(isSidebarHovered || !isGlassVisible) ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-45'}`}
         />
 
         {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
@@ -71,12 +71,12 @@ export default function MusicPage() {
           onClick={handleBackToPortal}
           onMouseEnter={() => setIsSidebarHovered(true)}
           onMouseLeave={() => setIsSidebarHovered(false)}
-          className="group flex flex-col md:flex-col-reverse items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-zinc-500 hover:text-purple-600 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] transition-all duration-300 pointer-events-auto cursor-pointer"
+          className={`group flex flex-col md:flex-col-reverse items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase transition-all duration-300 pointer-events-auto cursor-pointer ${!isGlassVisible ? 'text-purple-600 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]' : 'text-zinc-500 hover:text-purple-600 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]'}`}
         >
           <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
             Back to portal
           </span>
-          <ArrowLeft size={20} className={`${isGlassVisible ? "rotate-0" : "rotate-90"} md:rotate-0 group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]`} />
+          <ArrowLeft size={20} className={`${isGlassVisible ? "rotate-0" : "rotate-90"} md:rotate-0 group-hover:-translate-y-2 transition-transform duration-300 ${!isGlassVisible ? 'drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]' : 'drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]'}`} />
         </button>
       </motion.nav>
 
