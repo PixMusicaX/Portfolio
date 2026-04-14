@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Play, Speaker, MonitorSpeaker, Mic2, Pause, ChevronDown, ArrowRight } from "lucide-react";
-import { SiYoutube, SiSpotify, SiApplemusic, SiInstagram } from "react-icons/si";
+import { SiGmail, SiYoutube, SiSpotify, SiApplemusic, SiInstagram } from "react-icons/si";
 import { MusicBackground } from "@/components/Backgrounds";
 import { GaseousDivider } from "@/components/GaseousDivider";
 import { useAudio } from "@/components/AudioProvider";
+import { Mail } from "lucide-react"
 
 export default function MusicPage() {
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
@@ -123,6 +124,14 @@ export default function MusicPage() {
                 </a>
                 <a href="https://www.instagram.com/_pix.aki_/?__d=1%2B" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-purple-100 hover:text-purple-600 transition-colors shadow-sm" title="Instagram">
                   <SiInstagram size={22} />
+                </a>
+                {/* 1. Change SiGmail to Mail from lucide-react */}
+                <a
+                  href="mailto:pinakipps21@gmail.com"
+                  className="p-3 rounded-full bg-zinc-100 hover:bg-red-100 hover:text-rose-600 transition-colors shadow-sm"
+                  title="Email"
+                >
+                  <Mail size={22} strokeWidth={2} />
                 </a>
               </div>
 
@@ -248,12 +257,12 @@ export default function MusicPage() {
                     <motion.div
                       key={i}
                       onClick={() => handleGenreClick(genre.route, genre.badge)}
-                      whileHover={!isTransitioning && !transitioningGenre ? { 
-                        y: -8, 
-                        boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" 
+                      whileHover={!isTransitioning && !transitioningGenre ? {
+                        y: -8,
+                        boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
                       } : {}}
-                      animate={{ 
-                        opacity: isFading ? 0 : 1, 
+                      animate={{
+                        opacity: isFading ? 0 : 1,
                         scale: isFading ? 0.95 : 1,
                         y: isTransitioning ? -8 : 0
                       }}
