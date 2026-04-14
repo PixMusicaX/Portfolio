@@ -102,7 +102,7 @@ export default function MusicPage() {
 
           {/* Header Section */}
           <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 relative pb-32">
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
+            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <div className="inline-block px-4 py-1 mb-6 rounded-full bg-purple-100 text-purple-600 text-xs font-bold tracking-widest uppercase">
                 Sonic Architecture & Synthesis
               </div>
@@ -141,7 +141,7 @@ export default function MusicPage() {
 
           {/* About Me Section */}
           <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-purple-500/10">
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
+            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4 text-zinc-800">
                 <Speaker size={32} className="text-pink-500" />
                 About Me
@@ -168,7 +168,7 @@ export default function MusicPage() {
             id="genres"
             className="min-h-screen w-full flex flex-col justify-center snap-start my-20 py-20 pb-40 border-t border-purple-500/10 relative"
           >
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
+            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4">
                 <Mic2 size={32} className="text-purple-600" />
                 Featured Genres
@@ -289,7 +289,7 @@ export default function MusicPage() {
 
           {/* Experience / Timeline Section */}
           <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-purple-500/10">
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
+            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4">
                 <Speaker size={32} className="text-orange-500" />
                 Experience

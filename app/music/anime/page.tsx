@@ -58,7 +58,7 @@ export default function AnimePage() {
           </p>
         </motion.div>
 
-        <div className="w-full max-w-3xl px-8 flex justify-center">
+        <div className="w-full max-w-3xl px-8 flex justify-center mb-24 md:mb-32">
           <div className="flex flex-wrap gap-6 justify-center">
             {TRACKS.map((track) => {
               const isActive = activeTrack === track.id;
@@ -79,7 +79,7 @@ export default function AnimePage() {
           </div>
         </div>
 
-        <div className="w-full mt-auto mb-8 px-8 relative z-30">
+        <div className="w-full mt-auto pt-12 md:pt-20 mb-8 px-8 relative z-30">
           <CustomAudioPlayer
             tracks={TRACKS}
             activeTrackId={activeTrack}
