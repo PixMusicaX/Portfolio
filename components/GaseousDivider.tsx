@@ -12,7 +12,6 @@ interface DividerProps {
 export const GaseousDivider = ({ hoveredSide, variant = "default", className = "", align = "left" }: DividerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isTurbulent = hoveredSide !== null;
-  const isHorizontal = align === "top" || align === "bottom";
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -50,23 +49,20 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       }
       
       ctx.clearRect(0, 0, W, H);
+      const cx = W / 2;
       const dpr = window.devicePixelRatio || 1;
+      
       const currentHoveredSide = document.body.dataset.hoveredSide || "none";
 
-      // L = Length along the divider, T = Thickness
-      const L = isHorizontal ? W : H;
-      const T = isHorizontal ? H : W;
-      const cp = T / 2; // Center point of thickness
-
       ctx.save();
-      // Clipping logic for split-screen hovers
-      if (currentHoveredSide === "left" && !isHorizontal) {
+      if (currentHoveredSide === "left") {
         ctx.beginPath();
-        ctx.rect(cp - 0.5, 0, W * 2, H); 
+        // Shift rect extremely slightly left to avoid fractional subpixel 1px seams
+        ctx.rect(cx - 0.5, 0, W * 2, H); 
         ctx.clip();
-      } else if (currentHoveredSide === "right" && !isHorizontal) {
+      } else if (currentHoveredSide === "right") {
         ctx.beginPath();
-        ctx.rect(-W * 2, 0, cp + 0.5, H);
+        ctx.rect(-W * 2, 0, cx + W * 2 + 0.5, H);
         ctx.clip();
       }
 
@@ -82,63 +78,45 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       for (const layer of layers) {
         const pts = [];
         for (let i = 0; i <= SEGS; i++) {
-          const pNorm = i / SEGS;
-          const p = pNorm * L;
-          const env = Math.pow(Math.sin(pNorm * Math.PI), 0.4);
-          const bulge = 1 + 0.4 * Math.sin(pNorm * Math.PI * 2 + t * 0.8);
-          const baseP = p / dpr;
-          const dPos = fbm(baseP, t * layer.speed, layer.oct) * 28 * env * dpr;
-          const hw = layer.spread * env * bulge * (0.7 + 0.3 * Math.abs(fbm(baseP, t * layer.speed + 10, 2))) * dpr;
+          const y = (i / SEGS) * H;
+          const yNorm = i / SEGS;
+          const env = Math.pow(Math.sin(yNorm * Math.PI), 0.4);
+          const bulge = 1 + 0.4 * Math.sin(yNorm * Math.PI * 2 + t * 0.8);
+          const baseY = y / dpr;
+          const dx = fbm(baseY, t * layer.speed, layer.oct) * 28 * env * dpr;
+          const hw = layer.spread * env * bulge * (0.7 + 0.3 * Math.abs(fbm(baseY, t * layer.speed + 10, 2))) * dpr;
           
-          let lEdge = dPos - hw;
-          let rEdge = dPos + hw;
+          let lEdge = dx - hw;
+          let rEdge = dx + hw;
 
-          if (!isHorizontal) {
-            if (currentHoveredSide === "left") {
-              lEdge = 0;
-              rEdge = hw * 1.4 + Math.abs(dPos) * 1.2; 
-            } else if (currentHoveredSide === "right") {
-              rEdge = 0;
-              lEdge = -hw * 1.4 - Math.abs(dPos) * 1.2; 
-            }
+          if (currentHoveredSide === "left") {
+            lEdge = 0; // Perfectly flat on hovered side
+            rEdge = hw * 1.4 + Math.abs(dx) * 1.2; 
+          } else if (currentHoveredSide === "right") {
+            rEdge = 0; // Perfectly flat on hovered side
+            lEdge = -hw * 1.4 - Math.abs(dx) * 1.2; 
           }
 
-          pts.push({ p, lEdge, rEdge });
+          pts.push({ y, lEdge, rEdge });
         }
 
         ctx.beginPath();
-        if (isHorizontal) {
-          ctx.moveTo(pts[0].p, cp + pts[0].lEdge);
-          for (let i = 1; i <= SEGS; i++) {
-            const pt = pts[i], pp = pts[i - 1];
-            const mx = (pt.p + pp.p) / 2;
-            const my = (cp + pt.lEdge + cp + pp.lEdge) / 2;
-            ctx.quadraticCurveTo(pp.p, cp + pp.lEdge, mx, my);
-          }
-          for (let i = SEGS; i >= 0; i--) {
-            const pt = pts[i], pn = pts[Math.min(i + 1, SEGS)];
-            const mx = (pt.p + pn.p) / 2;
-            const my = (cp + pt.rEdge + cp + pn.rEdge) / 2;
-            ctx.quadraticCurveTo(pn.p, cp + pn.rEdge, mx, my);
-          }
-        } else {
-          ctx.moveTo(cp + pts[0].lEdge, pts[0].p);
-          for (let i = 1; i <= SEGS; i++) {
-            const pt = pts[i], pp = pts[i - 1];
-            const mx = (cp + pt.lEdge + cp + pp.lEdge) / 2;
-            const my = (pt.p + pp.p) / 2;
-            ctx.quadraticCurveTo(cp + pp.lEdge, pp.p, mx, my);
-          }
-          for (let i = SEGS; i >= 0; i--) {
-            const pt = pts[i], pn = pts[Math.min(i + 1, SEGS)];
-            const mx = (cp + pt.rEdge + cp + pn.rEdge) / 2;
-            const my = (pt.p + pn.p) / 2;
-            ctx.quadraticCurveTo(cp + pn.rEdge, pn.p, mx, my);
-          }
+        ctx.moveTo(cx + pts[0].lEdge, pts[0].y);
+        for (let i = 1; i <= SEGS; i++) {
+          const p = pts[i], pp = pts[i - 1];
+          const mx = (cx + p.lEdge + cx + pp.lEdge) / 2;
+          const my = (p.y + pp.y) / 2;
+          ctx.quadraticCurveTo(cx + pp.lEdge, pp.y, mx, my);
+        }
+        for (let i = SEGS; i >= 0; i--) {
+          const p = pts[i], pn = pts[Math.min(i + 1, SEGS)];
+          const mx = (cx + p.rEdge + cx + pn.rEdge) / 2;
+          const my = (p.y + pn.y) / 2;
+          ctx.quadraticCurveTo(cx + pn.rEdge, pn.y, mx, my);
         }
         ctx.closePath();
 
-        const g = isHorizontal ? ctx.createLinearGradient(0, 0, W, 0) : ctx.createLinearGradient(0, 0, 0, H);
+        const g = ctx.createLinearGradient(0, 0, 0, H);
         if (variant === "music") {
           g.addColorStop(0,    `rgba(168,85,247,0)`);
           g.addColorStop(0.2,  `rgba(168,85,247,${layer.alpha})`);
@@ -219,44 +197,36 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       ctx.beginPath();
       let firstPt = true;
       for (let i = 0; i <= SEGS; i++) {
-        const pNorm = i / SEGS;
-        const p = pNorm * L;
-        const env = Math.pow(Math.sin(pNorm * Math.PI), 0.3);
-        const baseP = p / dpr;
+        const y = (i / SEGS) * H;
+        const yNorm = i / SEGS;
+        const env = Math.pow(Math.sin(yNorm * Math.PI), 0.3);
+        const baseY = y / dpr;
         
-        let dPos = fbm(baseP, t * 1.6, 6) * 18 * env * dpr;
-        if (!isHorizontal) {
-          if (currentHoveredSide === "left") {
-            dPos = Math.abs(dPos) * 1.2;
-          } else if (currentHoveredSide === "right") {
-            dPos = -Math.abs(dPos) * 1.2;
-          }
+        let dx = fbm(baseY, t * 1.6, 6) * 18 * env * dpr;
+        if (currentHoveredSide === "left") {
+          dx = Math.abs(dx) * 1.2;
+        } else if (currentHoveredSide === "right") {
+          dx = -Math.abs(dx) * 1.2;
         }
         
-        if (firstPt) {
-          if (isHorizontal) ctx.moveTo(p, cp + dPos);
-          else ctx.moveTo(cp + dPos, p);
-          firstPt = false;
-        } else {
-          const ppNorm = (i - 1) / SEGS;
-          const pp = ppNorm * L;
-          const safeNorm = Math.max(0, ppNorm);
-          let pdPos = fbm(pp / dpr, t * 1.6, 6) * 18 * Math.pow(Math.max(0, Math.sin(safeNorm * Math.PI)), 0.3) * dpr;
+        if (firstPt) { ctx.moveTo(cx + dx, y); firstPt = false; }
+        else {
+          const py = ((i - 1) / SEGS) * H;
+          // Constrain value above 0 preventing negative fractional power eval (NaN crash bounding square bug)
+          const safeNorm = Math.max(0, (i - 1) / SEGS);
+          let pdx = fbm(py / dpr, t * 1.6, 6) * 18 * Math.pow(Math.max(0, Math.sin(safeNorm * Math.PI)), 0.3) * dpr;
           
-          if (!isHorizontal) {
-            if (currentHoveredSide === "left") {
-              pdPos = Math.abs(pdPos) * 1.2;
-            } else if (currentHoveredSide === "right") {
-              pdPos = -Math.abs(pdPos) * 1.2;
-            }
+          if (currentHoveredSide === "left") {
+            pdx = Math.abs(pdx) * 1.2;
+          } else if (currentHoveredSide === "right") {
+            pdx = -Math.abs(pdx) * 1.2;
           }
           
-          if (isHorizontal) ctx.quadraticCurveTo(pp, cp + pdPos, (p + pp) / 2, (cp + dPos + cp + pdPos) / 2);
-          else ctx.quadraticCurveTo(cp + pdPos, pp, (cp + dPos + cp + pdPos) / 2, (p + pp) / 2);
+          ctx.quadraticCurveTo(cx + pdx, py, cx + (dx + pdx) / 2, (y + py) / 2);
         }
       }
       
-      const cg = isHorizontal ? ctx.createLinearGradient(0, 0, W, 0) : ctx.createLinearGradient(0, 0, 0, H);
+      const cg = ctx.createLinearGradient(0, 0, 0, H);
       if (variant === "music") {
         cg.addColorStop(0,   'rgba(168,85,247,0)');
         cg.addColorStop(0.2, 'rgba(168,85,247,1)');
@@ -335,23 +305,20 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       ctx.stroke();
 
       for (let spark = 0; spark < 3; spark++) {
-        const pNorm = (t * 0.7 + spark * 1.7) % 1;
-        const p = L * (0.1 + 0.8 * pNorm);
-        const env = Math.pow(Math.sin(pNorm * Math.PI), 0.4);
-        let sDev = fbm(p / dpr, t * 2.1 + spark * 5, 4) * 22 * env * dpr;
+        const sy = H * (0.1 + 0.8 * ((t * 0.7 + spark * 1.7) % 1));
+        const yNorm = sy / H;
+        const env = Math.pow(Math.sin(yNorm * Math.PI), 0.4);
+        let sdx = fbm(sy / dpr, t * 2.1 + spark * 5, 4) * 22 * env * dpr;
         
-        if (!isHorizontal) {
-          if (currentHoveredSide === "left") {
-            sDev = Math.abs(sDev) * 1.2 + Math.random() * 20 * dpr;
-          } else if (currentHoveredSide === "right") {
-            sDev = -Math.abs(sDev) * 1.2 - Math.random() * 20 * dpr;
-          }
+        if (currentHoveredSide === "left") {
+          sdx = Math.abs(sdx) * 1.2 + Math.random() * 20 * dpr;
+        } else if (currentHoveredSide === "right") {
+          sdx = -Math.abs(sdx) * 1.2 - Math.random() * 20 * dpr;
         }
         
-        const sAlpha = Math.pow(Math.sin(pNorm * Math.PI), 2) * 0.7;
+        const sAlpha = Math.pow(Math.sin(yNorm * Math.PI), 2) * 0.7;
         ctx.beginPath();
-        if (isHorizontal) ctx.arc(p, cp + sDev, (1.5 + Math.random()) * dpr, 0, Math.PI * 2);
-        else ctx.arc(cp + sDev, p, (1.5 + Math.random()) * dpr, 0, Math.PI * 2);
+        ctx.arc(cx + sdx, sy, (1.5 + Math.random()) * dpr, 0, Math.PI * 2);
         
         let fillColor = `rgba(255,255,255,${sAlpha})`;
         if (variant === "music") {
@@ -404,20 +371,21 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isHorizontal, variant]);
+  }, []);
 
   useEffect(() => {
     document.body.dataset.turbulent = isTurbulent ? "true" : "false";
     document.body.dataset.hoveredSide = hoveredSide || "none";
   }, [isTurbulent, hoveredSide]);
 
+  // FIX: Injected the top-alignment logic into the ternary chain
   const alignStyle = align === "left" 
     ? { left: 0, transform: 'translateX(-50%)', top: '-10%', bottom: '-10%', width: 800 } 
     : align === "right" 
       ? { right: 0, transform: 'translateX(50%)', top: '-10%', bottom: '-10%', width: 800 } 
       : align === "top"
-        ? { top: 0, left: 0, width: '100vw', height: 400, transform: 'translateY(-50%)' }
-        : { bottom: 0, left: 0, width: '100vw', height: 400, transform: 'translateY(50%)' };
+        ? { top: 0, left: '50%', transform: 'translate(-50%, -50%) rotate(90deg)', width: 800, height: '150vw' }
+        : { bottom: 0, left: '50%', transform: 'translate(-50%, 50%) rotate(-90deg)', width: 800, height: '150vw' };
 
   return (
     <div 
