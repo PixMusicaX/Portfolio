@@ -39,7 +39,7 @@ export default function OrchestralPage() {
   }, []);
 
   return (
-    <div className="min-h-[100dvh] w-full bg-indigo-50 text-indigo-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
+    <div className="fixed inset-0 bg-indigo-50 text-indigo-900 font-[family-name:var(--font-outfit)] overflow-hidden flex">
       <OrchestralBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-violet-50/50 to-indigo-100/80 -z-10" />
 
