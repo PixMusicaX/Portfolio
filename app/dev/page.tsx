@@ -288,10 +288,18 @@ export default function DeveloperPage() {
                   },
                 ].map((job, i) => (
                   <div key={i} className="group relative pl-8 border-l border-zinc-800 hover:border-zinc-500 transition-colors">
-                    <div className="absolute w-3 h-3 bg-black border border-zinc-600 rounded-full -left-[1.5px] top-1.5 group-hover:bg-white inset-y-0 transform -translate-x-1/2 transition-colors" />
+                    <div className={`absolute w-3.5 h-3.5 rounded-full -left-[1.75px] top-1.5 inset-y-0 transform -translate-x-1/2 transition-all duration-300 border-2
+                      ${job.company === "LTM" ? "border-orange-500 bg-orange-500/20 group-hover:bg-orange-500 group-hover:shadow-[0_0_20px_rgba(249,115,22,0.8)]" : 
+                        job.company === "Kreat Inc." ? "border-purple-500 bg-purple-500/20 group-hover:bg-purple-500 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.8)]" : 
+                        "border-zinc-600 bg-zinc-600/20 group-hover:bg-white group-hover:border-white group-hover:shadow-[0_0_15px_rgba(255,255,255,0.5)]"}
+                    `} />
                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                      <h3 className="text-lg font-medium text-white group-hover:text-indigo-400 transition-colors">{job.role}</h3>
-                      <span className="text-sm font-mono text-zinc-500 bg-zinc-900 px-2 py-1 rounded">{job.period}</span>
+                      <h3 className={`text-lg font-bold text-white transition-colors duration-300
+                        ${job.company === "LTM" ? "group-hover:text-orange-400" : 
+                          job.company === "Kreat Inc." ? "group-hover:text-purple-400" : 
+                          "group-hover:text-indigo-400"}
+                      `}>{job.role}</h3>
+                      <span className="text-sm font-mono text-zinc-500 bg-zinc-900/50 px-2 py-1 rounded border border-zinc-800">{job.period}</span>
                     </div>
                     <p className="text-zinc-300 font-medium mb-3">{job.company}</p>
                     <p className="text-zinc-500 text-sm leading-relaxed max-w-2xl mb-4">{job.desc}</p>

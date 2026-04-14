@@ -35,7 +35,7 @@ export default function AcousticPage() {
   }, []);
 
   return (
-    <div className="min-h-[100dvh] bg-emerald-50 text-emerald-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
+    <div className="min-h-[100dvh] w-full bg-emerald-50 text-emerald-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
       <AcousticBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-green-50/50 to-emerald-100/80 -z-10" />
 

@@ -27,7 +27,7 @@ const THEME_MAP: Record<PlayerTheme, { title: string; barBg: string; barFill: st
 interface CustomAudioPlayerProps {
   tracks: Track[];
   onTrackChange?: (track: Track) => void;
-  activeTrackId?: string;
+  activeTrackId?: string | null;
   onPlayStateChange?: (isPlaying: boolean) => void;
   theme?: PlayerTheme;
 }

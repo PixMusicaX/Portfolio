@@ -39,7 +39,7 @@ export default function LegacyStuffPage() {
   }, []);
 
   return (
-    <div className="min-h-[100dvh] bg-teal-50 text-teal-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
+    <div className="min-h-[100dvh] w-full bg-teal-50 text-teal-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
       <LegacyBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-teal-50 via-cyan-50/50 to-teal-100/80 -z-10" />
 
