@@ -102,7 +102,7 @@ export default function Home() {
     setTimeout(() => router.push(path), 700);
   };
 
-// --- MOBILE LAYOUT ---
+  // --- MOBILE LAYOUT ---
   if (isMobile) {
     return (
       <div className="relative flex flex-col h-[100dvh] w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]">
@@ -144,7 +144,8 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute top-16 text-zinc-500 font-mono text-xs tracking-widest z-10 pointer-events-none"
+              // Changed top-16 to top-12 to mirror bottom-12 on the music side
+              className="absolute top-12 text-zinc-500 font-mono text-xs tracking-widest z-10 pointer-events-none"
             >
               TAP AGAIN TO EXPLORE [DEV]
             </motion.div>
