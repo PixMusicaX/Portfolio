@@ -16,7 +16,7 @@ const TRACKS: Track[] = [
 
 export default function FusionPage() {
   const { setAudioState } = useAudio();
-  const [activeTrack, setActiveTrack] = useState<string>(TRACKS[0].id);
+  const [activeTrack, setActiveTrack] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGlassVisible, setIsGlassVisible] = useState(false);
 

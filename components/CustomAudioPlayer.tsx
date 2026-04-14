@@ -33,7 +33,7 @@ interface CustomAudioPlayerProps {
 }
 
 export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlayStateChange, theme = "blue" }: CustomAudioPlayerProps) {
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -71,6 +71,12 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
   }, [currentTrackIndex]); // eslint-disable-line
 
   const togglePlay = () => {
+    if (currentTrackIndex === -1) {
+      setCurrentTrackIndex(0);
+      setIsPlaying(true);
+      return;
+    }
+
     if (!audioRef.current) return;
     let nextPlayingState = !isPlaying;
     
@@ -150,9 +156,9 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
       />
 
       {/* Typography */}
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-2 h-[48px] md:h-[60px] flex items-center justify-center">
         <h2 className={`text-2xl md:text-4xl font-light tracking-widest uppercase ${THEME_MAP[theme].title}`}>
-          {currentTrack?.title || "Loading..."}
+          {currentTrackIndex === -1 ? "Select a track to begin" : (currentTrack?.title || "Loading...")}
         </h2>
       </div>
 

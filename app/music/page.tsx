@@ -246,13 +246,17 @@ export default function MusicPage() {
                     <motion.div
                       key={i}
                       onClick={() => handleGenreClick(genre.route, genre.badge)}
+                      whileHover={!isTransitioning && !transitioningGenre ? { 
+                        y: -8, 
+                        boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" 
+                      } : {}}
                       animate={{ 
                         opacity: isFading ? 0 : 1, 
                         scale: isFading ? 0.95 : 1,
                         y: isTransitioning ? -8 : 0
                       }}
                       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                      className={`block p-8 rounded-3xl bg-gradient-to-br ${genre.color} border border-white/50 shadow-sm group ${isTransitioning ? 'shadow-2xl z-50 relative' : 'hover:shadow-lg lg:hover:-translate-y-1 cursor-pointer transition-all duration-300'}`}
+                      className={`block p-8 rounded-3xl bg-gradient-to-br ${genre.color} border border-white/50 shadow-sm group ${isTransitioning ? 'shadow-2xl z-50 relative' : 'cursor-pointer'}`}
                     >
                       <div className="flex justify-between items-start mb-12">
                         <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
