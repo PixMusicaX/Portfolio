@@ -36,7 +36,7 @@ export default function AnimePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-pink-50 text-pink-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
+    <div className="min-h-[100dvh] bg-pink-50 text-pink-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
       <AnimeBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-rose-50/50 to-pink-100/80 -z-10" />
 

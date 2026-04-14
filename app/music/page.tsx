@@ -47,7 +47,7 @@ export default function MusicPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 font-[family-name:var(--font-outfit)] selection:bg-purple-200 relative overflow-hidden">
+    <div className="min-h-[100dvh] bg-white text-zinc-900 font-[family-name:var(--font-outfit)] selection:bg-purple-200 relative overflow-hidden">
       <MusicBackground />
 
       <motion.nav

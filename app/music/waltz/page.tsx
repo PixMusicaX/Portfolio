@@ -39,7 +39,7 @@ export default function WaltzPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-sky-50 text-blue-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
+    <div className="min-h-[100dvh] bg-sky-50 text-blue-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
       <WaltzBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-sky-50 via-blue-50/50 to-sky-100/80 -z-10" />
 

@@ -370,8 +370,8 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
     : align === "right" 
       ? { right: 0, transform: 'translateX(50%)', top: '-10%', bottom: '-10%', width: 800 } 
       : align === "top"
-        ? { top: 0, left: '50%', transform: 'translate(-50%, -50%) rotate(90deg)', width: 800, height: '120vw' }
-        : { bottom: 0, left: '50%', transform: 'translate(-50%, 50%) rotate(-90deg)', width: 800, height: '120vw' };
+        ? { top: 0, left: '50%', transform: 'translate(-50%, -50%) rotate(90deg)', width: 800, height: '120dvh' }
+        : { bottom: 0, left: '50%', transform: 'translate(-50%, 50%) rotate(-90deg)', width: 800, height: '120dvh' };
 
   return (
     <div 

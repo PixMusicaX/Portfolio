@@ -37,7 +37,7 @@ export default function FusionPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-amber-50 text-amber-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
+    <div className="min-h-[100dvh] bg-amber-50 text-amber-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
       <FusionBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50/50 to-amber-100/80 -z-10" />
 

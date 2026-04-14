@@ -65,7 +65,7 @@ export default function DeveloperPage() {
   return (
     <>
 
-    <div className="min-h-screen bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
+    <div className="min-h-[100dvh] bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
       <DevBackground />
 
       <motion.nav

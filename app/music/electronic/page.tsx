@@ -41,7 +41,7 @@ export default function ElectronicPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
+    <div className="min-h-[100dvh] bg-zinc-50 text-zinc-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
       <ElectronicBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-zinc-50 via-neutral-50/50 to-zinc-100/80 -z-10" />
 

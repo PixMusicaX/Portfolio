@@ -38,7 +38,7 @@ export default function SynthwavePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-purple-50 text-purple-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
+    <div className="min-h-[100dvh] bg-purple-50 text-purple-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
       <SynthwaveBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-fuchsia-50/50 to-purple-100/80 -z-10" />
 
