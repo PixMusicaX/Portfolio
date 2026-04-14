@@ -11,7 +11,14 @@ interface DividerProps {
 
 export const GaseousDivider = ({ hoveredSide, variant = "default", className = "", align = "left" }: DividerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // ✅ FIX 1: Use a ref to track hoveredSide inside the rAF loop — avoids Safari dataset lag
+  const hoveredSideRef = useRef(hoveredSide);
   const isTurbulent = hoveredSide !== null;
+
+  // ✅ FIX 2: Keep the ref in sync with the prop on every render
+  useEffect(() => {
+    hoveredSideRef.current = hoveredSide;
+  }, [hoveredSide]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -47,18 +54,18 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         animationFrameId = requestAnimationFrame(draw);
         return;
       }
-      
+
       ctx.clearRect(0, 0, W, H);
       const cx = W / 2;
       const dpr = window.devicePixelRatio || 1;
-      
-      const currentHoveredSide = document.body.dataset.hoveredSide || "none";
+
+      // ✅ FIX 1 applied: read from ref, not from document.body.dataset
+      const currentHoveredSide = hoveredSideRef.current ?? "none";
 
       ctx.save();
       if (currentHoveredSide === "left") {
         ctx.beginPath();
-        // Shift rect extremely slightly left to avoid fractional subpixel 1px seams
-        ctx.rect(cx - 0.5, 0, W * 2, H); 
+        ctx.rect(cx - 0.5, 0, W * 2, H);
         ctx.clip();
       } else if (currentHoveredSide === "right") {
         ctx.beginPath();
@@ -74,7 +81,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         { spread: 11, alpha: 0.60, speed: 1.3, oct: 5 },
         { spread: 5,  alpha: 0.85, speed: 1.5, oct: 6 },
       ];
-      
+
       for (const layer of layers) {
         const pts = [];
         for (let i = 0; i <= SEGS; i++) {
@@ -85,16 +92,16 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
           const baseY = y / dpr;
           const dx = fbm(baseY, t * layer.speed, layer.oct) * 28 * env * dpr;
           const hw = layer.spread * env * bulge * (0.7 + 0.3 * Math.abs(fbm(baseY, t * layer.speed + 10, 2))) * dpr;
-          
+
           let lEdge = dx - hw;
           let rEdge = dx + hw;
 
           if (currentHoveredSide === "left") {
-            lEdge = 0; // Perfectly flat on hovered side
-            rEdge = hw * 1.4 + Math.abs(dx) * 1.2; 
+            lEdge = 0;
+            rEdge = hw * 1.4 + Math.abs(dx) * 1.2;
           } else if (currentHoveredSide === "right") {
-            rEdge = 0; // Perfectly flat on hovered side
-            lEdge = -hw * 1.4 - Math.abs(dx) * 1.2; 
+            rEdge = 0;
+            lEdge = -hw * 1.4 - Math.abs(dx) * 1.2;
           }
 
           pts.push({ y, lEdge, rEdge });
@@ -360,7 +367,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
 
       const speedMult = currentHoveredSide !== "none" ? 2.5 : 1;
       t += 0.028 * speedMult;
-      
+
       ctx.restore();
       animationFrameId = requestAnimationFrame(draw);
     };
@@ -371,28 +378,39 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, []); // ✅ Empty deps — loop runs once, reads live value via ref
 
-  useEffect(() => {
-    document.body.dataset.turbulent = isTurbulent ? "true" : "false";
-    document.body.dataset.hoveredSide = hoveredSide || "none";
-  }, [isTurbulent, hoveredSide]);
+  // ✅ FIX 3: Remove the dataset side-effect entirely — no longer needed
+  // (deleted the useEffect that set document.body.dataset.hoveredSide)
 
-  // FIX: Injected the top-alignment logic into the ternary chain
-  const alignStyle = align === "left" 
-    ? { left: 0, transform: 'translateX(-50%)', top: '-10%', bottom: '-10%', width: 800 } 
-    : align === "right" 
-      ? { right: 0, transform: 'translateX(50%)', top: '-10%', bottom: '-10%', width: 800 } 
+  // ✅ FIX 4: Force GPU compositing layer on Safari — prevents mix-blend-difference being dropped
+  const alignStyle = align === "left"
+    ? { left: 0, transform: 'translateX(-50%)', top: '-10%', bottom: '-10%', width: 800 }
+    : align === "right"
+      ? { right: 0, transform: 'translateX(50%)', top: '-10%', bottom: '-10%', width: 800 }
       : align === "top"
         ? { top: 0, left: '50%', transform: 'translate(-50%, -50%) rotate(90deg)', width: 800, height: '150vw' }
         : { bottom: 0, left: '50%', transform: 'translate(-50%, 50%) rotate(-90deg)', width: 800, height: '150vw' };
 
   return (
-    <div 
+    <div
       className={`absolute z-30 pointer-events-none ${variant === "default" ? "mix-blend-difference" : ""} ${className}`}
-      style={{ ...alignStyle }}
+      style={{
+        ...alignStyle,
+        // ✅ FIX 4: Force Safari to promote this to its own compositing layer
+        // mix-blend-difference requires the element to be in the same stacking context
+        // willChange tells Safari to composite it properly
+        willChange: "transform",
+        WebkitTransform: (alignStyle as any).transform, // Safari prefix
+      }}
     >
-      <canvas ref={canvasRef} className="w-full h-full opacity-90 mix-blend-normal" />
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full opacity-90"
+        // ✅ FIX 5: Remove mix-blend-normal from canvas — let the parent div handle blending
+        // mix-blend on both parent AND child causes Safari to cancel them out
+        style={{ display: "block" }}
+      />
     </div>
   );
 };
