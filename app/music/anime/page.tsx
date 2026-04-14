@@ -20,10 +20,20 @@ export default function AnimePage() {
   const { setAudioState } = useAudio();
   const [activeTrack, setActiveTrack] = useState<string>(TRACKS[0].id);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isGlassVisible, setIsGlassVisible] = useState(false);
 
   useEffect(() => {
     setAudioState("silent");
   }, [setAudioState]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(min-width: 768px)");
+    const handleMediaChange = () => setIsGlassVisible(media.matches);
+    handleMediaChange();
+    media.addEventListener("change", handleMediaChange);
+    return () => media.removeEventListener("change", handleMediaChange);
+  }, []);
 
   return (
     <div className="min-h-screen bg-pink-50 text-pink-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
@@ -31,11 +41,21 @@ export default function AnimePage() {
       <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-rose-50/50 to-pink-100/80 -z-10" />
 
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
-        <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-pink-500/10 shadow-[20px_0_50px_rgba(219,39,119,0.05)] backdrop-blur-sm z-[-1]" />
+        {/* Glass pane — hidden on mobile */}
+        <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-pink-500/10 shadow-[20px_0_50px_rgba(219,39,119,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
+
+        {/* Gaseous divider lives in the sidebar on mobile */}
+        {!isGlassVisible && (
+          <GaseousDivider
+            hoveredSide="left"
+            variant="anime"
+            className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+          />
+        )}
 
         <Link
           href="/music#genres"
-          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-pink-400 hover:text-pink-600 hover:drop-shadow-[0_0_12px_rgba(219,39,119,0.4)] transition-all duration-300 pointer-events-auto"
+          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-pink-900 md:text-pink-400 hover:text-pink-600 hover:drop-shadow-[0_0_12px_rgba(219,39,119,0.4)] transition-all duration-300 pointer-events-auto"
         >
           <ArrowLeft size={20} className="group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(219,39,119,0.6)]" />
           <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
@@ -50,7 +70,7 @@ export default function AnimePage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-center mb-12"
+          className="text-center mb-12 px-4 md:px-0"
         >
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-pink-900/90 mb-4">Anime</h1>
           <p className="text-lg md:text-xl text-pink-600/60 max-w-xl mx-auto italic font-light" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
@@ -90,7 +110,15 @@ export default function AnimePage() {
         </div>
       </main>
 
-      <GaseousDivider hoveredSide="left" variant="anime" align="bottom" className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`} />
+      {/* Gaseous divider at bottom — desktop only */}
+      {isGlassVisible && (
+        <GaseousDivider
+          hoveredSide="left"
+          variant="anime"
+          align="bottom"
+          className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
 
       <motion.div
         initial={{ opacity: 1 }}

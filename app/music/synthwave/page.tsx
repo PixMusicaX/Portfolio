@@ -19,23 +19,50 @@ export default function SynthwavePage() {
   const { setAudioState } = useAudio();
   const [activeTrack, setActiveTrack] = useState<string>(TRACKS[0].id);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isGlassVisible, setIsGlassVisible] = useState(false);
 
+  // Sync Global Audio State
   useEffect(() => {
     setAudioState("silent");
   }, [setAudioState]);
+
+  // Handle responsive visibility for glass effects and divider placement
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(min-width: 768px)");
+    const handleMediaChange = () => setIsGlassVisible(media.matches);
+
+    handleMediaChange();
+    media.addEventListener("change", handleMediaChange);
+    return () => media.removeEventListener("change", handleMediaChange);
+  }, []);
 
   return (
     <div className="min-h-screen bg-purple-50 text-purple-900 font-[family-name:var(--font-outfit)] relative overflow-hidden flex">
       <SynthwaveBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-fuchsia-50/50 to-purple-100/80 -z-10" />
 
-      {/* Left Sidebar Navigation */}
+      {/* Navigation Sidebar */}
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
-        <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-purple-500/10 shadow-[20px_0_50px_rgba(147,51,234,0.05)] backdrop-blur-sm z-[-1]" />
+        {/* Glass pane — only visible on desktop for depth */}
+        <div
+          className={`absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-purple-500/10 shadow-[20px_0_50px_rgba(147,51,234,0.05)] backdrop-blur-sm z-[-1] ${isGlassVisible ? 'block' : 'hidden'
+            }`}
+        />
+
+        {/* Gaseous divider lives in the sidebar on mobile when playing */}
+        {!isGlassVisible && (
+          <GaseousDivider
+            hoveredSide="left"
+            variant="synthwave"
+            className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+          />
+        )}
 
         <Link
           href="/music#genres"
-          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-purple-400 hover:text-purple-600 hover:drop-shadow-[0_0_12px_rgba(147,51,234,0.4)] transition-all duration-300 pointer-events-auto"
+          // text-purple-900 on mobile for visibility, md:text-purple-400 on desktop
+          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-purple-900 md:text-purple-400 hover:text-purple-600 hover:drop-shadow-[0_0_12px_rgba(147,51,234,0.4)] transition-all duration-300 pointer-events-auto"
         >
           <ArrowLeft size={20} className="group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(147,51,234,0.6)]" />
           <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
@@ -46,13 +73,11 @@ export default function SynthwavePage() {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col items-center justify-between py-16 pl-16 relative z-20 overflow-y-auto">
-
-        {/* Genre Title */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-center mb-12"
+          className="text-center mb-12 px-4 md:px-0"
         >
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-purple-900/90 mb-4">Synthwave</h1>
           <p className="text-lg md:text-xl text-purple-600/60 max-w-xl mx-auto italic font-light" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
@@ -75,7 +100,11 @@ export default function SynthwavePage() {
                     }`}
                 >
                   <span className={isActive ? 'font-bold' : ''}>{track.title}</span>
-                  {track.tag && <span className={`text-[10px] mt-1 tracking-wider font-normal ${isActive ? 'text-purple-500/70' : 'text-purple-900/30'}`}>{track.tag}</span>}
+                  {track.tag && (
+                    <span className={`text-[10px] mt-1 tracking-wider font-normal ${isActive ? 'text-purple-500/70' : 'text-purple-900/30'}`}>
+                      {track.tag}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -94,8 +123,15 @@ export default function SynthwavePage() {
         </div>
       </main>
 
-      {/* Bottom Flame */}
-      <GaseousDivider hoveredSide="left" variant="synthwave" align="bottom" className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`} />
+      {/* Gaseous divider at bottom — desktop only */}
+      {isGlassVisible && (
+        <GaseousDivider
+          hoveredSide="left"
+          variant="synthwave"
+          align="bottom"
+          className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
 
       {/* Entry Wipe */}
       <motion.div
