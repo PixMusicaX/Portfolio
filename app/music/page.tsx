@@ -85,18 +85,6 @@ export default function MusicPage() {
         transition={{ duration: 1, ease: "easeOut" }}
         className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
       >
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 3.5, duration: 1 }}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2 text-zinc-400 drop-shadow-lg"
-        >
-          <span className="text-[10px] tracking-[0.3em] uppercase font-bold">Scroll</span>
-          <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-            <ChevronDown size={16} />
-          </motion.div>
-        </motion.div>
 
         <div className="max-w-5xl mx-auto px-6 pl-20 relative z-10 w-full flex flex-col">
 
@@ -136,6 +124,19 @@ export default function MusicPage() {
                   <Camera size={24} />
                 </a>
               </div>
+
+              {/* Scroll Indicator - Moved from fixed to absolute within header */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 3.5, duration: 1 }}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2 text-zinc-400 drop-shadow-lg"
+              >
+                <span className="text-[10px] tracking-[0.3em] uppercase font-bold">Scroll</span>
+                <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
+                  <ChevronDown size={16} />
+                </motion.div>
+              </motion.div>
             </motion.div>
           </section>
 

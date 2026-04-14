@@ -9,6 +9,29 @@ import { DevBackground } from "@/components/Backgrounds";
 import { GaseousDivider } from "@/components/GaseousDivider";
 import { useAudio } from "@/components/AudioProvider";
 
+export const ResearchGateIcon = ({ size = 24 }: { size?: number }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M19.37 12.83c.285 0 .541.026.765.076.224.05.439.132.645.241l1.245-2.031c-.53-.339-1.114-.582-1.748-.727-.636-.145-1.304-.218-2.003-.218-1.077 0-1.996.14-2.757.419-.76.277-1.393.684-1.897 1.218-.504.536-.889 1.192-1.155 1.97-.266.778-.398 1.666-.398 2.665 0 1.012.132 1.905.398 2.68.266.773.65 1.424 1.155 1.954.504.528 1.137.928 1.897 1.197.761.272 1.68.408 2.757.408 1.259 0 2.308-.186 3.149-.556v-3.418h-3.418v1.85h1.568v.81c-.267.106-.528.188-.785.244-.257.056-.554.084-.891.084-.57 0-1.047-.11-1.429-.333-.383-.222-.686-.532-.91-.933-.223-.4-.378-.865-.466-1.396-.088-.53-.131-1.096-.131-1.696 0-.61.043-1.171.131-1.683.088-.512.243-.96.466-1.346.224-.384.527-.68.91-.884.382-.204.859-.306 1.429-.306zM7.174 13.71c.365 0 .7.056 1.004.168.305.112.557.275.759.488.201.213.355.474.462.784.106.31.159.661.159 1.053 0 .393-.053.743-.159 1.052a2.31 2.31 0 0 1-.462.784 2.39 2.39 0 0 1-.759.488 2.8 2.8 0 0 1-1.004.168c-.366 0-.7-.056-1.004-.168a2.36 2.36 0 0 1-.76-.488 2.31 2.31 0 0 1-.461-.784 2.89 2.89 0 0 1-.159-1.052c0-.392.053-.744.159-1.053.107-.31.26-.571.461-.784a2.44 2.44 0 0 1 .76-.488c.304-.112.638-.168 1.004-.168z" />
+  </svg>
+);
+
+const calculateAge = (birthDate: string) => {
+  const [day, month, year] = birthDate.split('.').map(Number);
+  const birth = new Date(year, month - 1, day);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age;
+};
 
 export default function DeveloperPage() {
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
@@ -19,6 +42,7 @@ export default function DeveloperPage() {
   const previousAudioState = useRef<string | null>(null);
   const { setAudioState, audioState } = useAudio();
   const router = useRouter();
+  const age = calculateAge("27.06.2003");
 
   const handleMuteToggle = () => {
     if (!isMuted) {
@@ -30,7 +54,7 @@ export default function DeveloperPage() {
       if (previousAudioState.current) {
         setAudioState(previousAudioState.current as any);
       } else {
-         setAudioState("full-dark");
+        setAudioState("full-dark");
       }
     }
     setIsMuted(!isMuted);
@@ -65,124 +89,133 @@ export default function DeveloperPage() {
   return (
     <>
 
-    <div className="min-h-[100dvh] bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
-      <DevBackground />
+      <div className="min-h-[100dvh] bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
+        <DevBackground />
 
-      <motion.nav
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.2 }}
-        className="fixed right-0 top-0 bottom-0 w-16 max-md:w-14 max-md:right-2 z-50 flex flex-col items-center justify-center pointer-events-none"
-      >
-
-
-
-        <GaseousDivider
-          hoveredSide={isSidebarHovered ? "right" : null}
-          variant="dev"
-          align="right"
-          className={`z-[-2] transition-opacity duration-700 ease-in-out ${isSidebarHovered ? 'opacity-70' : 'opacity-45'}`}>
-          </GaseousDivider>
-        {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
-        <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-black/40 border-l border-white/5 shadow-[-20px_0_50px_rgba(255,255,255,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
-
-        <button
-          onClick={handleBackToPortal}
-          onMouseEnter={() => setIsSidebarHovered(true)}
-          onMouseLeave={() => setIsSidebarHovered(false)}
-          className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-mono tracking-widest uppercase text-zinc-300 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300 pointer-events-auto cursor-pointer" >
-         <span style={{ writingMode: 'vertical-rl' }} >
-            Back to portal
-          </span>
-          <ArrowRight size={20} className={`${isGlassVisible ? "rotate-0" : "rotate-90"} md:rotate-0 group-hover:translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]`} />
-        </button>
-      </motion.nav>
-
-      {/* Global Ambient Graphic Institution Fader - Extracted strictly outside scrolling container physics */}
-      <AnimatePresence>
-        {hoveredEdu && (
-          <motion.img
-            key={hoveredEdu}
-            src={educationData.find(e => e.id === hoveredEdu)?.image}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 0.2, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="fixed inset-0 w-full h-full object-cover object-center pointer-events-none z-[1] grayscale-[60%]"
-            alt="Institution Graphic"
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Global Scroll Viewport */}
-      <motion.div
-        initial={{ opacity: 0, filter: "blur(12px)" }}
-        animate={{ opacity: 1, filter: "blur(0px)" }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] relative"
-      >
-        {/* Scroll Indicator */}
-        <motion.div
+        <motion.nav
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 3.5, duration: 1 }}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2 text-zinc-600 mix-blend-difference"
+          transition={{ duration: 1, delay: 0.2 }}
+          className="fixed right-0 top-0 bottom-0 w-16 max-md:w-14 max-md:right-2 z-50 flex flex-col items-center justify-center pointer-events-none"
         >
-          <span className="text-[10px] tracking-widest uppercase font-mono">Scroll</span>
-          <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-            <ChevronDown size={16} />
-          </motion.div>
-        </motion.div>
 
-        <div className="max-w-4xl mx-auto px-6 pr-20 relative z-10 w-full">
 
-          {/* Header Section */}
-          <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 pb-32">
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
-              {/* Mute Toggle — pill style, inline above status */}
-              <button
-                id="mute-toggle"
-                onClick={handleMuteToggle}
-                className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:border-zinc-600 transition-all duration-300 cursor-pointer"
-              >
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={isMuted ? "muted" : "unmuted"}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.5 }}
-                    transition={{ duration: 0.15 }}
-                    className="flex items-center"
-                  >
-                    {isMuted ? <VolumeX size={12} strokeWidth={1.5} /> : <Volume2 size={12} strokeWidth={1.5} />}
-                  </motion.span>
-                </AnimatePresence>
-                {isMuted ? "Unmute" : "Mute"}
-              </button>
-              <div className="inline-flex items-center gap-3 px-3 py-1 mb-6 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                Currently Building Software
-              </div>
-              <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-2 flex items-center gap-4">
-                Software <br className="md:hidden" /> Developer <Terminal size={48} className="text-zinc-700 hidden md:block" />
-              </h1>
-              <h2 className="text-2xl md:text-3xl font-light text-zinc-500 tracking-wide mb-6">
-                Pinaki Pritam Singha
-              </h2>
+
+          <GaseousDivider
+            hoveredSide={isSidebarHovered ? "right" : null}
+            variant="dev"
+            align="right"
+            className={`z-[-2] transition-opacity duration-700 ease-in-out ${isSidebarHovered ? 'opacity-70' : 'opacity-45'}`}>
+          </GaseousDivider>
+          {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
+          <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-black/40 border-l border-white/5 shadow-[-20px_0_50px_rgba(255,255,255,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
+
+          <button
+            onClick={handleBackToPortal}
+            onMouseEnter={() => setIsSidebarHovered(true)}
+            onMouseLeave={() => setIsSidebarHovered(false)}
+            className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-mono tracking-widest uppercase text-zinc-300 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300 pointer-events-auto cursor-pointer" >
+            <span style={{ writingMode: 'vertical-rl' }} >
+              Back to portal
+            </span>
+            <ArrowRight size={20} className={`${isGlassVisible ? "rotate-0" : "rotate-90"} md:rotate-0 group-hover:translate-y-2 transition-transform duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]`} />
+          </button>
+        </motion.nav>
+
+        {/* Global Ambient Graphic Institution Fader - Extracted strictly outside scrolling container physics */}
+        <AnimatePresence>
+          {hoveredEdu && (
+            <motion.img
+              key={hoveredEdu}
+              src={educationData.find(e => e.id === hoveredEdu)?.image}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 0.2, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="fixed inset-0 w-full h-full object-cover object-center pointer-events-none z-[1] grayscale-[60%]"
+              alt="Institution Graphic"
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Global Scroll Viewport */}
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(12px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] relative"
+        >
+
+          <div className="max-w-4xl mx-auto px-6 pr-20 relative z-10 w-full">
+
+            {/* Header Section */}
+            <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 relative pb-32">
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
+                {/* Mute Toggle — pill style, inline above status */}
+                <button
+                  id="mute-toggle"
+                  onClick={handleMuteToggle}
+                  className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:border-zinc-600 transition-all duration-300 cursor-pointer"
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={isMuted ? "muted" : "unmuted"}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex items-center"
+                    >
+                      {isMuted ? <VolumeX size={12} strokeWidth={1.5} /> : <Volume2 size={12} strokeWidth={1.5} />}
+                    </motion.span>
+                  </AnimatePresence>
+                  {isMuted ? "Unmute" : "Mute"}
+                </button>
+                <div className="inline-flex items-center gap-3 px-3 py-1 mb-6 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300">
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  Currently Building Software
+                </div>
+                <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-2 flex items-center gap-4">
+                  Software <br className="md:hidden" /> Developer <Terminal size={48} className="text-zinc-700 hidden md:block" />
+                </h1>
+                <h2 className="text-2xl md:text-3xl font-light text-zinc-500 tracking-wide mb-2">
+                  Pinaki Pritam Singha
+                </h2>
+                
+                <div className="flex items-center gap-3 text-[10px] md:text-xs font-mono tracking-[0.2em] text-zinc-600 uppercase mb-8">
+                  <span>{age} Yo</span>
+                  <span className="w-1 h-1 rounded-full bg-zinc-800" />
+                  <span>He / Him</span>
+                  <span className="w-1 h-1 rounded-full bg-zinc-800" />
+                  <span>Tauros</span>
+                </div>
               <p className="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed">
                 Previously architecting intelligent solutions as an AI developer, I transitioned into engineering robust enterprise ecosystems using .NET and Angular. Currently, my focus is expanding into high-performance systems with Rust while crafting cinematic, modern web experiences in Next.js.
               </p>
-              <div className="flex items-center gap-6 mt-8">
-                <a href="https://github.com/PixMusicaX" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                  <Code size={24} />
-                </a>
-                <a href="https://www.linkedin.com/in/pinakipsingha/" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                  <Globe size={24} />
-                </a>
-                <a href="mailto:pinakipps21@gmail.com" className="text-zinc-500 hover:text-white transition-colors">
-                  <Mail size={24} />
-                </a>
-              </div>
+                <div className="flex items-center gap-6 mt-8">
+                  <a href="https://github.com/PixMusicaX" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors" title="GitHub">
+                    <Code size={24} />
+                  </a>
+                  <a href="https://www.linkedin.com/in/pinakipsingha/" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors" title="LinkedIn">
+                    <Globe size={24} />
+                  </a>
+                  <a href="mailto:pinakipps21@gmail.com" className="text-zinc-500 hover:text-white transition-colors" title="Email">
+                    <Mail size={24} />
+                  </a>
+                </div>
+
+              {/* Scroll Indicator - Moved from fixed to absolute within header */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 3.5, duration: 1 }}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2 text-zinc-600 mix-blend-difference"
+              >
+                <span className="text-[10px] tracking-widest uppercase font-mono">Scroll</span>
+                <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
+                  <ChevronDown size={16} />
+                </motion.div>
+              </motion.div>
             </motion.div>
           </section>
 
@@ -405,30 +438,32 @@ export default function DeveloperPage() {
               </div>
             </motion.div>
           </section>
-        </div>
-      </motion.div>
+      </div>
+    </motion.div >
 
-      {/* Exit Transition Overlay */}
+      {/* Exit Transition Overlay */ }
       <AnimatePresence>
-        {isExiting && (
-          isGlassVisible ? (
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-              className="fixed inset-0 bg-black z-[9999] origin-right pointer-events-none"
-            />
-          ) : (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "100vh", opacity: 1 }}
-              transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-              className="fixed bottom-0 left-0 right-0 z-[9999] bg-black origin-bottom pointer-events-none"
-            />
-          )
-        )}
-      </AnimatePresence>
-    </div>
+  {
+    isExiting && (
+      isGlassVisible ? (
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 bg-black z-[9999] origin-right pointer-events-none"
+        />
+      ) : (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "100vh", opacity: 1 }}
+          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed bottom-0 left-0 right-0 z-[9999] bg-black origin-bottom pointer-events-none"
+        />
+      )
+    )
+  }
+        </AnimatePresence >
+      </div >
     </>
   );
 }
