@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 interface DividerProps {
   hoveredSide: "left" | "right" | "bottom" | null;
-  variant?: "default" | "music" | "dev" | "waltz" | "synthwave" | "battle" | "electronic" | "fusion" | "acoustic" | "anime" | "orchestral" | "legacy";
+  variant?: "default" | "music" | "dev" | "waltz" | "synthwave" | "battle" | "electronic" | "fusion" | "acoustic" | "anime" | "orchestral" | "legacy" | "dark";
   className?: string;
   align?: "left" | "right" | "bottom" | "top";
 }
@@ -177,6 +177,12 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
           g.addColorStop(0.5,  `rgba(13,148,136,${layer.alpha * 0.9})`);
           g.addColorStop(0.8,  `rgba(20,184,166,${layer.alpha})`);
           g.addColorStop(1,    `rgba(20,184,166,0)`);
+        } else if (variant === "dark") {
+          g.addColorStop(0,    `rgba(0,0,0,0)`);
+          g.addColorStop(0.04, `rgba(0,0,0,${layer.alpha})`);
+          g.addColorStop(0.5,  `rgba(0,0,0,${layer.alpha})`);
+          g.addColorStop(0.96, `rgba(0,0,0,${layer.alpha})`);
+          g.addColorStop(1,    `rgba(0,0,0,0)`);
         } else {
           g.addColorStop(0,    `rgba(255,255,255,0)`);
           g.addColorStop(0.04, `rgba(255,255,255,${layer.alpha})`);
@@ -281,6 +287,12 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         cg.addColorStop(0.5, 'rgba(13,148,136,1)');
         cg.addColorStop(0.8, 'rgba(20,184,166,1)');
         cg.addColorStop(1,   'rgba(20,184,166,0)');
+      } else if (variant === "dark") {
+        cg.addColorStop(0,    'rgba(0,0,0,0)');
+        cg.addColorStop(0.04, 'rgba(0,0,0,1)');
+        cg.addColorStop(0.5,  'rgba(0,0,0,1)');
+        cg.addColorStop(0.96, 'rgba(0,0,0,1)');
+        cg.addColorStop(1,    'rgba(0,0,0,0)');
       } else {
         cg.addColorStop(0,    'rgba(255,255,255,0)');
         cg.addColorStop(0.04, 'rgba(255,255,255,1)');
@@ -339,6 +351,8 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         } else if (variant === "legacy") {
           const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(17,94,89,${sAlpha})` : depth > 0.3 ? `rgba(13,148,136,${sAlpha})` : `rgba(20,184,166,${sAlpha})`;
+        } else if (variant === "dark") {
+          fillColor = `rgba(0,0,0,${sAlpha})`;
         }
         ctx.fillStyle = fillColor;
         ctx.fill();
