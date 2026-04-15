@@ -175,7 +175,6 @@ export default function MusicPage() {
                 <a href="https://www.instagram.com/_pix.aki_/?__d=1%2B" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-purple-100 hover:text-purple-600 transition-colors shadow-sm" title="Instagram">
                   <SiInstagram size={22} />
                 </a>
-                {/* 1. Change SiGmail to Mail from lucide-react */}
                 <a
                   href="mailto:pinakipps21@gmail.com"
                   className="p-3 rounded-full bg-zinc-100 hover:bg-red-100 hover:text-rose-600 transition-colors shadow-sm"
@@ -191,7 +190,7 @@ export default function MusicPage() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2, duration: 1 }}
                 onClick={() => {
-                  const genresSection = document.getElementById('genres');
+                  const genresSection = document.getElementById('about me');
                   genresSection?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-zinc-400 drop-shadow-lg cursor-pointer hover:text-purple-600 transition-colors pointer-events-auto"
@@ -205,7 +204,7 @@ export default function MusicPage() {
           </section>
 
           {/* About Me Section */}
-          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-purple-500/10">
+          <section id="about me" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-purple-500/10">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4 text-zinc-800">
                 <Speaker size={32} className="text-pink-500" />
