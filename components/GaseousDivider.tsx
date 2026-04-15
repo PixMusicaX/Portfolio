@@ -33,11 +33,22 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
 
       const resize = (entries?: ResizeObserverEntry[]) => {
         const dpr = window.devicePixelRatio || 1;
-        const width = entries && entries[0] ? entries[0].contentRect.width : (canvas.clientWidth || 800);
-        const height = entries && entries[0] ? entries[0].contentRect.height : (canvas.clientHeight || 800);
-        
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
+        let width = 0;
+        let height = 0;
+
+        if (entries && entries[0]) {
+          width = entries[0].contentRect.width;
+          height = entries[0].contentRect.height;
+        } else {
+          const rect = canvas.getBoundingClientRect();
+          width = rect.width;
+          height = rect.height;
+        }
+
+        if (width > 0 && height > 0) {
+          canvas.width = Math.round(width * dpr);
+          canvas.height = Math.round(height * dpr);
+        }
       };
 
       const resizeObserver = new ResizeObserver(resize);
@@ -57,15 +68,26 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
     }
 
     const draw = () => {
+      const dpr = window.devicePixelRatio || 1;
       const W = canvas.width, H = canvas.height;
+      const expectedW = Math.round(canvas.clientWidth * dpr);
+      const expectedH = Math.round(canvas.clientHeight * dpr);
+
+      // Auto-sync resolution if it drifts (e.g. during rapid layout shifts)
+      if (expectedW > 0 && expectedH > 0 && (W !== expectedW || H !== expectedH)) {
+        resize();
+        animationFrameId = requestAnimationFrame(draw);
+        return;
+      }
+
       if (W === 0 || H === 0) {
         animationFrameId = requestAnimationFrame(draw);
         return;
       }
 
+      // Clear and setup
       ctx.clearRect(0, 0, W, H);
       const cx = W / 2;
-      const dpr = window.devicePixelRatio || 1;
 
       // ✅ FIX 1 applied: read from ref, not from document.body.dataset
       const currentHoveredSide = hoveredSideRef.current ?? "none";
@@ -106,10 +128,10 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
 
           if (currentHoveredSide === "left") {
             lEdge = 0;
-            rEdge = hw * 1.4 + Math.abs(dx) * 1.2;
+            rEdge = hw * 2.2 + Math.abs(dx) * 1.5; // Restored to 2.2
           } else if (currentHoveredSide === "right") {
             rEdge = 0;
-            lEdge = -hw * 1.4 - Math.abs(dx) * 1.2;
+            lEdge = -hw * 2.2 - Math.abs(dx) * 1.5; // Restored to 2.2
           }
 
           pts.push({ y, lEdge, rEdge });
@@ -397,9 +419,9 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
 
   // ✅ FIX 4: Force GPU compositing layer on Safari — prevents mix-blend-difference being dropped
   const alignStyle = align === "left"
-    ? { left: 0, transform: 'translateX(-50%)', top: '-10%', bottom: '-10%', width: 800 }
+    ? { left: 0, transform: 'translateX(-50%)', top: '-25%', bottom: '-25%', width: 800 }
     : align === "right"
-      ? { right: 0, transform: 'translateX(50%)', top: '-10%', bottom: '-10%', width: 800 }
+      ? { right: 0, transform: 'translateX(50%)', top: '-25%', bottom: '-25%', width: 800 }
       : align === "top"
         ? { top: 0, left: '50%', transform: 'translate(-50%, -50%) rotate(90deg)', width: 800, height: '150vw' }
         : { bottom: 0, left: '50%', transform: 'translate(-50%, 50%) rotate(-90deg)', width: 800, height: '150vw' };

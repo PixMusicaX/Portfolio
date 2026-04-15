@@ -313,6 +313,7 @@ export default function Home() {
         className={`relative flex flex-col justify-center items-center ${hoveredSide === "left" && !selectedSide ? "cursor-pointer" : "cursor-default"}`}
         animate={{
           width: selectedSide === "left" ? "100%" : selectedSide === "right" ? "0%" : hoveredSide === "left" ? "70%" : hoveredSide === "right" ? "30%" : "50%",
+          height: "100%", // Force full height to prevent "flattening" from stale mobile heights
           backgroundColor: hoveredSide === "left" || selectedSide === "left" ? "#0a0a0a" : "#000000",
         }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -361,6 +362,7 @@ export default function Home() {
         className={`relative flex flex-col justify-center items-center font-[family-name:var(--font-syne)] ${hoveredSide === "right" && !selectedSide ? "cursor-pointer" : "cursor-default"}`}
         animate={{
           width: selectedSide === "right" ? "100%" : selectedSide === "left" ? "0%" : hoveredSide === "right" ? "70%" : hoveredSide === "left" ? "30%" : "50%",
+          height: "100%", // Force full height to prevent "flattening" from stale mobile heights
           backgroundColor: hoveredSide === "right" || selectedSide === "right" ? "#ffffff" : "#fafafa",
         }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
