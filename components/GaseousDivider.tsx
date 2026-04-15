@@ -7,10 +7,9 @@ interface DividerProps {
   variant?: "default" | "music" | "dev" | "waltz" | "synthwave" | "battle" | "electronic" | "fusion" | "acoustic" | "anime" | "orchestral" | "legacy" | "dark";
   className?: string;
   align?: "left" | "right" | "bottom" | "top";
-  intensity?: number;
 }
 
-export const GaseousDivider = ({ hoveredSide, variant = "default", className = "", align = "left", intensity = 1.0 }: DividerProps) => {
+export const GaseousDivider = ({ hoveredSide, variant = "default", className = "", align = "left" }: DividerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // ✅ FIX 1: Use a ref to track hoveredSide inside the rAF loop — avoids Safari dataset lag
   const hoveredSideRef = useRef(hoveredSide);
@@ -27,7 +26,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationFrameId = 0;
+    let animationFrameId: number;
     let t = 0;
     let lastTime = performance.now();
     const SEGS = 120;
@@ -129,10 +128,10 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
 
           if (currentHoveredSide === "left") {
             lEdge = 0;
-            rEdge = hw * (1.0 + 0.5 * intensity) + Math.abs(dx) * (0.8 + 0.4 * intensity); // Reduced base to ~1.5 at intensity=1.0
+            rEdge = hw * 2.2 + Math.abs(dx) * 1.5; // Restored to 2.2
           } else if (currentHoveredSide === "right") {
             rEdge = 0;
-            lEdge = -hw * (1.0 + 0.5 * intensity) - Math.abs(dx) * (0.8 + 0.4 * intensity); // Reduced base to ~1.5 at intensity=1.0
+            lEdge = -hw * 2.2 - Math.abs(dx) * 1.5; // Restored to 2.2
           }
 
           pts.push({ y, lEdge, rEdge });
@@ -142,15 +141,15 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         ctx.moveTo(cx + pts[0].lEdge, pts[0].y);
         for (let i = 1; i <= SEGS; i++) {
           const p = pts[i], pp = pts[i - 1];
-          const mx = (cx + p.lEdge + cx + pp.lEdge) / 2;
-          const my = (p.y + pp.y) / 2;
-          ctx.quadraticCurveTo(cx + pp.lEdge, pp.y, mx, my);
+          const mx = Math.round((cx + p.lEdge + cx + pp.lEdge) / 2);
+          const my = Math.round((p.y + pp.y) / 2);
+          ctx.quadraticCurveTo(Math.round(cx + pp.lEdge), Math.round(pp.y), mx, my);
         }
         for (let i = SEGS; i >= 0; i--) {
           const p = pts[i], pn = pts[Math.min(i + 1, SEGS)];
-          const mx = (cx + p.rEdge + cx + pn.rEdge) / 2;
-          const my = (p.y + pn.y) / 2;
-          ctx.quadraticCurveTo(cx + pn.rEdge, pn.y, mx, my);
+          const mx = Math.round((cx + p.rEdge + cx + pn.rEdge) / 2);
+          const my = Math.round((p.y + pn.y) / 2);
+          ctx.quadraticCurveTo(Math.round(cx + pn.rEdge), Math.round(pn.y), mx, my);
         }
         ctx.closePath();
 
@@ -240,7 +239,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         const env = Math.pow(Math.sin(yNorm * Math.PI), 0.3);
         const baseY = y / dpr;
 
-        let dx = fbm(baseY, t * 1.6, 3) * 18 * env * dpr;
+        let dx = fbm(baseY, t * 1.6, 6) * 18 * env * dpr;
         if (currentHoveredSide === "left") {
           dx = Math.abs(dx) * 1.2;
         } else if (currentHoveredSide === "right") {
@@ -252,7 +251,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
           const py = ((i - 1) / SEGS) * H;
           // Constrain value above 0 preventing negative fractional power eval (NaN crash bounding square bug)
           const safeNorm = Math.max(0, (i - 1) / SEGS);
-          let pdx = fbm(py / dpr, t * 1.6, 3) * 18 * Math.pow(Math.max(0, Math.sin(safeNorm * Math.PI)), 0.3) * dpr;
+          let pdx = fbm(py / dpr, t * 1.6, 6) * 18 * Math.pow(Math.max(0, Math.sin(safeNorm * Math.PI)), 0.3) * dpr;
 
           if (currentHoveredSide === "left") {
             pdx = Math.abs(pdx) * 1.2;
@@ -339,7 +338,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         cg.addColorStop(1, 'rgba(255,255,255,0)');
       }
       ctx.strokeStyle = cg;
-      ctx.lineWidth = 3.0 * dpr; // Increased from 2.5 for maximum smoothness
+      ctx.lineWidth = 2.5 * dpr;
       ctx.stroke();
 
       for (let spark = 0; spark < 3; spark++) {
@@ -360,9 +359,9 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         const sAlpha = Math.pow(Math.sin(yNorm * Math.PI), 2) * 0.7;
         ctx.beginPath();
 
-        // Removed Math.round to enable sub-pixel anti-aliasing for the sparks
+        // Use deterministic radius instead of Math.random()
         const sparkRadius = (1.5 + (Math.sin(t * 3 + spark) * 0.5 + 0.5)) * dpr;
-        ctx.arc(cx + sdx, sy, sparkRadius, 0, Math.PI * 2);
+        ctx.arc(Math.round(cx + sdx), Math.round(sy), sparkRadius, 0, Math.PI * 2);
 
         // Use spark index for deterministic color depth instead of Math.random()
         let fillColor = `rgba(255,255,255,${sAlpha})`;
@@ -399,7 +398,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       const dt = (now - lastTime) / 16.666; // Normalize to roughly 60fps
       lastTime = now;
 
-      const speedMult = currentHoveredSide !== "none" ? (1.8 + 1.2 * intensity) : 1;
+      const speedMult = currentHoveredSide !== "none" ? 2.5 : 1;
       t += 0.028 * speedMult * dt;
 
       ctx.restore();
