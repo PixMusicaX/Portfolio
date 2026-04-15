@@ -13,9 +13,8 @@ const TRACKS: Track[] = [
   { id: "1", title: "KAWAII", src: "/audio/electronic/track04.mp3", tag: "Pop Synth" },
   { id: "2", title: "O I A", src: "/audio/electronic/track02.mp3", tag: "Meme" },
   { id: "3", title: "DOOM", src: "/audio/electronic/track03.mp3", tag: "Chiptune" },
-  { id: "4", title: "Super Gogeta", src: "/audio/electronic/track01.mp3", tag: "Guitars" },
-  { id: "5", title: "ULTRAS", src: "/audio/electronic/track05.mp3", tag: "Dubstep" },
-  { id: "6", title: "Toothless", src: "/audio/electronic/track06.mp3", tag: "Hyper" },
+  { id: "4", title: "ULTRAS", src: "/audio/electronic/track05.mp3", tag: "Dubstep" },
+  { id: "5", title: "Toothless", src: "/audio/electronic/track06.mp3", tag: "Hyper" }
 ];
 
 export default function ElectronicPage() {

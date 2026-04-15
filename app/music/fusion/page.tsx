@@ -11,7 +11,9 @@ import { FusionBackground } from "@/components/Backgrounds";
 
 const TRACKS: Track[] = [
   { id: "1", title: "Bad Habits", src: "/audio/fusion/track01.mp3", tag: "Jazz - EDM" },
-  { id: "2", title: "Pochita", src: "/audio/fusion/track02.mp3", tag: "Piano - Trap" },
+  { id: "2", title: "Pochita", src: "/audio/fusion/track02.mp3", tag: "Piano - Hip Hop" },
+  { id: "3", title: "Toxic", src: "/audio/fusion/track03.mp3", tag: "Salsa - Trap" },
+  { id: "4", title: "Super Gogeta", src: "/audio/fusion/track04.mp3", tag: "Metal - Electronic" }
 ];
 
 export default function FusionPage() {

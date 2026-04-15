@@ -12,7 +12,7 @@ import { AcousticBackground } from "@/components/Backgrounds";
 const TRACKS: Track[] = [
   { id: "1", title: "Bossa Nova", src: "/audio/acoustic/track01.mp3", tag: "Lo-Fi" },
   { id: "2", title: "Last of Us", src: "/audio/acoustic/track02.mp3", tag: "SFX" },
-  { id: "3", title: "Toxic", src: "/audio/acoustic/track03.mp3", tag: "Salsa" },
+  { id: "3", title: "Detective", src: "/audio/acoustic/track04.mp3", tag: "Cinematic" },
 ];
 
 export default function AcousticPage() {

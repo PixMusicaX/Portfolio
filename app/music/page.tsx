@@ -10,6 +10,7 @@ import { MusicBackground } from "@/components/Backgrounds";
 import { GaseousDivider } from "@/components/GaseousDivider";
 import { useAudio } from "@/components/AudioProvider";
 import { Mail } from "lucide-react"
+import Footer from "@/components/Footer";
 
 export default function MusicPage() {
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
@@ -34,6 +35,16 @@ export default function MusicPage() {
       router.push("/");
     }, 800);
   };
+
+const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <span 
+      className="inline-block font-bold animate-shimmer-light bg-clip-text text-transparent bg-[length:200%_100%] bg-[linear-gradient(110deg,#6b21a8,45%,#d8b4fe,50%,#ca13b8)]"
+    >
+      {children}
+    </span>
+  );
+};
 
   useEffect(() => {
     setAudioState("full-light");
@@ -96,17 +107,24 @@ export default function MusicPage() {
               <div className="inline-block px-4 py-1 mb-6 rounded-full bg-purple-100 text-purple-600 text-xs font-bold tracking-widest uppercase">
                 Sonic Architecture & Synthesis
               </div>
-              <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-2 flex items-center gap-6">
+              <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-2 leading-tight">
                 <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent pb-2">
                   Producer & <br className="md:hidden" /> Sound Architect
                 </span>
-                <MonitorSpeaker size={120} strokeWidth={1.5} className="text-pink-500 hidden md:block opacity-80" />
+
+                {/* The Logo Wrapper */}
+                <span className="inline-block align-middle ml-6 text-pink-500 opacity-80">
+                  <MonitorSpeaker 
+                    strokeWidth={1.5} 
+                    className="w-[1em] h-[1em] md:w-[0.9em] md:h-[0.9em] animate-[pulse_4s_ease-in-out_infinite]" 
+                  />
+                </span>
               </h1>
               <h2 className="text-2xl md:text-4xl font-bold text-zinc-400 tracking-tight mb-8">
                 PiX MusicaX, Theme/Alter
               </h2>
               <p className="text-xl md:text-2xl text-zinc-600 max-w-2xl leading-relaxed font-medium">
-                Blending classical instruments with modern electronic synthesis to create cinematic, immersive soundscapes.
+                Blending <MusicShimmer>Classical</MusicShimmer> Instruments with Modern <MusicShimmer>Electronic</MusicShimmer> Synthesis to create immersive beats and soundscapes.
               </p>
 
               <div className="flex flex-wrap items-center gap-4 mt-10">
@@ -159,16 +177,19 @@ export default function MusicPage() {
               </h2>
               <div className="text-zinc-600 leading-relaxed font-medium space-y-6 text-xl max-w-3xl">
                 <p>
-                  I go by <span className="text-zinc-900 font-bold">PiX MusicaX</span> and <span className="text-zinc-900 font-bold">Theme/Alter</span> — two sides of the same sonic coin. My journey into music production began in <span className="text-zinc-900 font-semibold">2018</span>, driven by a fascination with layering classical texture over modern digital frameworks.
+                  I go by <MusicShimmer>PiX MusicaX</MusicShimmer> and <MusicShimmer>Theme/Alter</MusicShimmer> — two sides of the same sonic coin. My journey into music production began in 2018, driven by a fascination with <MusicShimmer>World Music</MusicShimmer> and <MusicShimmer>Various Genres</MusicShimmer>, since then I have set out on the voyage to play and learn all of them. 
                 </p>
                 <p>
-                  My weapon of choice is <span className="text-zinc-900 font-semibold">FL Studio</span>, where I sculpt sounds using <span className="text-zinc-900 font-semibold">Serum</span> and <span className="text-zinc-900 font-semibold">Nexus</span> for electronic production, and <span className="text-zinc-900 font-semibold">Kontakt</span> libraries for orchestral and classical arrangements.
+                  My weapon of choice is <MusicShimmer>FL Studio</MusicShimmer>, where I sculpt sounds using <MusicShimmer>Serum</MusicShimmer> and <MusicShimmer>Nexus</MusicShimmer> for electronic production, and <MusicShimmer>Kontakt</MusicShimmer> libraries for orchestral and classical arrangements.
                 </p>
                 <p>
-                  Beyond the DAW, I play the <span className="text-zinc-900 font-semibold">piano</span> and <span className="text-zinc-900 font-semibold">guitar</span> — instruments that keep me rooted in raw musicality and inform everything I produce, from intimate acoustic sketches to full cinematic battle scores.
+                  Beyond the DAW, I play the <MusicShimmer>Piano</MusicShimmer> and <MusicShimmer>Guitar</MusicShimmer> — instruments that keep me rooted in raw musicality and inform everything I produce, from intimate acoustic sketches to full cinematic scores.
                 </p>
                 <p>
-                  Make sure to check out some of my <span className="text-zinc-900 font-bold">samples</span> by scrolling below!
+                  My works include <MusicShimmer>Soundtracks, BGMs, Albums</MusicShimmer> as well as <MusicShimmer>Mainstream Music</MusicShimmer>. Been mostly working on 'help-me-bro' projects as of late, but I'm always open to new collaborations, gigs and commissions.
+                </p>
+                <p>
+                  Make sure to check out some of my <MusicShimmer>samples</MusicShimmer> by scrolling below!
                 </p>
               </div>
             </motion.div>
@@ -307,7 +328,7 @@ export default function MusicPage() {
           </section>
 
           {/* Experience / Timeline Section */}
-          <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-purple-500/10">
+          <section className="min-h-screen w-full flex flex-col justify-center snap-start py-5 border-t border-purple-500/10">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4">
                 <Speaker size={32} className="text-orange-500" />
@@ -332,6 +353,10 @@ export default function MusicPage() {
                 ))}
               </div>
             </motion.div>
+          </section>
+
+                    <section className="snap-start py-1 flex flex-col items-center">
+            <Footer variant="music" /> 
           </section>
 
         </div>
