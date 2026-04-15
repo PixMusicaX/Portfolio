@@ -341,13 +341,13 @@ export default function MusicPage() {
                   { year: "2019", title: "Opened Youtube Channel", desc: "Started uploading music covers and original compositions to Youtube." },
                   { year: "2018", title: "Introduced to Fruity Loops", desc: "This is where everything began." },
                 ].map((exp, i) => (
-                  <div key={i} className="flex gap-6 items-start p-6 rounded-2xl hover:bg-purple-50 transition-colors">
-                    <div className="font-bold text-transparent bg-clip-text bg-gradient-to-b from-zinc-300 to-zinc-200 text-5xl">
+                  <div key={i} className="flex gap-4 md:gap-6 items-start p-4 md:p-6 rounded-2xl hover:bg-purple-50 transition-colors">
+                    <div className="font-bold text-transparent bg-clip-text bg-gradient-to-b from-zinc-300 to-zinc-200 text-3xl md:text-5xl">
                       {exp.year}
                     </div>
-                    <div className="pt-2">
-                      <h3 className="text-xl font-bold mb-2 text-zinc-800">{exp.title}</h3>
-                      <p className="text-zinc-600 leading-relaxed font-medium">{exp.desc}</p>
+                    <div className="pt-1 md:pt-2">
+                      <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2 text-zinc-800">{exp.title}</h3>
+                      <p className="text-sm md:text-base text-zinc-600 leading-relaxed font-medium">{exp.desc}</p>
                     </div>
                   </div>
                 ))}
