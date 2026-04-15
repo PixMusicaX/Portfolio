@@ -317,10 +317,13 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         const env = Math.pow(Math.sin(yNorm * Math.PI), 0.4);
         let sdx = fbm(sy / dpr, t * 2.1 + spark * 5, 4) * 22 * env * dpr;
         
+        // Use a smooth offset instead of Math.random()
+        const jitter = Math.sin(t * 5 + spark * 10) * 8 * dpr;
+
         if (currentHoveredSide === "left") {
-          sdx = Math.abs(sdx) * 1.2 + Math.random() * 20 * dpr;
+          sdx = Math.abs(sdx) * 1.2 + jitter;
         } else if (currentHoveredSide === "right") {
-          sdx = -Math.abs(sdx) * 1.2 - Math.random() * 20 * dpr;
+          sdx = -Math.abs(sdx) * 1.2 - jitter;
         }
         
         const sAlpha = Math.pow(Math.sin(yNorm * Math.PI), 2) * 0.7;

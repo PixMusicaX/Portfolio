@@ -13,6 +13,7 @@ export default function Home() {
   const [hoveredSide, setHoveredSide] = useState<"left" | "right" | null>(null);
   const [selectedSide, setSelectedSide] = useState<"left" | "right" | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
   const [tappedSide, setTappedSide] = useState<"left" | "right" | null>(null);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [touchEndY, setTouchEndY] = useState<number | null>(null);
@@ -25,10 +26,23 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // Increased threshold for tablets/landscape
+      setIsLandscape(window.innerWidth > window.innerHeight && window.innerWidth < 1280);
+    };
+    
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    const mql = window.matchMedia("(orientation: landscape)");
+    const handleOrientation = (e: MediaQueryListEvent) => {
+      checkMobile();
+    };
+    mql.addEventListener("change", handleOrientation);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      mql.removeEventListener("change", handleOrientation);
+    };
   }, []);
 
   useEffect(() => {
@@ -129,29 +143,38 @@ export default function Home() {
     const isDownSwipe = distance < -minSwipeDistance;
 
     if (isUpSwipe) {
-      if (hoveredSide === "left") {
-        setHoveredSide(null);
-        setTappedSide(null);
-      } else if (!hoveredSide || hoveredSide === "right") {
+      // Swipe UP -> Select/Explore Music (Bottom)
+      if (hoveredSide === "right") {
+        // SECOND SWIPE -> Navigate
+        if (isNavigatingRef.current) return;
+        isNavigatingRef.current = true;
+        setSelectedSide("right");
+        setTimeout(() => router.push("/music"), 700);
+      } else {
         setHoveredSide("right");
         setTappedSide("right");
       }
     } else if (isDownSwipe) {
-      if (hoveredSide === "right") {
-        setHoveredSide(null);
-        setTappedSide(null);
-      } else if (!hoveredSide || hoveredSide === "left") {
+      // Swipe DOWN -> Select/Explore Developer (Top)
+      if (hoveredSide === "left") {
+        // SECOND SWIPE -> Navigate
+        if (isNavigatingRef.current) return;
+        isNavigatingRef.current = true;
+        setSelectedSide("left");
+        setTimeout(() => router.push("/dev"), 700);
+      } else {
         setHoveredSide("left");
         setTappedSide("left");
       }
     }
   };
 
-// --- MOBILE LAYOUT ---
-  if (isMobile) {
+// --- MOBILE LAYOUT (Portrait) ---
+  if (isMobile && !isLandscape) {
     return (
       <div 
         className="relative flex flex-col h-[100dvh] w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]"
+        style={{ overscrollBehaviorY: 'contain' }} // Prevent pull-to-refresh
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -194,9 +217,9 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute top-16 text-zinc-500 font-mono text-xs tracking-widest z-10 pointer-events-none"
+              className="absolute top-16 text-zinc-500 font-mono text-[10px] tracking-widest z-10 pointer-events-none text-center"
             >
-              TAP AGAIN TO EXPLORE [DEV]
+              TAP OR SWIPE AGAIN TO EXPLORE [DEV]
             </motion.div>
           )}
 
@@ -253,9 +276,9 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute bottom-12 text-zinc-400 text-xs tracking-[0.2em] uppercase font-bold z-10 pointer-events-none"
+              className="absolute bottom-12 text-zinc-400 text-[10px] tracking-[0.2em] uppercase font-bold z-10 pointer-events-none text-center"
             >
-              Tap again to explore (Audio)
+              Tap or Swipe again to explore (Audio)
             </motion.div>
           )}
         </motion.div>
