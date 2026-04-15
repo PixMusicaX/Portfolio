@@ -125,16 +125,16 @@ export default function DeveloperPage() {
     if (typeof window === "undefined") return;
     const media = window.matchMedia("(min-width: 768px)");
     const hoverMedia = window.matchMedia("(hover: hover)");
-    
+
     const handleMediaChange = () => {
       setIsGlassVisible(media.matches);
       setCanHover(hoverMedia.matches);
     };
-    
+
     handleMediaChange();
     media.addEventListener("change", handleMediaChange);
     hoverMedia.addEventListener("change", handleMediaChange);
-    
+
     return () => {
       media.removeEventListener("change", handleMediaChange);
       hoverMedia.removeEventListener("change", handleMediaChange);
@@ -174,6 +174,13 @@ export default function DeveloperPage() {
   return (
     <div className="min-h-[100dvh] bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
       <DevBackground />
+      <GaseousDivider
+        hoveredSide={(isSidebarHovered || !isGlassVisible) ? "right" : null}
+        variant="dev"
+        align="right"
+        intensity={0.45}
+        className={`z-[1] transition-opacity duration-700 ease-in-out ${(isSidebarHovered || !isGlassVisible) ? 'opacity-70' : 'opacity-45'}`}>
+      </GaseousDivider>
 
       <motion.nav
         initial={{ opacity: 0 }}
@@ -181,12 +188,6 @@ export default function DeveloperPage() {
         transition={{ duration: 1, delay: 0.2 }}
         className="fixed right-0 top-0 bottom-0 w-16 max-md:w-14 z-50 flex flex-col items-center justify-center pointer-events-none"
       >
-        <GaseousDivider
-          hoveredSide={(isSidebarHovered || !isGlassVisible) ? "right" : null}
-          variant="dev"
-          align="right"
-          className={`z-[-2] transition-opacity duration-700 ease-in-out ${(isSidebarHovered || !isGlassVisible) ? 'opacity-70' : 'opacity-45'}`}>
-        </GaseousDivider>
         <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-black/40 border-l border-white/5 shadow-[-20px_0_50px_rgba(255,255,255,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
 
         <button
@@ -221,7 +222,7 @@ export default function DeveloperPage() {
         initial={{ opacity: 0, filter: "blur(12px)" }}
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain no-scrollbar relative"
+        className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain no-scrollbar relative z-10"
       >
         <div className="max-w-4xl mx-auto px-6 pr-20 relative z-10 w-full">
 

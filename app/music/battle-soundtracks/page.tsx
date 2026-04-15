@@ -41,18 +41,28 @@ export default function BattleSoundtracksPage() {
       <BattleBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-red-50/50 to-rose-100/80 -z-10" />
 
+      {/* Unified Background Dividers */}
+      <GaseousDivider
+        hoveredSide="left"
+        variant="battle"
+        intensity={0.45}
+        className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
+      />
+      {isGlassVisible && (
+        <GaseousDivider
+          hoveredSide="left"
+          variant="battle"
+          align="bottom"
+          intensity={0.45}
+          className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
         {/* Glass pane — hidden on mobile to maintain clean sidebar */}
         <div className={`absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-rose-500/10 shadow-[20px_0_50px_rgba(225,29,72,0.05)] backdrop-blur-sm z-[-1] ${isGlassVisible ? 'block' : 'hidden'}`} />
 
-        {/* Gaseous divider lives in the sidebar on mobile when playing */}
-        {!isGlassVisible && (
-          <GaseousDivider
-            hoveredSide="left"
-            variant="battle"
-            className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-          />
-        )}
+        {/* Gaseous divider moved to root for correct layering */}
 
         <Link
           href="/music#genres"
@@ -110,15 +120,7 @@ export default function BattleSoundtracksPage() {
         </div>
       </main>
 
-      {/* Gaseous divider at bottom — desktop only */}
-      {isGlassVisible && (
-        <GaseousDivider
-          hoveredSide="left"
-          variant="battle"
-          align="bottom"
-          className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-        />
-      )}
+      {/* Fixed z-index layering above */}
 
       <motion.div
         initial={{ opacity: 1 }}

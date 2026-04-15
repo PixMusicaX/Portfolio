@@ -44,6 +44,23 @@ export default function ElectronicPage() {
       <ElectronicBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-zinc-50 via-neutral-50/50 to-zinc-100/80 -z-10" />
 
+      {/* Unified Background Dividers */}
+      <GaseousDivider
+        hoveredSide="left"
+        variant="electronic"
+        intensity={0.45}
+        className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
+      />
+      {isGlassVisible && (
+        <GaseousDivider
+          hoveredSide="left"
+          variant="electronic"
+          align="bottom"
+          intensity={0.45}
+          className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+
       {/* Navigation Sidebar */}
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
         {/* Glass pane — hidden on mobile */}
@@ -52,14 +69,7 @@ export default function ElectronicPage() {
             }`}
         />
 
-        {/* Gaseous divider for mobile sidebar */}
-        {!isGlassVisible && (
-          <GaseousDivider
-            hoveredSide="left"
-            variant="electronic"
-            className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-          />
-        )}
+        {/* Gaseous divider moved to root for correct layering */}
 
         <Link
           href="/music#genres"
@@ -124,15 +134,7 @@ export default function ElectronicPage() {
         </div>
       </main>
 
-      {/* Gaseous divider at bottom — desktop only */}
-      {isGlassVisible && (
-        <GaseousDivider
-          hoveredSide="left"
-          variant="electronic"
-          align="bottom"
-          className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-        />
-      )}
+      {/* Fixed z-index layering above */}
 
       {/* Initial Page Fade-in Effect */}
       <motion.div

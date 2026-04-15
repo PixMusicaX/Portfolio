@@ -105,6 +105,13 @@ export default function MusicPage() {
   return (
     <div className="min-h-[100dvh] bg-white text-zinc-900 font-[family-name:var(--font-outfit)] selection:bg-purple-200 relative overflow-hidden">
       <MusicBackground />
+      <GaseousDivider
+        hoveredSide={(isSidebarHovered || !isGlassVisible) ? "left" : null}
+        variant="music"
+        intensity={0.45}
+        className={`z-[1] ${(isSidebarHovered || !isGlassVisible) ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-45'}`}
+      />
+
 
       <motion.nav
         initial={{ opacity: 0 }}
@@ -112,12 +119,6 @@ export default function MusicPage() {
         transition={{ duration: 1, delay: 0.2 }}
         className="fixed left-0 top-0 bottom-0 w-16 max-md:w-14 z-50 flex flex-col items-center justify-center pointer-events-none"
       >
-
-        <GaseousDivider
-          hoveredSide={(isSidebarHovered || !isGlassVisible) ? "left" : null}
-          variant="music"
-          className={`z-[-2] ${(isSidebarHovered || !isGlassVisible) ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-45'}`}
-        />
 
         {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
         <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-purple-500/10 shadow-[20px_0_50px_rgba(168,85,247,0.15)] backdrop-blur-sm z-[-1] hidden md:block" />
@@ -140,7 +141,7 @@ export default function MusicPage() {
         initial={{ opacity: 0, filter: "blur(12px)" }}
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+        className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] relative z-10"
       >
 
         <div className="max-w-5xl mx-auto px-6 pl-14 md:pl-20 relative z-10 w-full flex flex-col">
@@ -263,7 +264,7 @@ export default function MusicPage() {
                   },
                   {
                     title: "Synthwave",
-                    desc: "Nostalgic 80s analog synthesizers paired with driving, retro-futuristic drum machine grooves.",
+                    desc: "Nostalgic 80s analog synthesizers paired with driving, retro-futuristic arpeggios and grooves.",
                     route: "/music/synthwave",
                     color: "from-purple-100 to-fuchsia-100",
                     badge: "Analog"
@@ -284,14 +285,14 @@ export default function MusicPage() {
                   },
                   {
                     title: "Fusion",
-                    desc: "Genre-defying sonic experiments merging world instruments with modern production techniques.",
+                    desc: "Genre-defying sonic experiments merging genres with modern production techniques.",
                     route: "/music/fusion",
                     color: "from-amber-100 to-orange-100",
                     badge: "Hybrid"
                   },
                   {
                     title: "Acoustic",
-                    desc: "Raw, intimate performances captured with warmth — fingerpicked strings and natural resonance.",
+                    desc: "Raw, intimate performances captured with warmth — fingerpicked strings or natural resonance.",
                     route: "/music/acoustic",
                     color: "from-emerald-100 to-green-100",
                     badge: "Organic"
@@ -305,14 +306,14 @@ export default function MusicPage() {
                   },
                   {
                     title: "Orchestral",
-                    desc: "Full symphonic arrangements with sweeping strings, bold brass, and thunderous timpani.",
+                    desc: "Full symphonic arrangements with sweeping strings, bold brass, and symphonic pianos.",
                     route: "/music/orchestral",
                     color: "from-indigo-100 to-violet-100",
                     badge: "Classical"
                   },
                   {
                     title: "Legacy Stuff",
-                    desc: "Archived experiments and early explorations from the formative years of the sonic journey.",
+                    desc: "Archived experiments and early explorations from the formative years of my sonic journey.",
                     route: "/music/legacy-stuff",
                     color: "from-teal-100 to-cyan-100",
                     badge: "Archive"
@@ -335,7 +336,7 @@ export default function MusicPage() {
                         y: isTransitioning ? -8 : 0
                       }}
                       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                      className={`block p-8 rounded-3xl bg-gradient-to-br ${genre.color} border border-white/50 shadow-sm group ${isTransitioning ? 'shadow-2xl z-50 relative' : 'cursor-pointer'}`}
+                      className={`block p-8 rounded-3xl bg-gradient-to-br ${genre.color} border border-white/50 backdrop-blur-md shadow-sm group ${isTransitioning ? 'shadow-2xl z-50 relative' : 'cursor-pointer'}`}
                     >
                       <div className="flex justify-between items-start mb-12">
                         <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
@@ -375,7 +376,7 @@ export default function MusicPage() {
           </section>
 
           {/* Experience / Timeline Section */}
-          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-10 md:py-5 border-t border-purple-500/10">
+          <section className="min-h-0 w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-purple-500/10">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4">
                 <Speaker size={32} className="text-orange-500" />

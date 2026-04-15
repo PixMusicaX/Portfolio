@@ -43,6 +43,23 @@ export default function LegacyStuffPage() {
       <LegacyBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-teal-50 via-cyan-50/50 to-teal-100/80 -z-10" />
 
+      {/* Unified Background Dividers */}
+      <GaseousDivider
+        hoveredSide="left"
+        variant="legacy"
+        intensity={0.45}
+        className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
+      />
+      {isGlassVisible && (
+        <GaseousDivider
+          hoveredSide="left"
+          variant="legacy"
+          align="bottom"
+          intensity={0.45}
+          className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+
       {/* Navigation Sidebar */}
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
         {/* Glass pane — only visible on desktop for depth */}
@@ -51,14 +68,7 @@ export default function LegacyStuffPage() {
             }`}
         />
 
-        {/* Gaseous divider lives in the sidebar on mobile when playing */}
-        {!isGlassVisible && (
-          <GaseousDivider
-            hoveredSide="left"
-            variant="legacy"
-            className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-          />
-        )}
+        {/* Gaseous divider moved to root for correct layering */}
 
         <Link
           href="/music#genres"
@@ -82,7 +92,7 @@ export default function LegacyStuffPage() {
         >
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-teal-900/90 mb-4">Legacy Stuff</h1>
           <p className="text-lg md:text-xl text-teal-600/60 max-w-xl mx-auto italic font-light" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-            Archived experiments and early explorations from the formative years of the sonic journey.
+            Archived experiments and early explorations from my formative years of the sonic journey.
           </p>
         </motion.div>
 
@@ -96,8 +106,8 @@ export default function LegacyStuffPage() {
                   key={track.id}
                   onClick={() => setActiveTrack(track.id)}
                   className={`w-56 md:w-72 h-20 md:h-24 flex flex-col items-center justify-center rounded-2xl uppercase tracking-[0.3em] font-medium text-sm md:text-base transition-all duration-300 border ${isActive
-                      ? 'bg-white text-teal-700 border-white shadow-[0_10px_40px_rgba(13,148,136,0.15)] scale-105 z-10'
-                      : 'bg-white/40 text-teal-900/60 border-white/40 hover:bg-white/80 hover:text-teal-800 hover:shadow-lg hover:-translate-y-1 backdrop-blur-sm'
+                    ? 'bg-white text-teal-700 border-white shadow-[0_10px_40px_rgba(13,148,136,0.15)] scale-105 z-10'
+                    : 'bg-white/40 text-teal-900/60 border-white/40 hover:bg-white/80 hover:text-teal-800 hover:shadow-lg hover:-translate-y-1 backdrop-blur-sm'
                     }`}
                 >
                   <span className={isActive ? 'font-bold' : ''}>{track.title}</span>
@@ -124,15 +134,7 @@ export default function LegacyStuffPage() {
         </div>
       </main>
 
-      {/* Gaseous divider at bottom — desktop only */}
-      {isGlassVisible && (
-        <GaseousDivider
-          hoveredSide="left"
-          variant="legacy"
-          align="bottom"
-          className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-        />
-      )}
+      {/* Fixed z-index layering above */}
 
       {/* Entry Wipe Overlay */}
       <motion.div

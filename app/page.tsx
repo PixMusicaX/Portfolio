@@ -30,7 +30,7 @@ export default function Home() {
       setIsMobile(window.innerWidth < 1024); // Increased threshold for tablets/landscape
       setIsLandscape(window.innerWidth > window.innerHeight && window.innerWidth < 1280);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
     const mql = window.matchMedia("(orientation: landscape)");
@@ -101,7 +101,7 @@ export default function Home() {
       // Second tap — navigate
       if (isNavigatingRef.current) return;
       isNavigatingRef.current = true;
-      
+
       setSelectedSide(side);
       setHoveredSide(side);
       setTimeout(() => router.push(path), 700);
@@ -119,7 +119,7 @@ export default function Home() {
     const x = e.clientX;
     if (side === "left" && x > w * 0.35) return;
     if (side === "right" && x < w * 0.65) return;
-    
+
     if (isNavigatingRef.current) return;
     isNavigatingRef.current = true;
 
@@ -169,10 +169,10 @@ export default function Home() {
     }
   };
 
-// --- MOBILE LAYOUT (Portrait) ---
+  // --- MOBILE LAYOUT (Portrait) ---
   if ((isMobile && !isLandscape)) {
     return (
-      <div 
+      <div
         className="relative flex flex-col h-[100dvh] w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]"
         style={{ overscrollBehaviorY: 'contain' }} // Prevent pull-to-refresh
         onTouchStart={onTouchStart}
@@ -223,7 +223,7 @@ export default function Home() {
             </motion.div>
           )}
 
-          </motion.div>
+        </motion.div>
 
         {/* Bottom: Music Producer */}
         <motion.div
@@ -296,9 +296,9 @@ export default function Home() {
             }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <GaseousDivider 
-              hoveredSide={hoveredSide} 
-              align="top" 
+            <GaseousDivider
+              hoveredSide={hoveredSide}
+              align="top"
             />
           </motion.div>
         )}

@@ -43,6 +43,23 @@ export default function FusionPage() {
       <FusionBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50/50 to-amber-100/80 -z-10" />
 
+      {/* Unified Background Dividers */}
+      <GaseousDivider
+        hoveredSide="left"
+        variant="fusion"
+        intensity={0.45}
+        className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
+      />
+      {isGlassVisible && (
+        <GaseousDivider
+          hoveredSide="left"
+          variant="fusion"
+          align="bottom"
+          intensity={0.45}
+          className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+
       {/* Navigation Sidebar */}
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
         {/* Glass pane — only visible on desktop for depth */}
@@ -51,14 +68,7 @@ export default function FusionPage() {
             }`}
         />
 
-        {/* Gaseous divider lives in the sidebar on mobile when playing */}
-        {!isGlassVisible && (
-          <GaseousDivider
-            hoveredSide="left"
-            variant="fusion"
-            className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-          />
-        )}
+        {/* Gaseous divider moved to root for correct layering */}
 
         <Link
           href="/music#genres"
@@ -83,7 +93,7 @@ export default function FusionPage() {
         >
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-amber-900/90 mb-4">Fusion</h1>
           <p className="text-lg md:text-xl text-amber-600/60 max-w-xl mx-auto italic font-light" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-            Genre-defying sonic experiments merging world instruments with modern production techniques.
+            Genre-defying sonic experiments merging genres with modern production techniques.
           </p>
         </motion.div>
 
@@ -125,15 +135,7 @@ export default function FusionPage() {
         </div>
       </main>
 
-      {/* Gaseous divider at bottom — desktop only */}
-      {isGlassVisible && (
-        <GaseousDivider
-          hoveredSide="left"
-          variant="fusion"
-          align="bottom"
-          className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-        />
-      )}
+      {/* Fixed z-index layering above */}
 
       {/* Entry Wipe */}
       <motion.div

@@ -43,6 +43,23 @@ export default function WaltzPage() {
       <WaltzBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-sky-50 via-blue-50/50 to-sky-100/80 -z-10" />
 
+      {/* Unified Background Dividers */}
+      <GaseousDivider
+        hoveredSide="left"
+        variant="waltz"
+        intensity={0.45}
+        className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
+      />
+      {isGlassVisible && (
+        <GaseousDivider
+          hoveredSide="left"
+          variant="waltz"
+          align="bottom"
+          intensity={0.45}
+          className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+
       {/* Navigation Sidebar */}
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
         {/* Parabolic Light Leak Sidebar Container — only visible on desktop */}
@@ -51,14 +68,7 @@ export default function WaltzPage() {
             }`}
         />
 
-        {/* Gaseous divider lives in the sidebar on mobile when playing */}
-        {!isGlassVisible && (
-          <GaseousDivider
-            hoveredSide="left"
-            variant="waltz"
-            className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-          />
-        )}
+        {/* Gaseous divider moved to root for correct layering */}
 
         <Link
           href="/music#genres"
@@ -125,15 +135,7 @@ export default function WaltzPage() {
         </div>
       </main>
 
-      {/* Gaseous divider at bottom — desktop only */}
-      {isGlassVisible && (
-        <GaseousDivider
-          hoveredSide="left"
-          variant="waltz"
-          align="bottom"
-          className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-        />
-      )}
+      {/* Fixed z-index layering above */}
 
       {/* Absolute Initial Transition Wipe */}
       <motion.div

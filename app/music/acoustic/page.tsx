@@ -39,18 +39,28 @@ export default function AcousticPage() {
       <AcousticBackground />
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-green-50/50 to-emerald-100/80 -z-10" />
 
+      {/* Unified Background Dividers */}
+      <GaseousDivider
+        hoveredSide="left"
+        variant="acoustic"
+        intensity={0.45}
+        className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
+      />
+      {isGlassVisible && (
+        <GaseousDivider
+          hoveredSide="left"
+          variant="acoustic"
+          align="bottom"
+          intensity={0.45}
+          className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
         {/* Glass pane — hidden on mobile */}
         <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-emerald-500/10 shadow-[20px_0_50px_rgba(5,150,105,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
 
-        {/* Gaseous divider lives in the sidebar on mobile */}
-        {!isGlassVisible && (
-          <GaseousDivider
-            hoveredSide="left"
-            variant="acoustic"
-            className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-          />
-        )}
+        {/* Gaseous divider moved to root for correct layering */}
 
         <Link
           href="/music#genres"
@@ -73,7 +83,7 @@ export default function AcousticPage() {
         >
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-emerald-900/90 mb-4">Acoustic</h1>
           <p className="text-lg md:text-xl text-emerald-600/60 max-w-xl mx-auto italic font-light" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-            Raw, intimate performances captured with warmth — fingerpicked strings and natural resonance.
+            Raw, intimate performances captured with warmth — fingerpicked strings or natural resonance.
           </p>
         </motion.div>
 
@@ -109,15 +119,7 @@ export default function AcousticPage() {
         </div>
       </main>
 
-      {/* Gaseous divider at bottom — desktop only */}
-      {isGlassVisible && (
-        <GaseousDivider
-          hoveredSide="left"
-          variant="acoustic"
-          align="bottom"
-          className={`transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-        />
-      )}
+      {/* Fixed z-index layering above */}
 
       <motion.div
         initial={{ opacity: 1 }}
