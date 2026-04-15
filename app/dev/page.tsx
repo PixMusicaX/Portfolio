@@ -19,17 +19,17 @@ import Footer from "@/components/Footer";
 
 const LanguageCard = ({ lang, icon: IconComponent, glowColor, link }: { lang: string; icon: any; glowColor: string; link: string }) => {
   const [isHovered, setIsHovered] = useState(false);
-  
+
   return (
-    <a 
-      href={link} 
+    <a
+      href={link}
       target="_blank"
       rel="noopener noreferrer"
       className="flex flex-col items-center gap-2 cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div 
+      <div
         className="flex items-center justify-center w-16 h-16 rounded-2xl border border-zinc-800 bg-zinc-950/70 transition-all duration-300"
         style={{
           borderColor: isHovered ? 'rgba(255, 255, 255, 0.2)' : 'rgb(39, 39, 42)',
@@ -40,7 +40,7 @@ const LanguageCard = ({ lang, icon: IconComponent, glowColor, link }: { lang: st
         {IconComponent ? (
           <IconComponent size={28} style={{ color: isHovered ? glowColor : 'white', transition: 'color 300ms' }} />
         ) : (
-          <div 
+          <div
             className="w-8 h-8 rounded bg-zinc-700/50 flex items-center justify-center text-xs font-semibold transition-all duration-300"
             style={{
               color: isHovered ? glowColor : 'rgb(161, 161, 170)',
@@ -102,19 +102,19 @@ export default function DeveloperPage() {
     }, 800);
   };
 
-const educationData = [
-  { id: "college", title: "B.Tech in Computer Science", institution: "University of Engineering & Management, Kolkata", year: "2021 - 2025", image: "/images/UEM,_Kolkata.jpg", gpa: "8.4 CGPA" },
-  { id: "highschool", title: "ISC", institution: "Don Bosco, Bandel", year: "2019 - 2021", image: "/images/dbb.jpg", gpa: "85.25%" },
-  { id: "school", title: "ICSE", institution: "Don Bosco, Bandel", year: "2009 - 2019", image: "/images/dbb_junior.JPG", gpa: "92.2%" }
-];
+  const educationData = [
+    { id: "college", title: "B.Tech in Computer Science", institution: "University of Engineering & Management, Kolkata", year: "2021 - 2025", image: "/images/UEM,_Kolkata.jpg", gpa: "8.4 CGPA" },
+    { id: "highschool", title: "ISC", institution: "Don Bosco, Bandel", year: "2019 - 2021", image: "/images/dbb.jpg", gpa: "85.25%" },
+    { id: "school", title: "ICSE", institution: "Don Bosco, Bandel", year: "2009 - 2019", image: "/images/dbb_junior.JPG", gpa: "92.2%" }
+  ];
 
-const ShimmerText = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <span className="inline-block font-semibold animate-shimmer bg-clip-text text-transparent bg-[length:200%_100%] bg-[linear-gradient(110deg,#a1a1aa,35%,#fff,50%,#a1a1aa)]">
-      {children}
-    </span>
-  );
-};
+  const ShimmerText = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <span className="inline-block font-semibold animate-shimmer bg-clip-text text-transparent bg-[length:200%_100%] bg-[linear-gradient(110deg,#a1a1aa,35%,#fff,50%,#a1a1aa)]">
+        {children}
+      </span>
+    );
+  };
 
   useEffect(() => {
     setAudioState("full-dark");
@@ -133,7 +133,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!scrollContainerRef.current) return;
-      
+
       const scrollAmount = 100;
       switch (e.key) {
         case "ArrowDown":
@@ -212,12 +212,12 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
         className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] relative"
       >
         <div className="max-w-4xl mx-auto px-6 pr-20 relative z-10 w-full">
-          
+
           <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 relative pb-32">
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true, amount: 0.3 }} 
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8 }}
               className="relative z-10"
             >
@@ -226,7 +226,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
                   id="mute-toggle"
                   onClick={handleMuteToggle}
                   className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:border-zinc-600 transition-all duration-300 cursor-pointer">
-                    <AnimatePresence mode="wait">
+                  <AnimatePresence mode="wait">
                     <motion.span
                       key={isMuted ? "muted" : "unmuted"}
                       initial={{ opacity: 0, scale: 0.5 }}
@@ -241,20 +241,20 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
                   {isMuted ? "Unmute" : "Mute"}
                 </button>
 
-                <div className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:border-zinc-600 transition-all duration-300 cursor-pointer">
+                <div className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400">
                   <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                   Currently Building Software
                 </div>
               </div>
 
               <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-2 relative leading-tight">
-                Full Stack + AI <br className="md:hidden" /> Developer 
-                
+                Full Stack + AI <br className="md:hidden" /> Developer
+
                 {/* The Icon Wrapper */}
                 <span className="inline-block align-middle ml-4 text-zinc-800">
-                  <Terminal 
-                    strokeWidth={2.5} 
-                    className="w-[1.2em] h-[1.2em] md:w-[1.1em] md:h-[1.1em]" 
+                  <Terminal
+                    strokeWidth={2.5}
+                    className="w-[1.2em] h-[1.2em] md:w-[1.1em] md:h-[1.1em]"
                   />
                 </span>
               </h1>
@@ -271,7 +271,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
               </div>
 
               <p className="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed mb-8">
-                Building creative <ShimmerText>Full Stack Applications</ShimmerText> and <ShimmerText>AI Solutions</ShimmerText>, blending rigorous backend architecture with engaging, intuitive frontend experiences. 
+                Building creative <ShimmerText>Full Stack Applications</ShimmerText> and <ShimmerText>AI Solutions</ShimmerText>, blending rigorous backend architecture with engaging, intuitive frontend experiences.
               </p>
 
               <div className="flex items-center gap-6 mb-8">
@@ -290,7 +290,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
                     { label: "Projects", id: "projects" },
                     { label: "Experience", id: "experience" },
                     { label: "Education", id: "education" },
-                    { label: "Resume", id: "resume", link: "/docs/Resume.pdf" } 
+                    { label: "Resume", id: "resume", link: "/docs/Resume.pdf" }
                   ].map((section) => (
                     <motion.button
                       key={section.id}
@@ -340,15 +340,15 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
                 <p>
                   I'm a developer focused on building <ShimmerText>Practical, Scalable Applications</ShimmerText> with a strong interest in <ShimmerText>AI-driven Systems</ShimmerText>. I have worked primarily with Python, JavaScript, and modern frameworks like React and FastAPI. 🙂‍↔️
                 </p>
-                
+
                 <p>
-                  Currently working with <ShimmerText>.NET and Angular</ShimmerText> on the Cloud at LTM, while exploring <ShimmerText>Rust</ShimmerText> for optimal performance and <ShimmerText>Next.js</ShimmerText> for amazing web designs. 😎
+                  Currently working with <ShimmerText>.NET and Angular</ShimmerText> on the Cloud at LTM, while exploring <ShimmerText>Rust</ShimmerText> for optimal performance and <ShimmerText>Next.js</ShimmerText> for amazing web designs. (like this one!) 😎
                 </p>
-                
+
                 <p>
                   Work aside, I enjoy travelling, exploring new tech and music production. Putting inspirations into <ShimmerText>Real-World solutions</ShimmerText>. 🚀
                 </p>
-                
+
                 <p>
                   Always open to <ShimmerText>like-minded individuals</ShimmerText> for work or just a chat. 🙂‍↕️
                 </p>
@@ -492,7 +492,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
                           <p className="text-zinc-300 mt-1">{project.result}</p>
                         </div>
                       </div>
-                   </div>
+                    </div>
 
                     <div className="flex flex-wrap gap-2 mt-auto pt-6 border-t border-zinc-800/50">
                       {project.tech.map((t, idx) => (
@@ -510,7 +510,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
             </motion.div>
           </section>
 
-            <section id="experience" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50">
+          <section id="experience" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">Work Experience</h2>
               <div className="space-y-12">
@@ -541,11 +541,11 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
           </section>
 
           <section id="education" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-10 border-t border-zinc-900/50 relative">
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true, amount: 0.3 }} 
-              transition={{ duration: 0.8 }} 
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8 }}
               /* 1. Added mx-auto to center the entire motion container */
               className="relative z-10 w-full max-w-4xl mx-auto"
             >
@@ -555,10 +555,10 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                 {educationData.map((edu) => (
-                  <div 
-                    key={edu.id} 
-                    onMouseEnter={() => setHoveredEdu(edu.id)} 
-                    onMouseLeave={() => setHoveredEdu(null)} 
+                  <div
+                    key={edu.id}
+                    onMouseEnter={() => setHoveredEdu(edu.id)}
+                    onMouseLeave={() => setHoveredEdu(null)}
                     /* 3. The card will now fill the grid cells centered by the parent */
                     className="group p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800 hover:bg-zinc-800/80 transition-all duration-300 backdrop-blur-md cursor-pointer"
                   >
@@ -576,82 +576,82 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
               </div>
 
               {/* <section id="research" className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-zinc-900/50 relative"> */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 50 }} 
-                  whileInView={{ opacity: 1, y: 0 }} 
-                  viewport={{ once: true, amount: 0.3 }} 
-                  transition={{ duration: 0.8 }} 
-                  className="relative z-10 w-full"
-                >
-                  <h2 className="text-2xl font-semibold text-white mt-8 mb-8 border-b border-zinc-800 pb-4">Research & Publications</h2>
-                  
-                  <div className="space-y-10">
-                    {[
-                      {
-                        title: "Breast Cancer Detection Using Advanced Machine Learning Algorithms: A Comparative Analysis",
-                        journal: "Conference Paper • Jul 2024",
-                        date: "2024",
-                        desc: "A comparative study analyzing various machine learning architectures for high-accuracy breast cancer detection.",
-                        link: "https://www.researchgate.net/publication/382372766_Breast_Cancer_Detection_Using_Advanced_Machine_Learning_Algorithms_A_Comparative_Analysis",
-                        tags: ["Machine Learning", "Healthcare", "Analysis"]
-                      },
-                      {
-                        title: "A Correlative Survey on Imbalanced Breast Cancer Data Using Ensembled Oversampling Techniques and Deep Learning Algorithms",
-                        journal: "Conference Paper • Feb 2024",
-                        date: "2024",
-                        desc: "Researching the impact of ensembled oversampling on imbalanced datasets to improve deep learning diagnostic reliability.",
-                        link: "https://www.researchgate.net/publication/379494519_A_Correlative_Survey_on_Imbalanced_Breast_Cancer_Data_Using_Ensembled_Oversampling_Techniques_and_Deep_Learning_Algorithms",
-                        tags: ["Deep Learning", "Oversampling", "Data Science"]
-                      },
-                      {
-                        title: "IoT-based Fire Alarm: Design and Approach",
-                        journal: "Article • Oct 2023",
-                        date: "2023",
-                        desc: "Designed an IoT-integrated fire alarm system leveraging sensor networks for real-time industrial and household safety.",
-                        link: "https://www.researchgate.net/publication/374625842_IoT-based_Fire_Alarm_Design_and_Approach",
-                        tags: ["IoT", "Embedded Systems", "Safety Tech"]
-                      }
-                    ].map((pub, i) => (
-                      <div key={i} className="group relative pl-8 border-l border-zinc-800 hover:border-cyan-500/50 transition-colors">
-                        {/* Timeline Dot */}
-                        <div className="absolute w-3.5 h-3.5 rounded-full -left-[7px] top-1.5 transition-all duration-300 border-2 border-cyan-500 bg-cyan-500/20 group-hover:bg-cyan-500 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.8)]" />
-                        
-                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-2">
-                          <div className="max-w-2xl">
-                            <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors duration-300">
-                              {pub.title}
-                            </h3>
-                            <p className="text-cyan-600/80 font-mono text-xs mt-1 uppercase tracking-wider">{pub.journal}</p>
-                            <p className="text-zinc-400 text-sm mt-3 leading-relaxed">{pub.desc}</p>
-                            
-                            {/* Added Tags rendering to match your data objects */}
-                            <div className="flex flex-wrap gap-2 mt-4">
-                              {pub.tags.map((tag) => (
-                                <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-500">
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center gap-3 shrink-0">
-                            <span className="text-sm font-mono text-zinc-500 bg-zinc-900/50 px-2 py-1 rounded border border-zinc-800">
-                              {pub.date}
-                            </span>
-                            <a 
-                              href={pub.link} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="p-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all"
-                            >
-                              <ExternalLink size={16} />
-                            </a>
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8 }}
+                className="relative z-10 w-full"
+              >
+                <h2 className="text-2xl font-semibold text-white mt-8 mb-8 border-b border-zinc-800 pb-4">Research & Publications</h2>
+
+                <div className="space-y-10">
+                  {[
+                    {
+                      title: "Breast Cancer Detection Using Advanced Machine Learning Algorithms: A Comparative Analysis",
+                      journal: "Conference Paper • Jul 2024",
+                      date: "2024",
+                      desc: "A comparative study analyzing various machine learning architectures for high-accuracy breast cancer detection.",
+                      link: "https://www.researchgate.net/publication/382372766_Breast_Cancer_Detection_Using_Advanced_Machine_Learning_Algorithms_A_Comparative_Analysis",
+                      tags: ["Machine Learning", "Healthcare", "Analysis"]
+                    },
+                    {
+                      title: "A Correlative Survey on Imbalanced Breast Cancer Data Using Ensembled Oversampling Techniques and Deep Learning Algorithms",
+                      journal: "Conference Paper • Feb 2024",
+                      date: "2024",
+                      desc: "Researching the impact of ensembled oversampling on imbalanced datasets to improve deep learning diagnostic reliability.",
+                      link: "https://www.researchgate.net/publication/379494519_A_Correlative_Survey_on_Imbalanced_Breast_Cancer_Data_Using_Ensembled_Oversampling_Techniques_and_Deep_Learning_Algorithms",
+                      tags: ["Deep Learning", "Oversampling", "Data Science"]
+                    },
+                    {
+                      title: "IoT-based Fire Alarm: Design and Approach",
+                      journal: "Article • Oct 2023",
+                      date: "2023",
+                      desc: "Designed an IoT-integrated fire alarm system leveraging sensor networks for real-time industrial and household safety.",
+                      link: "https://www.researchgate.net/publication/374625842_IoT-based_Fire_Alarm_Design_and_Approach",
+                      tags: ["IoT", "Embedded Systems", "Safety Tech"]
+                    }
+                  ].map((pub, i) => (
+                    <div key={i} className="group relative pl-8 border-l border-zinc-800 hover:border-cyan-500/50 transition-colors">
+                      {/* Timeline Dot */}
+                      <div className="absolute w-3.5 h-3.5 rounded-full -left-[7px] top-1.5 transition-all duration-300 border-2 border-cyan-500 bg-cyan-500/20 group-hover:bg-cyan-500 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.8)]" />
+
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-2">
+                        <div className="max-w-2xl">
+                          <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors duration-300">
+                            {pub.title}
+                          </h3>
+                          <p className="text-cyan-600/80 font-mono text-xs mt-1 uppercase tracking-wider">{pub.journal}</p>
+                          <p className="text-zinc-400 text-sm mt-3 leading-relaxed">{pub.desc}</p>
+
+                          {/* Added Tags rendering to match your data objects */}
+                          <div className="flex flex-wrap gap-2 mt-4">
+                            {pub.tags.map((tag) => (
+                              <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-500">
+                                {tag}
+                              </span>
+                            ))}
                           </div>
                         </div>
+
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="text-sm font-mono text-zinc-500 bg-zinc-900/50 px-2 py-1 rounded border border-zinc-800">
+                            {pub.date}
+                          </span>
+                          <a
+                            href={pub.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all"
+                          >
+                            <ExternalLink size={16} />
+                          </a>
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                </motion.div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
               {/* </section> */}
             </motion.div>
           </section>
@@ -659,9 +659,9 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
           <section className="snap-start py-1 flex flex-col items-center">
             <Footer variant="dev" />
           </section>
-        
-          </div>
-        </motion.div >
+
+        </div>
+      </motion.div >
 
 
       <AnimatePresence>

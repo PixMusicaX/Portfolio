@@ -32,7 +32,16 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [audioState, setAudioState] = useState<AudioState>("silent");
   const [hasEntered, setHasEntered] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Web Audio Context References for Sample-Accurate Seamless Looping
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -193,6 +202,19 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchStartY(e.targetTouches[0].clientY);
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartY || isLoading) return;
+    const touchEndY = e.changedTouches[0].clientY;
+    const distance = Math.abs(touchStartY - touchEndY);
+    if (distance > 30) {
+      handleEnter();
+    }
+  };
+
   return (
     <AudioContext.Provider value={{ audioState, setAudioState, hasEntered }}>
       <AnimatePresence>
@@ -202,16 +224,18 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
             exit={{ opacity: 0, filter: "blur(40px)", scale: 1.1 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             onClick={isLoading ? undefined : handleEnter}
-            className={`fixed inset-0 z-[9999] bg-black/60 backdrop-blur-2xl flex flex-col items-center justify-center text-white overflow-hidden ${isLoading ? 'cursor-wait' : 'cursor-pointer'} ${hasEntered ? 'pointer-events-none' : ''}`}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            className={`fixed inset-0 z-[9999] bg-black/60 backdrop-blur-3xl flex flex-col items-center justify-center text-white overflow-hidden ${isLoading ? 'cursor-wait' : 'cursor-pointer'} ${hasEntered ? 'pointer-events-none' : ''}`}
           >
              <div className="relative z-10 flex flex-col items-center justify-center px-4">
-                 <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-6 opacity-90 flex items-center gap-3">
-                    <span className="font-semibold text-white">Pinaki</span> <span className="text-zinc-400">P Singha</span>
+                 <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-6 opacity-100 flex items-center gap-3">
+                    <span className="font-semibold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">Pinaki</span> <span className="text-zinc-200">P Singha</span>
                  </h1>
                  
-                 <div className="h-[1px] w-12 bg-white/20 mb-6" />
+                 <div className="h-[1px] w-12 bg-white/30 mb-8" />
 
-                 <p className={`text-zinc-400 font-mono text-[10px] md:text-xs tracking-[0.3em] uppercase text-center transition-colors duration-500 ${!isLoading && 'text-zinc-300'}`}>
+                 <p className={`text-zinc-300 font-mono text-[10px] md:text-sm tracking-[0.3em] uppercase text-center transition-colors duration-500`}>
                     {isLoading ? "Buffering gapless audio engine..." : "Use headphones for best experience."}
                  </p>
                  
@@ -220,9 +244,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
                       <motion.p 
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="absolute -bottom-16 text-[9px] text-zinc-500 tracking-[0.4em] uppercase animate-pulse"
+                        className="absolute -bottom-20 text-[10px] md:text-xs text-white/70 tracking-[0.4em] uppercase animate-pulse font-medium"
                       >
-                         Click to enter
+                         {isMobile ? "Tap / Swipe to Enter" : "Click to Enter"}
                       </motion.p>
                    )}
                  </AnimatePresence>

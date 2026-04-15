@@ -14,6 +14,9 @@ export default function Home() {
   const [selectedSide, setSelectedSide] = useState<"left" | "right" | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [tappedSide, setTappedSide] = useState<"left" | "right" | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [touchEndY, setTouchEndY] = useState<number | null>(null);
+  const minSwipeDistance = 50;
   const isNavigatingRef = useRef(false);
 
   const [isLocked, setIsLocked] = useState(true);
@@ -110,10 +113,49 @@ export default function Home() {
     setTimeout(() => router.push(path), 700);
   };
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEndY(null);
+    setTouchStartY(e.targetTouches[0].clientY);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEndY(e.targetTouches[0].clientY);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartY || !touchEndY) return;
+    const distance = touchStartY - touchEndY;
+    const isUpSwipe = distance > minSwipeDistance;
+    const isDownSwipe = distance < -minSwipeDistance;
+
+    if (isUpSwipe) {
+      if (hoveredSide === "left") {
+        setHoveredSide(null);
+        setTappedSide(null);
+      } else if (!hoveredSide || hoveredSide === "right") {
+        setHoveredSide("right");
+        setTappedSide("right");
+      }
+    } else if (isDownSwipe) {
+      if (hoveredSide === "right") {
+        setHoveredSide(null);
+        setTappedSide(null);
+      } else if (!hoveredSide || hoveredSide === "left") {
+        setHoveredSide("left");
+        setTappedSide("left");
+      }
+    }
+  };
+
 // --- MOBILE LAYOUT ---
   if (isMobile) {
     return (
-      <div className="relative flex flex-col h-[100dvh] w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]">
+      <div 
+        className="relative flex flex-col h-[100dvh] w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
 
         {/* Top: Developer */}
         <motion.div
