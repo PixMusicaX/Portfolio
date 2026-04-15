@@ -167,7 +167,7 @@ export default function DeveloperPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.2 }}
-        className="fixed right-0 top-0 bottom-0 w-16 max-md:w-14 max-md:right-2 z-50 flex flex-col items-center justify-center pointer-events-none"
+        className="fixed right-0 top-0 bottom-0 w-16 max-md:w-14 z-50 flex flex-col items-center justify-center pointer-events-none"
       >
         <GaseousDivider
           hoveredSide={(isSidebarHovered || !isGlassVisible) ? "right" : null}
@@ -209,11 +209,11 @@ export default function DeveloperPage() {
         initial={{ opacity: 0, filter: "blur(12px)" }}
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] relative"
+        className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain no-scrollbar relative"
       >
         <div className="max-w-4xl mx-auto px-6 pr-20 relative z-10 w-full">
 
-          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 relative pb-32">
+          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start pt-10 md:pt-20 pb-20 md:pb-32 relative">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
