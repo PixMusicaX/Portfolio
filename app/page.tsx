@@ -223,13 +223,7 @@ export default function Home() {
             </motion.div>
           )}
 
-          {/* FIX 1: Show White Gases ONLY when Light Side is hovered. Also fixed the align="top" typo here! */}
-          {hoveredSide === "right" && (
-            <div className="absolute bottom-0 left-0 w-full pointer-events-none">
-              <GaseousDivider hoveredSide={hoveredSide} align="top" />
-            </div>
-          )}
-        </motion.div>
+          </motion.div>
 
         {/* Bottom: Music Producer */}
         <motion.div
@@ -243,13 +237,6 @@ export default function Home() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           onClick={() => !selectedSide && handleMobileTap("right", "/music")}
         >
-          {/* FIX 2: Show Dark Gases (Inverted Smoke) on initial load (null) AND when Dark Side is hovered */}
-          {hoveredSide !== "right" && (
-            <div className="absolute top-0 left-0 w-full pointer-events-none">
-              <GaseousDivider hoveredSide={hoveredSide} align="top" />
-            </div>
-          )}
-
           {/* Isolate background */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <MusicBackground position="absolute" />
@@ -300,6 +287,21 @@ export default function Home() {
           />
         )}
 
+        {/* Central Mobile Divider (Junction) */}
+        {!selectedSide && (
+          <motion.div
+            className="absolute left-0 w-full z-[80] pointer-events-none overflow-visible mix-blend-difference"
+            animate={{
+              top: hoveredSide === "left" ? "65dvh" : hoveredSide === "right" ? "35dvh" : "50dvh",
+            }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <GaseousDivider 
+              hoveredSide={hoveredSide} 
+              align="top" 
+            />
+          </motion.div>
+        )}
       </div>
     );
   }

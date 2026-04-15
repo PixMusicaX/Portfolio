@@ -56,16 +56,16 @@ export default function MusicPage() {
     if (typeof window === "undefined") return;
     const media = window.matchMedia("(min-width: 768px)");
     const hoverMedia = window.matchMedia("(hover: hover)");
-    
+
     const handleMediaChange = () => {
       setIsGlassVisible(media.matches);
       setCanHover(hoverMedia.matches);
     };
-    
+
     handleMediaChange();
     media.addEventListener("change", handleMediaChange);
     hoverMedia.addEventListener("change", handleMediaChange);
-    
+
     return () => {
       media.removeEventListener("change", handleMediaChange);
       hoverMedia.removeEventListener("change", handleMediaChange);
@@ -146,7 +146,7 @@ export default function MusicPage() {
         <div className="max-w-5xl mx-auto px-6 pl-14 md:pl-20 relative z-10 w-full flex flex-col">
 
           {/* Header Section */}
-          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start pt-10 md:pt-20 pb-20 md:pb-32 relative">
+          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start pt-10 md:pt-20 pb-25 md:pb-36 relative">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <div className="inline-block px-4 py-1 mb-6 rounded-full bg-purple-100 text-purple-600 text-xs font-bold tracking-widest uppercase">
                 Sonic Architecture & Synthesis

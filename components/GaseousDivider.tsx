@@ -20,24 +20,31 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
     hoveredSideRef.current = hoveredSide;
   }, [hoveredSide]);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    useEffect(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-    let animationFrameId: number;
-    let t = 0;
-    let lastTime = performance.now();
-    const SEGS = 120;
+      let animationFrameId: number;
+      let t = 0;
+      let lastTime = performance.now();
+      const SEGS = 120;
 
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = canvas.clientWidth * dpr;
-      canvas.height = canvas.clientHeight * dpr;
-    };
-    resize();
-    window.addEventListener("resize", resize);
+      const resize = (entries?: ResizeObserverEntry[]) => {
+        const dpr = window.devicePixelRatio || 1;
+        const width = entries && entries[0] ? entries[0].contentRect.width : (canvas.clientWidth || 800);
+        const height = entries && entries[0] ? entries[0].contentRect.height : (canvas.clientHeight || 800);
+        
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+      };
+
+      const resizeObserver = new ResizeObserver(resize);
+      resizeObserver.observe(canvas);
+      window.addEventListener("resize", () => resize());
+      
+      resize(); // Initial resize
 
     function fbm(y: number, t: number, octaves: number) {
       let v = 0, a = 1, f = 1, tot = 0;
@@ -379,10 +386,11 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
     draw();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", () => resize());
       cancelAnimationFrame(animationFrameId);
     };
-  }, []); // ✅ Empty deps — loop runs once, reads live value via ref
+  }, [align, variant]); 
 
   // ✅ FIX 3: Remove the dataset side-effect entirely — no longer needed
   // (deleted the useEffect that set document.body.dataset.hoveredSide)
@@ -401,19 +409,14 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       className={`absolute z-30 pointer-events-none ${variant === "default" ? "mix-blend-difference" : ""} ${className}`}
       style={{
         ...alignStyle,
-        // ✅ FIX 4: Force Safari to promote this to its own compositing layer
-        // mix-blend-difference requires the element to be in the same stacking context
-        // willChange tells Safari to composite it properly
-        willChange: "transform",
-        WebkitTransform: (alignStyle as any).transform, // Safari prefix
       }}
     >
       <canvas
         ref={canvasRef}
         className="w-full h-full opacity-90"
-        // ✅ FIX 5: Remove mix-blend-normal from canvas — let the parent div handle blending
-        // mix-blend on both parent AND child causes Safari to cancel them out
-        style={{ display: "block" }}
+        style={{ 
+          display: "block",
+        }}
       />
     </div>
   );
