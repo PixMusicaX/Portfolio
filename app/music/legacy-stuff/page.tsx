@@ -47,7 +47,6 @@ export default function LegacyStuffPage() {
       <GaseousDivider
         hoveredSide="left"
         variant="legacy"
-        intensity={0.45}
         className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
       />
       {isGlassVisible && (
@@ -55,7 +54,6 @@ export default function LegacyStuffPage() {
           hoveredSide="left"
           variant="legacy"
           align="bottom"
-          intensity={0.45}
           className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
         />
       )}

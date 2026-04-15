@@ -44,7 +44,6 @@ export default function AnimePage() {
       <GaseousDivider
         hoveredSide="left"
         variant="anime"
-        intensity={0.45}
         className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
       />
       {isGlassVisible && (
@@ -52,7 +51,6 @@ export default function AnimePage() {
           hoveredSide="left"
           variant="anime"
           align="bottom"
-          intensity={0.45}
           className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
         />
       )}

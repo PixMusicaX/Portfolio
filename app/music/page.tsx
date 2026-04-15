@@ -108,7 +108,6 @@ export default function MusicPage() {
       <GaseousDivider
         hoveredSide={(isSidebarHovered || !isGlassVisible) ? "left" : null}
         variant="music"
-        intensity={0.45}
         className={`z-[1] ${(isSidebarHovered || !isGlassVisible) ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-45'}`}
       />
 

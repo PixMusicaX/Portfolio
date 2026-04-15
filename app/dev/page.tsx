@@ -178,7 +178,6 @@ export default function DeveloperPage() {
         hoveredSide={(isSidebarHovered || !isGlassVisible) ? "right" : null}
         variant="dev"
         align="right"
-        intensity={0.45}
         className={`z-[1] transition-opacity duration-700 ease-in-out ${(isSidebarHovered || !isGlassVisible) ? 'opacity-70' : 'opacity-45'}`}>
       </GaseousDivider>
 

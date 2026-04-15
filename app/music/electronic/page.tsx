@@ -48,7 +48,6 @@ export default function ElectronicPage() {
       <GaseousDivider
         hoveredSide="left"
         variant="electronic"
-        intensity={0.45}
         className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'} ${isGlassVisible ? 'hidden' : 'block'}`}
       />
       {isGlassVisible && (
@@ -56,7 +55,6 @@ export default function ElectronicPage() {
           hoveredSide="left"
           variant="electronic"
           align="bottom"
-          intensity={0.45}
           className={`z-[1] transition-opacity duration-1000 ease-in-out ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
         />
       )}
