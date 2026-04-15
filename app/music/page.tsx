@@ -17,6 +17,7 @@ export default function MusicPage() {
   const [transitioningGenre, setTransitioningGenre] = useState<string | null>(null);
   const [isExiting, setIsExiting] = useState(false);
   const [isGlassVisible, setIsGlassVisible] = useState(false);
+  const [canHover, setCanHover] = useState(false);
   const { setAudioState } = useAudio();
   const router = useRouter();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -54,17 +55,28 @@ export default function MusicPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const media = window.matchMedia("(min-width: 768px)");
-    const handleMediaChange = () => setIsGlassVisible(media.matches);
+    const hoverMedia = window.matchMedia("(hover: hover)");
+    
+    const handleMediaChange = () => {
+      setIsGlassVisible(media.matches);
+      setCanHover(hoverMedia.matches);
+    };
+    
     handleMediaChange();
     media.addEventListener("change", handleMediaChange);
-    return () => media.removeEventListener("change", handleMediaChange);
+    hoverMedia.addEventListener("change", handleMediaChange);
+    
+    return () => {
+      media.removeEventListener("change", handleMediaChange);
+      hoverMedia.removeEventListener("change", handleMediaChange);
+    };
   }, []);
 
   // Keyboard Scrolling
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!scrollContainerRef.current) return;
-      
+
       const scrollAmount = 100;
       switch (e.key) {
         case "ArrowDown":
@@ -98,7 +110,7 @@ export default function MusicPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.2 }}
-        className="fixed left-0 top-0 bottom-0 w-16 z-50 flex flex-col items-center justify-center pointer-events-none"
+        className="fixed left-0 top-0 bottom-0 w-16 max-md:w-14 z-50 flex flex-col items-center justify-center pointer-events-none"
       >
 
         <GaseousDivider
@@ -131,10 +143,10 @@ export default function MusicPage() {
         className="h-[100dvh] overflow-y-auto overflow-x-hidden snap-y snap-proximity md:snap-mandatory scroll-smooth overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
       >
 
-        <div className="max-w-5xl mx-auto px-6 pl-20 relative z-10 w-full flex flex-col">
+        <div className="max-w-5xl mx-auto px-6 pl-14 md:pl-20 relative z-10 w-full flex flex-col">
 
           {/* Header Section */}
-          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 relative pb-32">
+          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start pt-10 md:pt-20 pb-20 md:pb-32 relative">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <div className="inline-block px-4 py-1 mb-6 rounded-full bg-purple-100 text-purple-600 text-xs font-bold tracking-widest uppercase">
                 Sonic Architecture & Synthesis
@@ -193,7 +205,7 @@ export default function MusicPage() {
                   const genresSection = document.getElementById('about me');
                   genresSection?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-zinc-400 drop-shadow-lg cursor-pointer hover:text-purple-600 transition-colors pointer-events-auto"
+                className="absolute bottom-5 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-zinc-400 drop-shadow-lg cursor-pointer hover:text-purple-600 transition-colors pointer-events-auto"
               >
                 <span className="text-[10px] tracking-[0.3em] uppercase font-bold">Scroll</span>
                 <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
@@ -313,7 +325,7 @@ export default function MusicPage() {
                     <motion.div
                       key={i}
                       onClick={() => handleGenreClick(genre.route, genre.badge)}
-                      whileHover={!isTransitioning && !transitioningGenre ? {
+                      whileHover={canHover && !isTransitioning && !transitioningGenre ? {
                         y: -8,
                         boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
                       } : {}}

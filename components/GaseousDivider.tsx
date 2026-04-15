@@ -28,6 +28,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
 
     let animationFrameId: number;
     let t = 0;
+    let lastTime = performance.now();
     const SEGS = 120;
 
     const resize = () => {
@@ -111,15 +112,15 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         ctx.moveTo(cx + pts[0].lEdge, pts[0].y);
         for (let i = 1; i <= SEGS; i++) {
           const p = pts[i], pp = pts[i - 1];
-          const mx = (cx + p.lEdge + cx + pp.lEdge) / 2;
-          const my = (p.y + pp.y) / 2;
-          ctx.quadraticCurveTo(cx + pp.lEdge, pp.y, mx, my);
+          const mx = Math.round((cx + p.lEdge + cx + pp.lEdge) / 2);
+          const my = Math.round((p.y + pp.y) / 2);
+          ctx.quadraticCurveTo(Math.round(cx + pp.lEdge), Math.round(pp.y), mx, my);
         }
         for (let i = SEGS; i >= 0; i--) {
           const p = pts[i], pn = pts[Math.min(i + 1, SEGS)];
-          const mx = (cx + p.rEdge + cx + pn.rEdge) / 2;
-          const my = (p.y + pn.y) / 2;
-          ctx.quadraticCurveTo(cx + pn.rEdge, pn.y, mx, my);
+          const mx = Math.round((cx + p.rEdge + cx + pn.rEdge) / 2);
+          const my = Math.round((p.y + pn.y) / 2);
+          ctx.quadraticCurveTo(Math.round(cx + pn.rEdge), Math.round(pn.y), mx, my);
         }
         ctx.closePath();
 
@@ -328,38 +329,34 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         
         const sAlpha = Math.pow(Math.sin(yNorm * Math.PI), 2) * 0.7;
         ctx.beginPath();
-        ctx.arc(cx + sdx, sy, (1.5 + Math.random()) * dpr, 0, Math.PI * 2);
         
+        // Use deterministic radius instead of Math.random()
+        const sparkRadius = (1.5 + (Math.sin(t * 3 + spark) * 0.5 + 0.5)) * dpr;
+        ctx.arc(Math.round(cx + sdx), Math.round(sy), sparkRadius, 0, Math.PI * 2);
+        
+        // Use spark index for deterministic color depth instead of Math.random()
         let fillColor = `rgba(255,255,255,${sAlpha})`;
+        const depth = (spark / 3 + t * 0.1) % 1; // Time-based but smooth cycle
+
         if (variant === "music") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(249,115,22,${sAlpha})` : depth > 0.3 ? `rgba(236,72,153,${sAlpha})` : `rgba(168,85,247,${sAlpha})`;
         } else if (variant === "waltz") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(30,58,138,${sAlpha})` : depth > 0.3 ? `rgba(29,78,216,${sAlpha})` : `rgba(37,99,235,${sAlpha})`;
         } else if (variant === "synthwave") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(88,28,135,${sAlpha})` : depth > 0.3 ? `rgba(147,51,234,${sAlpha})` : `rgba(192,38,211,${sAlpha})`;
         } else if (variant === "battle") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(136,19,55,${sAlpha})` : depth > 0.3 ? `rgba(225,29,72,${sAlpha})` : `rgba(244,63,94,${sAlpha})`;
         } else if (variant === "electronic") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(63,63,70,${sAlpha})` : depth > 0.3 ? `rgba(113,113,122,${sAlpha})` : `rgba(161,161,170,${sAlpha})`;
         } else if (variant === "fusion") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(146,64,14,${sAlpha})` : depth > 0.3 ? `rgba(217,119,6,${sAlpha})` : `rgba(245,158,11,${sAlpha})`;
         } else if (variant === "acoustic") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(6,95,70,${sAlpha})` : depth > 0.3 ? `rgba(5,150,105,${sAlpha})` : `rgba(16,185,129,${sAlpha})`;
         } else if (variant === "anime") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(157,23,77,${sAlpha})` : depth > 0.3 ? `rgba(219,39,119,${sAlpha})` : `rgba(236,72,153,${sAlpha})`;
         } else if (variant === "orchestral") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(49,46,129,${sAlpha})` : depth > 0.3 ? `rgba(79,70,229,${sAlpha})` : `rgba(99,102,241,${sAlpha})`;
         } else if (variant === "legacy") {
-          const depth = Math.random();
           fillColor = depth > 0.6 ? `rgba(17,94,89,${sAlpha})` : depth > 0.3 ? `rgba(13,148,136,${sAlpha})` : `rgba(20,184,166,${sAlpha})`;
         } else if (variant === "dark") {
           fillColor = `rgba(0,0,0,${sAlpha})`;
@@ -368,8 +365,12 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
         ctx.fill();
       }
 
+      const now = performance.now();
+      const dt = (now - lastTime) / 16.666; // Normalize to roughly 60fps
+      lastTime = now;
+
       const speedMult = currentHoveredSide !== "none" ? 2.5 : 1;
-      t += 0.028 * speedMult;
+      t += 0.028 * speedMult * dt;
 
       ctx.restore();
       animationFrameId = requestAnimationFrame(draw);

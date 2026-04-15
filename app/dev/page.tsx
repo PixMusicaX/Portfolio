@@ -73,6 +73,7 @@ export default function DeveloperPage() {
   const [hoveredEdu, setHoveredEdu] = useState<string | null>(null);
   const [isExiting, setIsExiting] = useState(false);
   const [isGlassVisible, setIsGlassVisible] = useState(false);
+  const [canHover, setCanHover] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const previousAudioState = useRef<string | null>(null);
   const { setAudioState, audioState } = useAudio();
@@ -123,10 +124,21 @@ export default function DeveloperPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const media = window.matchMedia("(min-width: 768px)");
-    const handleMediaChange = () => setIsGlassVisible(media.matches);
+    const hoverMedia = window.matchMedia("(hover: hover)");
+    
+    const handleMediaChange = () => {
+      setIsGlassVisible(media.matches);
+      setCanHover(hoverMedia.matches);
+    };
+    
     handleMediaChange();
     media.addEventListener("change", handleMediaChange);
-    return () => media.removeEventListener("change", handleMediaChange);
+    hoverMedia.addEventListener("change", handleMediaChange);
+    
+    return () => {
+      media.removeEventListener("change", handleMediaChange);
+      hoverMedia.removeEventListener("change", handleMediaChange);
+    };
   }, []);
 
   // Keyboard Scrolling
@@ -294,10 +306,9 @@ export default function DeveloperPage() {
                   ].map((section) => (
                     <motion.button
                       key={section.id}
-                      whileHover={{ y: -2 }}
+                      whileHover={canHover ? { y: -2 } : {}}
                       whileTap={{ scale: 0.96 }}
                       onClick={() => {
-                        // 2. Check if a link exists, otherwise scroll
                         if (section.link) {
                           window.open(section.link, "_blank", "noopener,noreferrer");
                         } else {
@@ -308,7 +319,6 @@ export default function DeveloperPage() {
                       className="flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 hover:border-zinc-600 transition-all duration-300 cursor-pointer leading-none"
                     >
                       {section.label}
-                      {/* 3. Optional: Add a small icon for the link to distinguish it */}
                       {section.link && <ExternalLink size={10} className="opacity-50" />}
                     </motion.button>
                   ))}
@@ -324,7 +334,7 @@ export default function DeveloperPage() {
                 const aboutSection = document.getElementById('about');
                 aboutSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-600 mix-blend-difference cursor-pointer hover:text-white transition-colors pointer-events-auto"
+              className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-600 mix-blend-difference cursor-pointer hover:text-white transition-colors pointer-events-auto"
             >
               <span className="text-[10px] tracking-widest uppercase font-mono">Scroll</span>
               <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>

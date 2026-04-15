@@ -114,7 +114,7 @@ export default function Home() {
 
   // Desktop click (unchanged)
   const handleNavigate = (e: React.MouseEvent, side: "left" | "right", path: string) => {
-    if (isMobile) return;
+    if (isMobile && !isLandscape) return;
     const w = window.innerWidth;
     const x = e.clientX;
     if (side === "left" && x > w * 0.35) return;
@@ -170,7 +170,7 @@ export default function Home() {
   };
 
 // --- MOBILE LAYOUT (Portrait) ---
-  if (isMobile && !isLandscape) {
+  if ((isMobile && !isLandscape)) {
     return (
       <div 
         className="relative flex flex-col h-[100dvh] w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]"
@@ -314,7 +314,14 @@ export default function Home() {
           backgroundColor: hoveredSide === "left" || selectedSide === "left" ? "#0a0a0a" : "#000000",
         }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        onClick={(e) => !selectedSide && handleNavigate(e, "left", "/dev")}
+        onClick={(e) => {
+          if (selectedSide) return;
+          if (isMobile) {
+            handleMobileTap("left", "/dev");
+          } else {
+            handleNavigate(e, "left", "/dev");
+          }
+        }}
       >
         <DevBackground position="absolute" />
         <motion.div
@@ -355,7 +362,14 @@ export default function Home() {
           backgroundColor: hoveredSide === "right" || selectedSide === "right" ? "#ffffff" : "#fafafa",
         }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        onClick={(e) => !selectedSide && handleNavigate(e, "right", "/music")}
+        onClick={(e) => {
+          if (selectedSide) return;
+          if (isMobile) {
+            handleMobileTap("right", "/music");
+          } else {
+            handleNavigate(e, "right", "/music");
+          }
+        }}
       >
         <MusicBackground position="absolute" />
         <GaseousDivider hoveredSide={hoveredSide} />
