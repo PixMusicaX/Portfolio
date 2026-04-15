@@ -106,13 +106,3 @@ across code and music —
 at this point in time.
 
 And it’ll keep evolving.
-
-
----
-
-If you want to push this further, I can:
-- :contentReference[oaicite:0]{index=0}
-- :contentReference[oaicite:1]{index=1}
-- or :contentReference[oaicite:2]{index=2}
-
-Just tell me the vibe you want (minimal / edgy / cinematic / hacker / indie artist).
