@@ -181,7 +181,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
       >
         <div className="max-w-4xl mx-auto px-6 pr-20 relative z-10 w-full">
           
-          <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 relative pb-32">
+          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 relative pb-32">
             <motion.div 
               initial={{ opacity: 0, y: 50 }} 
               whileInView={{ opacity: 1, y: 0 }} 
@@ -297,7 +297,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
             </motion.div>
           </section>
 
-          <section id="about" className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-zinc-900/50 relative">
+          <section id="about" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50 relative">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }} className="relative z-10 w-full">
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">About Me</h2>
               <div className="text-zinc-400 leading-relaxed space-y-6 text-lg max-w-3xl mb-10">
@@ -347,7 +347,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
           </section>
 
           {/* Projects Section */}
-          <section id="projects" className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-zinc-900/50 relative">
+          <section id="projects" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50 relative">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -474,7 +474,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
             </motion.div>
           </section>
 
-            <section id="experience" className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-zinc-900/50">
+            <section id="experience" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">Work Experience</h2>
               <div className="space-y-12">
@@ -504,7 +504,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
             </motion.div>
           </section>
 
-          <section id="education" className="min-h-screen w-full flex flex-col justify-center snap-start py-10 border-t border-zinc-900/50 relative">
+          <section id="education" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-10 border-t border-zinc-900/50 relative">
             <motion.div 
               initial={{ opacity: 0, y: 50 }} 
               whileInView={{ opacity: 1, y: 0 }} 

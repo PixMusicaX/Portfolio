@@ -41,6 +41,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   
   // Store the scheduler interval ID to ensure cleanup
   const schedulerIntervalRef = useRef<any>(null);
+  const isEnteringRef = useRef(false);
 
   // Initialize and Buffer tracks into memory purely on client-side
   useEffect(() => {
@@ -87,13 +88,15 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     // Tone down maximum hardware amplitude directly by cutting global ceiling to 60%
     const MASTER_VOL = 0.6;
     
-    // Dynamically calculate mathematical fade duration logic intervals
-    // 3 seconds strictly for deep routes and initial load, ~800ms responsive for hovered split-sides
-    const isSlowFade = audioState === 'initial' || audioState.startsWith('full-');
+    // Dynamically calculate mathematical fade duration logic intervals:
+    // 3s for initial entry, 1.2s for room/page transitions, 0.8s for side-hovers
+    const isInitialEntry = audioState === 'initial';
+    const isPageTransition = audioState.startsWith('full-');
+    
+    const fadeDurationSeconds = isInitialEntry ? 3 : isPageTransition ? 1.2 : 0.8;
     
     // We assume an average 60Hz monitor dispatch rate for smooth interpolation calculations
     const STEPS_PER_SECOND = 60;
-    const fadeDurationSeconds = isSlowFade ? 3 : 0.8;
     const frameStepValue = MASTER_VOL / (fadeDurationSeconds * STEPS_PER_SECOND);
 
     const crossfade = () => {
@@ -116,7 +119,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   }, [audioState, hasEntered]);
 
   const handleEnter = async () => {
-    if (isLoading || !audioCtxRef.current) return;
+    if (hasEntered || isEnteringRef.current || isLoading || !audioCtxRef.current) return;
+    
+    isEnteringRef.current = true;
     
     // Unlock Context securely against Chromium anti-autoplay engine
     if (audioCtxRef.current.state === 'suspended') {
@@ -171,9 +176,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
     // Spin up scheduler initially, then lock it via interval so backgrounding the tab doesn't kill it
     scheduleQueue();
+    if (schedulerIntervalRef.current) clearInterval(schedulerIntervalRef.current);
     schedulerIntervalRef.current = setInterval(scheduleQueue, 1000);
 
     setHasEntered(true);
+    // Note: isEnteringRef.current remains true to prevent ever re-entering the async loop redundantly
+    // since setHasEntered(true) update might take a render cycle to reflect.
 
     // Apply strict location routing commands dynamically
     if (pathname === '/dev') {
@@ -194,7 +202,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
             exit={{ opacity: 0, filter: "blur(40px)", scale: 1.1 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             onClick={isLoading ? undefined : handleEnter}
-            className={`fixed inset-0 z-[9999] bg-black/60 backdrop-blur-2xl flex flex-col items-center justify-center text-white overflow-hidden ${isLoading ? 'cursor-wait' : 'cursor-pointer'}`}
+            className={`fixed inset-0 z-[9999] bg-black/60 backdrop-blur-2xl flex flex-col items-center justify-center text-white overflow-hidden ${isLoading ? 'cursor-wait' : 'cursor-pointer'} ${hasEntered ? 'pointer-events-none' : ''}`}
           >
              <div className="relative z-10 flex flex-col items-center justify-center px-4">
                  <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-6 opacity-90 flex items-center gap-3">

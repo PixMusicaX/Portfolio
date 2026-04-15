@@ -36,15 +36,15 @@ export default function MusicPage() {
     }, 800);
   };
 
-const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <span 
-      className="inline-block font-bold animate-shimmer-light bg-clip-text text-transparent bg-[length:200%_100%] bg-[linear-gradient(110deg,#6b21a8,45%,#d8b4fe,50%,#ca13b8)]"
-    >
-      {children}
-    </span>
-  );
-};
+  const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <span
+        className="inline-block font-bold animate-shimmer-light bg-clip-text text-transparent bg-[length:200%_100%] bg-[linear-gradient(110deg,#6b21a8,45%,#d8b4fe,50%,#ca13b8)]"
+      >
+        {children}
+      </span>
+    );
+  };
 
   useEffect(() => {
     setAudioState("full-light");
@@ -102,7 +102,7 @@ const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
         <div className="max-w-5xl mx-auto px-6 pl-20 relative z-10 w-full flex flex-col">
 
           {/* Header Section */}
-          <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 relative pb-32">
+          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 relative pb-32">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <div className="inline-block px-4 py-1 mb-6 rounded-full bg-purple-100 text-purple-600 text-xs font-bold tracking-widest uppercase">
                 Sonic Architecture & Synthesis
@@ -114,9 +114,9 @@ const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
 
                 {/* The Logo Wrapper */}
                 <span className="inline-block align-middle ml-6 text-pink-500 opacity-80">
-                  <MonitorSpeaker 
-                    strokeWidth={1.5} 
-                    className="w-[1em] h-[1em] md:w-[0.9em] md:h-[0.9em] animate-[pulse_4s_ease-in-out_infinite]" 
+                  <MonitorSpeaker
+                    strokeWidth={1.5}
+                    className="w-[1em] h-[1em] md:w-[0.9em] md:h-[0.9em] animate-[pulse_4s_ease-in-out_infinite]"
                   />
                 </span>
               </h1>
@@ -169,7 +169,7 @@ const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
           </section>
 
           {/* About Me Section */}
-          <section className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-purple-500/10">
+          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-purple-500/10">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4 text-zinc-800">
                 <Speaker size={32} className="text-pink-500" />
@@ -177,7 +177,7 @@ const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
               </h2>
               <div className="text-zinc-600 leading-relaxed font-medium space-y-6 text-xl max-w-3xl">
                 <p>
-                  I go by <MusicShimmer>PiX MusicaX</MusicShimmer> and <MusicShimmer>Theme/Alter</MusicShimmer> — two sides of the same sonic coin. My journey into music production began in 2018, driven by a fascination with <MusicShimmer>World Music</MusicShimmer> and <MusicShimmer>Various Genres</MusicShimmer>, since then I have set out on the voyage to play and learn all of them. 
+                  I go by <MusicShimmer>PiX MusicaX</MusicShimmer> and <MusicShimmer>Theme/Alter</MusicShimmer> — two sides of the same sonic coin. My journey into music production began in 2018, driven by a fascination with <MusicShimmer>World Music</MusicShimmer> and <MusicShimmer>Various Genres</MusicShimmer>, since then I have set out on the voyage to play and learn all of them.
                 </p>
                 <p>
                   My weapon of choice is <MusicShimmer>FL Studio</MusicShimmer>, where I sculpt sounds using <MusicShimmer>Serum</MusicShimmer> and <MusicShimmer>Nexus</MusicShimmer> for electronic production, and <MusicShimmer>Kontakt</MusicShimmer> libraries for orchestral and classical arrangements.
@@ -189,7 +189,7 @@ const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
                   My works include <MusicShimmer>Soundtracks, BGMs, Albums</MusicShimmer> as well as <MusicShimmer>Mainstream Music</MusicShimmer>. Been mostly working on 'help-me-bro' projects as of late, but I'm always open to new collaborations, gigs and commissions.
                 </p>
                 <p>
-                  Make sure to check out some of my <MusicShimmer>samples</MusicShimmer> by scrolling below!
+                  Make sure to check out some of my <MusicShimmer>samples</MusicShimmer> by scrolling below and <MusicShimmer>clicking the cards</MusicShimmer>!
                 </p>
               </div>
             </motion.div>
@@ -198,7 +198,7 @@ const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
           {/* Featured Genres Section */}
           <section
             id="genres"
-            className="min-h-screen w-full flex flex-col justify-center snap-start my-20 py-20 pb-40 border-t border-purple-500/10 relative"
+            className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start md:my-20 py-20 pb-40 border-t border-purple-500/10 relative"
           >
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4">
@@ -328,7 +328,7 @@ const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
           </section>
 
           {/* Experience / Timeline Section */}
-          <section className="min-h-screen w-full flex flex-col justify-center snap-start py-5 border-t border-purple-500/10">
+          <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-10 md:py-5 border-t border-purple-500/10">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-3xl font-black mb-10 flex items-center gap-4">
                 <Speaker size={32} className="text-orange-500" />
@@ -355,8 +355,8 @@ const MusicShimmer = ({ children }: { children: React.ReactNode }) => {
             </motion.div>
           </section>
 
-                    <section className="snap-start py-1 flex flex-col items-center">
-            <Footer variant="music" /> 
+          <section className="snap-start py-1 flex flex-col items-center">
+            <Footer variant="music" />
           </section>
 
         </div>

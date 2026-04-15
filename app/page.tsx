@@ -14,6 +14,7 @@ export default function Home() {
   const [selectedSide, setSelectedSide] = useState<"left" | "right" | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [tappedSide, setTappedSide] = useState<"left" | "right" | null>(null);
+  const isNavigatingRef = useRef(false);
 
   const [isLocked, setIsLocked] = useState(true);
 
@@ -81,6 +82,9 @@ export default function Home() {
 
     if (tappedSide === side) {
       // Second tap — navigate
+      if (isNavigatingRef.current) return;
+      isNavigatingRef.current = true;
+      
       setSelectedSide(side);
       setHoveredSide(side);
       setTimeout(() => router.push(path), 700);
@@ -98,6 +102,10 @@ export default function Home() {
     const x = e.clientX;
     if (side === "left" && x > w * 0.35) return;
     if (side === "right" && x < w * 0.65) return;
+    
+    if (isNavigatingRef.current) return;
+    isNavigatingRef.current = true;
+
     setSelectedSide(side);
     setTimeout(() => router.push(path), 700);
   };

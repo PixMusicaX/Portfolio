@@ -10,10 +10,10 @@ import { GaseousDivider } from "@/components/GaseousDivider";
 import { FusionBackground } from "@/components/Backgrounds";
 
 const TRACKS: Track[] = [
-  { id: "1", title: "Bad Habits", src: "/audio/fusion/track01.mp3", tag: "Jazz - EDM" },
-  { id: "2", title: "Pochita", src: "/audio/fusion/track02.mp3", tag: "Piano - Hip Hop" },
-  { id: "3", title: "Toxic", src: "/audio/fusion/track03.mp3", tag: "Salsa - Trap" },
-  { id: "4", title: "Super Gogeta", src: "/audio/fusion/track04.mp3", tag: "Metal - Electronic" }
+  { id: "1", title: "Bad Habits", src: "/audio/fusion/track01.mp3", tag: "Jazz • EDM" },
+  { id: "2", title: "Pochita", src: "/audio/fusion/track02.mp3", tag: "Piano • Hip Hop" },
+  { id: "3", title: "Toxic", src: "/audio/fusion/track03.mp3", tag: "Salsa • Trap" },
+  { id: "4", title: "Super Gogeta", src: "/audio/fusion/track04.mp3", tag: "Metal • Electronic" }
 ];
 
 export default function FusionPage() {
@@ -97,8 +97,8 @@ export default function FusionPage() {
                   key={track.id}
                   onClick={() => setActiveTrack(track.id)}
                   className={`w-56 md:w-72 h-20 md:h-24 flex flex-col items-center justify-center rounded-2xl uppercase tracking-[0.3em] font-medium text-sm md:text-base transition-all duration-300 border ${isActive
-                      ? 'bg-white text-amber-700 border-white shadow-[0_10px_40px_rgba(217,119,6,0.15)] scale-105 z-10'
-                      : 'bg-white/40 text-amber-900/60 border-white/40 hover:bg-white/80 hover:text-amber-800 hover:shadow-lg hover:-translate-y-1 backdrop-blur-sm'
+                    ? 'bg-white text-amber-700 border-white shadow-[0_10px_40px_rgba(217,119,6,0.15)] scale-105 z-10'
+                    : 'bg-white/40 text-amber-900/60 border-white/40 hover:bg-white/80 hover:text-amber-800 hover:shadow-lg hover:-translate-y-1 backdrop-blur-sm'
                     }`}
                 >
                   <span className={isActive ? 'font-bold' : ''}>{track.title}</span>
