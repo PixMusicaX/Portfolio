@@ -33,7 +33,7 @@ const Footer = ({ variant = 'dev' }: FooterProps) => {
           </span>
         </div>
 
-        <p className={`text-[9px] font-mono uppercase tracking-widest ${isMusic ? 'text-zinc-500' : 'text-zinc-700'
+        <p className={`text-[9px] font-mono uppercase tracking-widest 'text-zinc-500'
           }`}>
           {isMusic ? 'Sonic Architecture' : '22.58° N, 88.41° E'} • {new Date().getFullYear()}
         </p>
