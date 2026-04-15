@@ -114,7 +114,7 @@ export default function FusionPage() {
         </div>
 
         {/* Audio Player */}
-        <div className="w-full mt-auto pt-12 md:pt-20 mb-8 px-8 relative z-30">
+        <div className="w-full mt-auto pt-12 md:pt-20 mb-8 px-4 md:px-8 relative z-30">
           <CustomAudioPlayer
             tracks={TRACKS}
             activeTrackId={activeTrack}

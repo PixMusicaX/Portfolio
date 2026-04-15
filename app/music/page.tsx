@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Play, Speaker, MonitorSpeaker, Mic2, Pause, ChevronDown, ArrowRight } from "lucide-react";
 import { SiGmail, SiYoutube, SiSpotify, SiApplemusic, SiInstagram } from "react-icons/si";
@@ -19,6 +19,7 @@ export default function MusicPage() {
   const [isGlassVisible, setIsGlassVisible] = useState(false);
   const { setAudioState } = useAudio();
   const router = useRouter();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleGenreClick = (route: string, badge: string) => {
     if (transitioningGenre) return;
@@ -59,6 +60,36 @@ export default function MusicPage() {
     return () => media.removeEventListener("change", handleMediaChange);
   }, []);
 
+  // Keyboard Scrolling
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!scrollContainerRef.current) return;
+      
+      const scrollAmount = 100;
+      switch (e.key) {
+        case "ArrowDown":
+          scrollContainerRef.current.scrollBy({ top: scrollAmount, behavior: "smooth" });
+          break;
+        case "ArrowUp":
+          scrollContainerRef.current.scrollBy({ top: -scrollAmount, behavior: "smooth" });
+          break;
+        case "PageDown":
+          scrollContainerRef.current.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" });
+          break;
+        case "PageUp":
+          scrollContainerRef.current.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" });
+          break;
+        case " ":
+          e.preventDefault();
+          scrollContainerRef.current.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" });
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <div className="min-h-[100dvh] bg-white text-zinc-900 font-[family-name:var(--font-outfit)] selection:bg-purple-200 relative overflow-hidden">
       <MusicBackground />
@@ -93,6 +124,7 @@ export default function MusicPage() {
       </motion.nav>
 
       <motion.div
+        ref={scrollContainerRef}
         initial={{ opacity: 0, filter: "blur(12px)" }}
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 1, ease: "easeOut" }}
@@ -153,12 +185,16 @@ export default function MusicPage() {
                 </a>
               </div>
 
-              {/* Scroll Indicator - Moved from fixed to absolute within header */}
+              {/* Scroll Indicator - Updated delay and interactivity */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 3.5, duration: 1 }}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2 text-zinc-400 drop-shadow-lg"
+                transition={{ delay: 2, duration: 1 }}
+                onClick={() => {
+                  const genresSection = document.getElementById('genres');
+                  genresSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-zinc-400 drop-shadow-lg cursor-pointer hover:text-purple-600 transition-colors pointer-events-auto"
               >
                 <span className="text-[10px] tracking-[0.3em] uppercase font-bold">Scroll</span>
                 <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>

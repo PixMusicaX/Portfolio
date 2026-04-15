@@ -78,6 +78,7 @@ export default function DeveloperPage() {
   const { setAudioState, audioState } = useAudio();
   const router = useRouter();
   const age = calculateAge("27.06.2003");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleMuteToggle = () => {
     if (!isMuted) {
@@ -128,6 +129,36 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
     return () => media.removeEventListener("change", handleMediaChange);
   }, []);
 
+  // Keyboard Scrolling
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!scrollContainerRef.current) return;
+      
+      const scrollAmount = 100;
+      switch (e.key) {
+        case "ArrowDown":
+          scrollContainerRef.current.scrollBy({ top: scrollAmount, behavior: "smooth" });
+          break;
+        case "ArrowUp":
+          scrollContainerRef.current.scrollBy({ top: -scrollAmount, behavior: "smooth" });
+          break;
+        case "PageDown":
+          scrollContainerRef.current.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" });
+          break;
+        case "PageUp":
+          scrollContainerRef.current.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" });
+          break;
+        case " ":
+          e.preventDefault();
+          scrollContainerRef.current.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" });
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <div className="min-h-[100dvh] bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
       <DevBackground />
@@ -174,6 +205,7 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
       </AnimatePresence>
 
       <motion.div
+        ref={scrollContainerRef}
         initial={{ opacity: 0, filter: "blur(12px)" }}
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 1, ease: "easeOut" }}
@@ -288,7 +320,11 @@ const ShimmerText = ({ children }: { children: React.ReactNode }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5, duration: 1 }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-600 mix-blend-difference"
+              onClick={() => {
+                const aboutSection = document.getElementById('about');
+                aboutSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-600 mix-blend-difference cursor-pointer hover:text-white transition-colors pointer-events-auto"
             >
               <span className="text-[10px] tracking-widest uppercase font-mono">Scroll</span>
               <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>

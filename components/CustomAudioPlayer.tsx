@@ -177,7 +177,7 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
       </div>
 
       {/* Media Controls */}
-      <div className={`flex items-center gap-8 ${THEME_MAP[theme].controlsTxt}`}>
+      <div className={`flex items-center gap-4 sm:gap-6 md:gap-8 ${THEME_MAP[theme].controlsTxt}`}>
         <button onClick={handlePrev} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
           <SkipBack size={24} strokeWidth={1.5} />
         </button>
