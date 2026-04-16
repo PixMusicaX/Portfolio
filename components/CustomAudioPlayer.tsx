@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, SkipBack, SkipForward, Rewind, FastForward } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Rewind, FastForward, Volume2, VolumeX } from "lucide-react";
 
 export interface Track {
   id: string;
@@ -40,6 +40,10 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const volumeBarRef = useRef<HTMLDivElement>(null);
+
+  const [volume, setVolume] = useState(0.8);
+  const [isMuted, setIsMuted] = useState(false);
 
   // Sync with prop-driven track selection
   useEffect(() => {
@@ -64,11 +68,18 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.load();
+      audioRef.current.volume = isMuted ? 0 : volume;
       if (isPlaying) {
         audioRef.current.play().catch(e => console.error(e));
       }
     }
   }, [currentTrackIndex]); // eslint-disable-line
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume;
+    }
+  }, [volume, isMuted]);
 
   const togglePlay = () => {
     if (currentTrackIndex === -1) {
@@ -134,6 +145,15 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
     }
   };
 
+  const handleVolumeChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!volumeBarRef.current) return;
+    const rect = volumeBarRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const newVolume = Math.max(0, Math.min(1, clickX / rect.width));
+    setVolume(newVolume);
+    setIsMuted(false);
+  };
+
   const formatTime = (time: number) => {
     if (isNaN(time)) return "0:00";
     const mins = Math.floor(time / 60);
@@ -144,7 +164,7 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
   const progressPercentage = duration > 0 ? (progress / duration) * 100 : 0;
 
   return (
-    <div className="w-full flex flex-col items-center justify-center space-y-8 z-50">
+    <div className="w-full flex flex-col items-center justify-center z-50">
       {/* Hidden Native Audio Node */}
       <audio
         ref={audioRef}
@@ -156,14 +176,14 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
       />
 
       {/* Typography */}
-      <div className="text-center space-y-2 h-[48px] md:h-[60px] flex items-center justify-center">
+      <div className="text-center space-y-2 h-[48px] md:h-[60px] flex items-center justify-center mb-6 md:mb-8">
         <h2 className={`text-2xl md:text-4xl font-light tracking-widest uppercase ${THEME_MAP[theme].title}`}>
           {currentTrackIndex === -1 ? "Select a track to begin" : (currentTrack?.title || "Loading...")}
         </h2>
       </div>
 
       {/* Seek Tracker */}
-      <div className="w-full max-w-2xl py-4 cursor-pointer group" onClick={handleSeek}>
+      <div className="w-full max-w-2xl py-2 cursor-pointer group mb-2 md:mb-4" onClick={handleSeek}>
         <div ref={progressBarRef} className={`h-[2px] w-full ${THEME_MAP[theme].barBg} relative rounded-full overflow-hidden`}>
           <div
             className={`absolute top-0 left-0 h-full ${THEME_MAP[theme].barFill} transition-all duration-75 ease-linear ${THEME_MAP[theme].barHover}`}
@@ -176,28 +196,50 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
         </div>
       </div>
 
-      {/* Media Controls */}
-      <div className={`flex items-center gap-5.5 sm:gap-6.5 md:gap-8 ${THEME_MAP[theme].controlsTxt}`}>
-        <button onClick={handlePrev} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
-          <SkipBack size={24} strokeWidth={1.5} />
-        </button>
-        <button onClick={() => skipRelative(-10)} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
-          <Rewind size={28} strokeWidth={1.5} />
-        </button>
+      {/* Media & Volume Controls */}
+      <div className="flex flex-col items-center gap-6">
+        <div className={`flex items-center gap-5.5 sm:gap-6.5 md:gap-8 ${THEME_MAP[theme].controlsTxt}`}>
+          <button onClick={handlePrev} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
+            <SkipBack size={24} strokeWidth={1.5} />
+          </button>
+          <button onClick={() => skipRelative(-10)} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
+            <Rewind size={28} strokeWidth={1.5} />
+          </button>
 
-        <button
-          onClick={togglePlay}
-          className={`w-16 h-16 rounded-full border ${THEME_MAP[theme].btnBorder} flex items-center justify-center ${THEME_MAP[theme].btnHoverBorder} ${THEME_MAP[theme].btnHoverBg} hover:text-white transition-all hover:scale-105 active:scale-95`}
-        >
-          {isPlaying ? <Pause size={24} className="fill-current" /> : <Play size={24} className="fill-current ml-1" />}
-        </button>
+          <button
+            onClick={togglePlay}
+            className={`w-16 h-16 rounded-full border ${THEME_MAP[theme].btnBorder} flex items-center justify-center ${THEME_MAP[theme].btnHoverBorder} ${THEME_MAP[theme].btnHoverBg} hover:text-white transition-all hover:scale-105 active:scale-95`}
+          >
+            {isPlaying ? <Pause size={24} className="fill-current" /> : <Play size={24} className="fill-current ml-1" />}
+          </button>
 
-        <button onClick={() => skipRelative(10)} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
-          <FastForward size={28} strokeWidth={1.5} />
-        </button>
-        <button onClick={handleNext} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
-          <SkipForward size={24} strokeWidth={1.5} />
-        </button>
+          <button onClick={() => skipRelative(10)} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
+            <FastForward size={28} strokeWidth={1.5} />
+          </button>
+          <button onClick={handleNext} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
+            <SkipForward size={24} strokeWidth={1.5} />
+          </button>
+        </div>
+
+        {/* Volume Control - Positioned below buttons */}
+        <div className="flex items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
+          <button 
+            onClick={() => setIsMuted(!isMuted)} 
+            className={`${THEME_MAP[theme].controlsHover} transition-colors`}
+          >
+            {isMuted || volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}
+          </button>
+          <div 
+            ref={volumeBarRef}
+            onClick={handleVolumeChange}
+            className={`w-32 md:w-40 h-[2px] ${THEME_MAP[theme].barBg} relative rounded-full cursor-pointer group/vol`}
+          >
+            <div 
+              className={`absolute top-0 left-0 h-full ${THEME_MAP[theme].barFill} ${THEME_MAP[theme].barHover}`}
+              style={{ width: `${(isMuted ? 0 : volume) * 100}%` }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

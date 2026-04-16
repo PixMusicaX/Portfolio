@@ -17,6 +17,8 @@ export default function Home() {
   const [tappedSide, setTappedSide] = useState<"left" | "right" | null>(null);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [touchEndY, setTouchEndY] = useState<number | null>(null);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const minSwipeDistance = 50;
   const isNavigatingRef = useRef(false);
 
@@ -129,42 +131,60 @@ export default function Home() {
 
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEndY(null);
+    setTouchEndX(null);
     setTouchStartY(e.targetTouches[0].clientY);
+    setTouchStartX(e.targetTouches[0].clientX);
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
     setTouchEndY(e.targetTouches[0].clientY);
+    setTouchEndX(e.targetTouches[0].clientX);
   };
 
   const onTouchEnd = () => {
     if (!touchStartY || !touchEndY) return;
-    const distance = touchStartY - touchEndY;
-    const isUpSwipe = distance > minSwipeDistance;
-    const isDownSwipe = distance < -minSwipeDistance;
+    const dy = touchStartY - touchEndY;
+    const dx = touchStartX && touchEndX ? touchStartX - touchEndX : 0;
+    
+    const isUpSwipe = dy > minSwipeDistance;
+    const isDownSwipe = dy < -minSwipeDistance;
+    const isLeftSwipe = dx > minSwipeDistance;
+    const isRightSwipe = dx < -minSwipeDistance;
 
-    if (isUpSwipe) {
-      // Swipe UP -> Select/Explore Music (Bottom)
-      if (hoveredSide === "right") {
-        // SECOND SWIPE -> Navigate
-        if (isNavigatingRef.current) return;
-        isNavigatingRef.current = true;
-        setSelectedSide("right");
-        setTimeout(() => router.push("/music"), 700);
-      } else {
-        setHoveredSide("right");
-        setTappedSide("right");
+    // Determine target side based on swipe direction AND current orientation
+    let targetSide: "left" | "right" | null = null;
+    let path = "";
+
+    if (isLandscape) {
+      // LANDSCAPE: Left (Dev) / Right (Music)
+      if (isLeftSwipe || isUpSwipe) {
+          targetSide = "right";
+          path = "/music";
+      } else if (isRightSwipe || isDownSwipe) {
+          targetSide = "left";
+          path = "/dev";
       }
-    } else if (isDownSwipe) {
-      // Swipe DOWN -> Select/Explore Developer (Top)
-      if (hoveredSide === "left") {
+    } else {
+      // PORTRAIT: Top (Dev) / Bottom (Music)
+      if (isUpSwipe) {
+          targetSide = "right";
+          path = "/music";
+      } else if (isDownSwipe) {
+          targetSide = "left";
+          path = "/dev";
+      }
+    }
+
+    if (targetSide) {
+      if (hoveredSide === targetSide) {
         // SECOND SWIPE -> Navigate
         if (isNavigatingRef.current) return;
         isNavigatingRef.current = true;
-        setSelectedSide("left");
-        setTimeout(() => router.push("/dev"), 700);
+        setSelectedSide(targetSide);
+        setTimeout(() => router.push(path), 700);
       } else {
-        setHoveredSide("left");
-        setTappedSide("left");
+        setHoveredSide(targetSide);
+        setTappedSide(targetSide);
       }
     }
   };
@@ -308,7 +328,13 @@ export default function Home() {
 
   // --- DESKTOP LAYOUT (unchanged) ---
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]">
+    <div 
+      className="flex h-screen w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]"
+      style={{ overscrollBehaviorY: 'contain' }} // Prevent pull-to-refresh
+      onTouchStart={isMobile ? onTouchStart : undefined}
+      onTouchMove={isMobile ? onTouchMove : undefined}
+      onTouchEnd={isMobile ? onTouchEnd : undefined}
+    >
       <motion.div
         className={`relative flex flex-col justify-center items-center ${hoveredSide === "left" && !selectedSide ? "cursor-pointer" : "cursor-default"}`}
         animate={{
@@ -351,9 +377,9 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute bottom-12 text-zinc-500 font-mono text-sm tracking-widest z-10"
+            className="absolute bottom-12 text-zinc-500 font-mono text-[10px] sm:text-sm tracking-widest z-10 text-center"
           >
-            {isMobile ? "TAP" : "CLICK"} TO EXPLORE [DEV]
+            {isMobile ? "TAP OR SWIPE AGAIN TO EXPLORE [DEV]" : "CLICK TO EXPLORE [DEV]"}
           </motion.div>
         )}
       </motion.div>
@@ -401,9 +427,9 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute bottom-12 text-zinc-400 text-sm tracking-[0.2em] uppercase font-bold z-10"
+            className="absolute bottom-12 text-zinc-400 text-[10px] sm:text-sm tracking-[0.2em] uppercase font-bold z-10 text-center"
           >
-            {isMobile ? "Tap" : "Click"} to explore (Audio)
+            {isMobile ? "Tap or Swipe again to explore (Audio)" : "Click to explore (Audio)"}
           </motion.div>
         )}
       </motion.div>
