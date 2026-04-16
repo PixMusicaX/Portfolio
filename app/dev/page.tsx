@@ -229,7 +229,7 @@ export default function DeveloperPage() {
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.8 }}
               className="relative z-10"
             >
@@ -344,7 +344,7 @@ export default function DeveloperPage() {
           </section>
 
           <section id="about" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50 relative">
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }} className="relative z-10 w-full">
+            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }} className="relative z-10 w-full">
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">About Me</h2>
               <div className="text-zinc-400 leading-relaxed space-y-6 text-lg max-w-3xl mb-10">
                 <p>
@@ -521,7 +521,7 @@ export default function DeveloperPage() {
           </section>
 
           <section id="experience" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50">
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
+            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">Work Experience</h2>
               <div className="space-y-12">
                 {[
@@ -550,14 +550,13 @@ export default function DeveloperPage() {
             </motion.div>
           </section>
 
-          <section id="education" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-10 border-t border-zinc-900/50 relative">
+          <section id="education" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-14 md:py-20 border-t border-zinc-900/50 relative">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.8 }}
-              /* 1. Added mx-auto to center the entire motion container */
-              className="relative z-10 w-full max-w-4xl mx-auto"
+              className="relative z-10 w-full max-w-4xl mx-auto mb-16"
             >
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">
                 Education
@@ -569,7 +568,6 @@ export default function DeveloperPage() {
                     key={edu.id}
                     onMouseEnter={() => setHoveredEdu(edu.id)}
                     onMouseLeave={() => setHoveredEdu(null)}
-                    /* 3. The card will now fill the grid cells centered by the parent */
                     className="group p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800 hover:bg-zinc-800/80 transition-all duration-300 backdrop-blur-md cursor-pointer"
                   >
                     <div className="flex justify-between items-start mb-2 relative">
@@ -584,92 +582,86 @@ export default function DeveloperPage() {
                   </div>
                 ))}
               </div>
+            </motion.div>
 
-              {/* <section id="research" className="min-h-screen w-full flex flex-col justify-center snap-start py-20 border-t border-zinc-900/50 relative"> */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8 }}
-                className="relative z-10 w-full"
-              >
-                <h2 className="text-2xl font-semibold text-white mt-8 mb-8 border-b border-zinc-800 pb-4">Research & Publications</h2>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.8 }}
+              className="relative z-10 w-full max-w-4xl mx-auto"
+            >
+              <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">Research & Publications</h2>
 
-                <div className="space-y-10">
-                  {[
-                    {
-                      title: "Breast Cancer Detection Using Advanced Machine Learning Algorithms: A Comparative Analysis",
-                      journal: "Conference Paper • Jul 2024",
-                      date: "2024",
-                      desc: "A comparative study analyzing various machine learning architectures for high-accuracy breast cancer detection.",
-                      link: "https://www.researchgate.net/publication/382372766_Breast_Cancer_Detection_Using_Advanced_Machine_Learning_Algorithms_A_Comparative_Analysis",
-                      tags: ["Machine Learning", "Healthcare", "Analysis"]
-                    },
-                    {
-                      title: "A Correlative Survey on Imbalanced Breast Cancer Data Using Ensembled Oversampling Techniques and Deep Learning Algorithms",
-                      journal: "Conference Paper • Feb 2024",
-                      date: "2024",
-                      desc: "Researching the impact of ensembled oversampling on imbalanced datasets to improve deep learning diagnostic reliability.",
-                      link: "https://www.researchgate.net/publication/379494519_A_Correlative_Survey_on_Imbalanced_Breast_Cancer_Data_Using_Ensembled_Oversampling_Techniques_and_Deep_Learning_Algorithms",
-                      tags: ["Deep Learning", "Oversampling", "Data Science"]
-                    },
-                    {
-                      title: "IoT-based Fire Alarm: Design and Approach",
-                      journal: "Article • Oct 2023",
-                      date: "2023",
-                      desc: "Designed an IoT-integrated fire alarm system leveraging sensor networks for real-time industrial and household safety.",
-                      link: "https://www.researchgate.net/publication/374625842_IoT-based_Fire_Alarm_Design_and_Approach",
-                      tags: ["IoT", "Embedded Systems", "Safety Tech"]
-                    }
-                  ].map((pub, i) => (
-                    <div key={i} className="group relative pl-8 border-l border-zinc-800 hover:border-cyan-500/50 transition-colors">
-                      {/* Timeline Dot */}
-                      <div className="absolute w-3.5 h-3.5 rounded-full -left-[7px] top-1.5 transition-all duration-300 border-2 border-cyan-500 bg-cyan-500/20 group-hover:bg-cyan-500 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.8)]" />
+              <div className="space-y-10">
+                {[
+                  {
+                    title: "Breast Cancer Detection Using Advanced Machine Learning Algorithms: A Comparative Analysis",
+                    journal: "Conference Paper • Jul 2024",
+                    date: "2024",
+                    desc: "A comparative study analyzing various machine learning architectures for high-accuracy breast cancer detection.",
+                    link: "https://www.researchgate.net/publication/382372766_Breast_Cancer_Detection_Using_Advanced_Machine_Learning_Algorithms_A_Comparative_Analysis",
+                    tags: ["Machine Learning", "Healthcare", "Analysis"]
+                  },
+                  {
+                    title: "A Correlative Survey on Imbalanced Breast Cancer Data Using Ensembled Oversampling Techniques and Deep Learning Algorithms",
+                    journal: "Conference Paper • Feb 2024",
+                    date: "2024",
+                    desc: "Researching the impact of ensembled oversampling on imbalanced datasets to improve deep learning diagnostic reliability.",
+                    link: "https://www.researchgate.net/publication/379494519_A_Correlative_Survey_on_Imbalanced_Breast_Cancer_Data_Using_Ensembled_Oversampling_Techniques_and_Deep_Learning_Algorithms",
+                    tags: ["Deep Learning", "Oversampling", "Data Science"]
+                  },
+                  {
+                    title: "IoT-based Fire Alarm: Design and Approach",
+                    journal: "Article • Oct 2023",
+                    date: "2023",
+                    desc: "Designed an IoT-integrated fire alarm system leveraging sensor networks for real-time industrial and household safety.",
+                    link: "https://www.researchgate.net/publication/374625842_IoT-based_Fire_Alarm_Design_and_Approach",
+                    tags: ["IoT", "Embedded Systems", "Safety Tech"]
+                  }
+                ].map((pub, i) => (
+                  <div key={i} className="group relative pl-8 border-l border-zinc-800 hover:border-cyan-500/50 transition-colors">
+                    <div className="absolute w-3.5 h-3.5 rounded-full -left-[7px] top-1.5 transition-all duration-300 border-2 border-cyan-500 bg-cyan-500/20 group-hover:bg-cyan-500 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.8)]" />
 
-                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-2">
-                        <div className="max-w-2xl">
-                          <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors duration-300">
-                            {pub.title}
-                          </h3>
-                          <p className="text-cyan-600/80 font-mono text-xs mt-1 uppercase tracking-wider">{pub.journal}</p>
-                          <p className="text-zinc-400 text-sm mt-3 leading-relaxed">{pub.desc}</p>
+                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-2">
+                      <div className="max-w-2xl">
+                        <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors duration-300">
+                          {pub.title}
+                        </h3>
+                        <p className="text-cyan-600/80 font-mono text-xs mt-1 uppercase tracking-wider">{pub.journal}</p>
+                        <p className="text-zinc-400 text-sm mt-3 leading-relaxed">{pub.desc}</p>
 
-                          {/* Added Tags rendering to match your data objects */}
-                          <div className="flex flex-wrap gap-2 mt-4">
-                            {pub.tags.map((tag) => (
-                              <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-500">
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-3 shrink-0">
-                          <span className="text-sm font-mono text-zinc-500 bg-zinc-900/50 px-2 py-1 rounded border border-zinc-800">
-                            {pub.date}
-                          </span>
-                          <a
-                            href={pub.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all"
-                          >
-                            <ExternalLink size={16} />
-                          </a>
+                        <div className="flex flex-wrap gap-2 mt-4">
+                          {pub.tags.map((tag) => (
+                            <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-500">
+                              {tag}
+                            </span>
+                          ))}
                         </div>
                       </div>
+
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className="text-sm font-mono text-zinc-500 bg-zinc-900/50 px-2 py-1 rounded border border-zinc-800">
+                          {pub.date}
+                        </span>
+                        <a
+                          href={pub.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all"
+                        >
+                          <ExternalLink size={16} />
+                        </a>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </motion.div>
-              {/* </section> */}
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </section>
-
           <section className="snap-start py-1 flex flex-col items-center">
             <Footer variant="dev" />
           </section>
-
         </div>
       </motion.div >
 
