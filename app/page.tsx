@@ -353,7 +353,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             className="absolute bottom-12 text-zinc-500 font-mono text-sm tracking-widest z-10"
           >
-            CLICK TO EXPLORE [DEV]
+            {isMobile ? "TAP" : "CLICK"} TO EXPLORE [DEV]
           </motion.div>
         )}
       </motion.div>
@@ -403,7 +403,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             className="absolute bottom-12 text-zinc-400 text-sm tracking-[0.2em] uppercase font-bold z-10"
           >
-            Click to explore (Audio)
+            {isMobile ? "Tap" : "Click"} to explore (Audio)
           </motion.div>
         )}
       </motion.div>
