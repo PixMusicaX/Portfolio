@@ -260,8 +260,7 @@ export default function DeveloperPage() {
               </div>
 
               <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-2 relative leading-tight">
-                Full Stack + AI <br className="md:hidden" /> Developer
-
+                Full Stack + AI 
                 {/* The Icon Wrapper */}
                 <span className="inline-block align-middle ml-4 text-zinc-800">
                   <Terminal
@@ -269,6 +268,7 @@ export default function DeveloperPage() {
                     className="w-[1.2em] h-[1.2em] md:w-[1.1em] md:h-[1.1em]"
                   />
                 </span>
+                <br className="md:hidden" /> Developer
               </h1>
               <h2 className="text-2xl md:text-3xl font-light text-zinc-500 tracking-wide mb-4">
                 Pinaki Pritam Singha
