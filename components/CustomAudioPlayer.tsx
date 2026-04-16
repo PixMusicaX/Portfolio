@@ -351,9 +351,9 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
             ref={volumeBarRef}
             onMouseDown={handleVolumeClick}
             onTouchStart={handleVolumeClick}
-            className={`py-2 px-1 cursor-pointer group/vol flex items-center touch-none flex-1`}
+            className={`py-2 px-1 cursor-pointer group/vol flex items-center touch-none ${isLandscape ? 'flex-1' : ''}`}
           >
-            <div className={`w-full h-[2px] ${THEME_MAP[theme].barBg} relative rounded-full`}>
+            <div className={`${isLandscape ? 'w-full' : 'w-32 md:w-40'} h-[2px] ${THEME_MAP[theme].barBg} relative rounded-full`}>
               <div
                 className={`absolute top-0 left-0 h-full ${THEME_MAP[theme].barFill} ${THEME_MAP[theme].barHover}`}
                 style={{ width: `${(isMuted ? 0 : volume) * 100}%` }}
