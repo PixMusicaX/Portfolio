@@ -49,7 +49,7 @@ const Footer = ({ variant = 'dev' }: FooterProps) => {
           </p>
           
           {visits !== null && (
-            <p className={`text-[10px] font-mono font-medium tracking-[0.3em] uppercase ${isMusic ? 'text-purple-500/90' : 'text-zinc-400'}`}>
+            <p className={`text-[10px] font-mono font-medium tracking-[0.3em] uppercase ${isMusic ? 'text-orange-500/90' : 'text-zinc-400'}`}>
               {visits.toLocaleString()} VISITS
             </p>
           )}
