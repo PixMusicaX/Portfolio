@@ -32,9 +32,10 @@ interface CustomAudioPlayerProps {
   onPlayStateChange?: (isPlaying: boolean) => void;
   theme?: PlayerTheme;
   onToggleFrame?: () => void;
+  isLandscape?: boolean;
 }
 
-export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlayStateChange, theme = "blue", onToggleFrame }: CustomAudioPlayerProps) {
+export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlayStateChange, theme = "blue", onToggleFrame, isLandscape = false }: CustomAudioPlayerProps) {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -280,20 +281,20 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
 
       {/* Typography - Now triggers frame toggle */}
       <div
-        className="text-center space-y-2 h-[48px] md:h-[60px] flex items-center justify-center mb-6 md:mb-8 cursor-pointer group/title select-none"
+        className={`text-center flex items-center justify-center cursor-pointer group/title select-none ${isLandscape ? 'h-[28px] mb-2' : 'h-[48px] md:h-[60px] mb-6 md:mb-8'}`}
         onClick={(e) => {
           e.stopPropagation();
           onToggleFrame?.();
         }}
       >
-        <h2 className={`text-2xl md:text-4xl font-light tracking-widest uppercase transition-opacity group-hover/title:opacity-100 ${THEME_MAP[theme].title} ${currentTrackIndex === -1 ? 'opacity-40' : 'opacity-100'}`}>
+        <h2 className={`font-light tracking-widest uppercase transition-opacity group-hover/title:opacity-100 ${THEME_MAP[theme].title} ${currentTrackIndex === -1 ? 'opacity-40' : 'opacity-100'} ${isLandscape ? 'text-lg' : 'text-2xl md:text-4xl'}`}>
           {currentTrackIndex === -1 ? "Select a track" : (currentTrack?.title || "Loading...")}
         </h2>
       </div>
 
       {/* Seek Tracker */}
       <div
-        className="w-full max-w-2xl py-4 cursor-pointer group mb-1 md:mb-2 touch-none"
+        className={`w-full max-w-2xl cursor-pointer group touch-none ${isLandscape ? 'py-1 mb-2' : 'py-4 mb-1 md:mb-2'}`}
         onMouseDown={handleSeek}
         onTouchStart={handleSeek}
       >
@@ -303,52 +304,56 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
             style={{ width: `${progressPercentage}%` }}
           />
         </div>
-        <div className={`flex justify-between items-center mt-3 text-[10px] font-mono ${THEME_MAP[theme].timeTxt} tracking-widest`}>
+        <div className={`flex justify-between items-center mt-1 text-[9px] font-mono ${THEME_MAP[theme].timeTxt} tracking-widest`}>
           <span>{formatTime(progress)}</span>
           <span>{formatTime(duration)}</span>
         </div>
       </div>
 
       {/* Media & Volume Controls */}
-      <div className="flex flex-col items-center gap-6">
-        <div className={`flex items-center gap-5.5 sm:gap-6.5 md:gap-8 ${THEME_MAP[theme].controlsTxt}`}>
+      <div className={`flex flex-col items-center w-full ${isLandscape ? 'gap-2 px-2' : 'gap-6'}`}>
+        <div className={`flex items-center ${isLandscape ? 'gap-4' : 'gap-5.5 sm:gap-6.5 md:gap-8'} ${THEME_MAP[theme].controlsTxt}`}>
           <button onClick={handlePrev} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
-            <SkipBack size={24} strokeWidth={1.5} />
+            <SkipBack size={isLandscape ? 18 : 24} strokeWidth={1.5} />
           </button>
-          <button onClick={(e) => skipRelative(e, -10)} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
-            <Rewind size={28} strokeWidth={1.5} />
-          </button>
+          {!isLandscape && (
+            <button onClick={(e) => skipRelative(e, -10)} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
+              <Rewind size={28} strokeWidth={1.5} />
+            </button>
+          )}
 
           <button
             onClick={togglePlay}
-            className={`w-16 h-16 rounded-full border ${THEME_MAP[theme].btnBorder} flex items-center justify-center ${THEME_MAP[theme].btnHoverBorder} ${THEME_MAP[theme].btnHoverBg} hover:text-white transition-all hover:scale-105 active:scale-95`}
+            className={`rounded-full border ${THEME_MAP[theme].btnBorder} flex items-center justify-center ${THEME_MAP[theme].btnHoverBorder} ${THEME_MAP[theme].btnHoverBg} hover:text-white transition-all hover:scale-105 active:scale-95 ${isLandscape ? 'w-10 h-10' : 'w-16 h-16'}`}
           >
-            {isPlaying ? <Pause size={24} className="fill-current" /> : <Play size={24} className="fill-current ml-1" />}
+            {isPlaying ? <Pause size={isLandscape ? 18 : 24} className="fill-current" /> : <Play size={isLandscape ? 18 : 24} className={`fill-current ${isLandscape ? 'ml-0.5' : 'ml-1'}`} />}
           </button>
 
-          <button onClick={(e) => skipRelative(e, 10)} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
-            <FastForward size={28} strokeWidth={1.5} />
-          </button>
+          {!isLandscape && (
+            <button onClick={(e) => skipRelative(e, 10)} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
+              <FastForward size={28} strokeWidth={1.5} />
+            </button>
+          )}
           <button onClick={handleNext} className={`${THEME_MAP[theme].controlsHover} transition-colors hover:scale-110 active:scale-95`}>
-            <SkipForward size={24} strokeWidth={1.5} />
+            <SkipForward size={isLandscape ? 18 : 24} strokeWidth={1.5} />
           </button>
         </div>
 
-        {/* Volume Control - Positioned below buttons */}
-        <div className="flex items-center justify-center gap-3 opacity-100">
+        {/* Volume Control - Compact for Landscape */}
+        <div className={`flex items-center justify-center gap-2 opacity-100 ${isLandscape ? 'w-full max-w-[12rem]' : ''}`}>
           <button
             onClick={() => setIsMuted(!isMuted)}
             className={`${THEME_MAP[theme].controlsActive}`}
           >
-            {isMuted || volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}
+            {isMuted || volume === 0 ? <VolumeX size={isLandscape ? 16 : 18} /> : <Volume2 size={isLandscape ? 16 : 18} />}
           </button>
           <div
             ref={volumeBarRef}
             onMouseDown={handleVolumeClick}
             onTouchStart={handleVolumeClick}
-            className="py-4 px-2 cursor-pointer group/vol flex items-center touch-none"
+            className={`py-2 px-1 cursor-pointer group/vol flex items-center touch-none flex-1`}
           >
-            <div className={`w-32 md:w-40 h-[2px] ${THEME_MAP[theme].barBg} relative rounded-full`}>
+            <div className={`w-full h-[2px] ${THEME_MAP[theme].barBg} relative rounded-full`}>
               <div
                 className={`absolute top-0 left-0 h-full ${THEME_MAP[theme].barFill} ${THEME_MAP[theme].barHover}`}
                 style={{ width: `${(isMuted ? 0 : volume) * 100}%` }}

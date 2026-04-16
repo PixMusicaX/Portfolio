@@ -41,6 +41,7 @@ export function MusicGenreLayout({
   const [isFrameVisible, setIsFrameVisible] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGlassVisible, setIsGlassVisible] = useState(false);
+  const [isMobileLandscape, setIsMobileLandscape] = useState(false);
 
   useEffect(() => {
     setAudioState("silent");
@@ -48,11 +49,22 @@ export function MusicGenreLayout({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const media = window.matchMedia("(min-width: 768px)");
-    const handleMediaChange = () => setIsGlassVisible(media.matches);
+    const glassMedia = window.matchMedia("(min-width: 768px)");
+    const landscapeMedia = window.matchMedia("(orientation: landscape) and (max-height: 500px)");
+
+    const handleMediaChange = () => {
+      setIsGlassVisible(glassMedia.matches);
+      setIsMobileLandscape(landscapeMedia.matches);
+    };
+
     handleMediaChange();
-    media.addEventListener("change", handleMediaChange);
-    return () => media.removeEventListener("change", handleMediaChange);
+    glassMedia.addEventListener("change", handleMediaChange);
+    landscapeMedia.addEventListener("change", handleMediaChange);
+
+    return () => {
+      glassMedia.removeEventListener("change", handleMediaChange);
+      landscapeMedia.removeEventListener("change", handleMediaChange);
+    };
   }, []);
 
   return (
@@ -88,49 +100,69 @@ export function MusicGenreLayout({
         </Link>
       </nav>
 
-      {/* Main Content Area - Center Aligned in Remaining Space */}
-      <main className="flex-1 flex flex-col items-center justify-start py-12 md:py-20 relative z-20 overflow-y-auto pl-14 md:pl-20 pr-4 md:pr-10">
-        <div className="w-full max-w-5xl flex flex-col items-center">
+      {/* Main Content Area */}
+      <main className={`flex-1 relative z-20 overflow-y-auto pl-14 md:pl-20 pr-4 md:pr-10 ${isMobileLandscape ? 'flex flex-row items-start pt-10 pb-10 gap-8' : 'flex flex-col items-center justify-start py-12 md:py-20'}`}>
+        
+        {/* Left Column: Header + Tracks */}
+        <div className={`flex flex-col items-center ${isMobileLandscape ? 'w-[55%] min-h-full' : 'w-full max-w-5xl'}`}>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-8 md:mb-16 w-full px-4 md:px-0"
+            className={`text-center w-full px-4 md:px-0 ${isMobileLandscape ? 'mb-6' : 'mb-8 md:mb-16'}`}
           >
             <h1
-              className="text-4xl md:text-8xl font-bold tracking-tight mb-4"
+              className={`font-bold tracking-tight mb-2 md:mb-4 ${isMobileLandscape ? 'text-2xl' : 'text-4xl md:text-8xl'}`}
               style={{ color: themeColor }}
             >
               {title}
             </h1>
             <p
-              className="text-sm md:text-xl opacity-70 max-w-2xl italic font-light font-serif leading-relaxed mx-auto"
+              className={`opacity-70 italic font-light font-serif leading-relaxed mx-auto ${isMobileLandscape ? 'text-xs max-w-lg' : 'text-sm md:text-xl max-w-2xl'}`}
               style={{ color: themeColor }}
             >
               {description}
             </p>
           </motion.div>
 
-          {/* Children content (usually the Grid) */}
-          <div className="pb-[17rem] w-full">
+          <div className={`${isMobileLandscape ? 'pb-10' : 'pb-[17rem]'} w-full`}>
             {children}
           </div>
         </div>
 
-        {/* Floating Integrated Player Container - Background Matched */}
-        <AnimatePresence>
-          <motion.div
-            initial={{ y: 200, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="fixed bottom-6 left-14 md:left-20 right-6 md:right-10 z-[60] pointer-events-none flex justify-center"
-          >
+        {/* Right Column / Floating Player for Portrait */}
+        {!isMobileLandscape ? (
+          <AnimatePresence>
+            <motion.div
+              initial={{ y: 200, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="fixed bottom-6 left-14 md:left-20 right-6 md:right-10 z-[60] pointer-events-none flex justify-center"
+            >
+              <div
+                className={`w-full max-w-4xl border rounded-[2rem] p-4 md:p-6 transition-all duration-500 pointer-events-auto ${isFrameVisible
+                    ? 'bg-white/20 backdrop-blur-xl shadow-xl'
+                    : 'bg-white/0 border-transparent shadow-none backdrop-blur-none'
+                  }`}
+                style={{ borderColor: isFrameVisible ? `${themeColor}40` : 'transparent' }}
+              >
+                <CustomAudioPlayer
+                  tracks={tracks}
+                  activeTrackId={activeTrackId}
+                  onTrackChange={(track) => setActiveTrack(track.id)}
+                  onPlayStateChange={(state) => setIsPlaying(state)}
+                  theme={theme}
+                  onToggleFrame={() => setIsFrameVisible(!isFrameVisible)}
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          /* Pinned Right Player for Landscape */
+          <div className="w-[45%] sticky top-0 h-full flex items-center justify-center pr-4">
             <div
-              className={`w-full max-w-4xl border rounded-[2rem] p-4 md:p-6 transition-all duration-500 pointer-events-auto ${isFrameVisible
-                  ? 'bg-white/20 backdrop-blur-xl shadow-xl'
-                  : 'bg-white/0 border-transparent shadow-none backdrop-blur-none'
-                }`}
-              style={{ borderColor: isFrameVisible ? `${themeColor}40` : 'transparent' }}
+              className={`w-full border rounded-3xl p-4 transition-all duration-500 bg-white/20 backdrop-blur-xl shadow-xl`}
+              style={{ borderColor: `${themeColor}40` }}
             >
               <CustomAudioPlayer
                 tracks={tracks}
@@ -138,11 +170,11 @@ export function MusicGenreLayout({
                 onTrackChange={(track) => setActiveTrack(track.id)}
                 onPlayStateChange={(state) => setIsPlaying(state)}
                 theme={theme}
-                onToggleFrame={() => setIsFrameVisible(!isFrameVisible)}
+                isLandscape={true}
               />
             </div>
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        )}
       </main>
 
       <motion.div
