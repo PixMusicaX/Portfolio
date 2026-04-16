@@ -131,50 +131,42 @@ export function MusicGenreLayout({
         </div>
 
         {/* Right Column / Floating Player for Portrait */}
-        {!isMobileLandscape ? (
-          <AnimatePresence>
-            <motion.div
-              initial={{ y: 200, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="fixed bottom-6 left-14 md:left-20 right-6 md:right-10 z-[60] pointer-events-none flex justify-center"
-            >
-              <div
-                className={`w-full max-w-4xl border rounded-[2rem] p-4 md:p-6 transition-all duration-500 pointer-events-auto ${isFrameVisible
-                    ? 'bg-white/20 backdrop-blur-xl shadow-xl'
-                    : 'bg-white/0 border-transparent shadow-none backdrop-blur-none'
-                  }`}
-                style={{ borderColor: isFrameVisible ? `${themeColor}40` : 'transparent' }}
-              >
-                <CustomAudioPlayer
-                  tracks={tracks}
-                  activeTrackId={activeTrackId}
-                  onTrackChange={(track) => setActiveTrack(track.id)}
-                  onPlayStateChange={(state) => setIsPlaying(state)}
-                  theme={theme}
-                  onToggleFrame={() => setIsFrameVisible(!isFrameVisible)}
-                />
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        ) : (
-          /* Pinned Right Player for Landscape */
-          <div className="w-[45%] sticky top-0 h-full flex items-center justify-center pr-4">
-            <div
-              className={`w-full border rounded-3xl p-4 transition-all duration-500 bg-white/20 backdrop-blur-xl shadow-xl`}
-              style={{ borderColor: `${themeColor}40` }}
-            >
-              <CustomAudioPlayer
-                tracks={tracks}
-                activeTrackId={activeTrackId}
-                onTrackChange={(track) => setActiveTrack(track.id)}
-                onPlayStateChange={(state) => setIsPlaying(state)}
-                theme={theme}
-                isLandscape={true}
-              />
-            </div>
-          </div>
-        )}
+        {/* Persistent Unified Player Container */}
+        <div className={isMobileLandscape 
+          ? "w-[45%] sticky top-0 h-full flex items-center justify-center pr-4 pointer-events-none" 
+          : "fixed bottom-6 left-14 md:left-20 right-6 md:right-10 z-[60] pointer-events-none flex justify-center"
+        }>
+          <motion.div
+            layout
+            initial={isMobileLandscape ? false : { y: 200, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ 
+              layout: { duration: 0.6, ease: "easeOut" },
+              opacity: { duration: 0.8 },
+              y: { duration: 0.8, delay: isMobileLandscape ? 0 : 0.5 }
+            }}
+            className={`w-full max-w-4xl border p-4 transition-all duration-500 pointer-events-auto ${
+              isMobileLandscape 
+                ? 'bg-white/20 backdrop-blur-xl shadow-xl rounded-3xl' 
+                : (isFrameVisible 
+                    ? 'bg-white/20 backdrop-blur-xl shadow-xl rounded-[2rem] md:p-6' 
+                    : 'bg-white/0 border-transparent shadow-none backdrop-blur-none rounded-[2rem] md:p-6')
+            }`}
+            style={{ 
+              borderColor: (isMobileLandscape || isFrameVisible) ? `${themeColor}40` : 'transparent' 
+            }}
+          >
+            <CustomAudioPlayer
+              tracks={tracks}
+              activeTrackId={activeTrackId}
+              onTrackChange={(track) => setActiveTrack(track.id)}
+              onPlayStateChange={(state) => setIsPlaying(state)}
+              theme={theme}
+              onToggleFrame={() => setIsFrameVisible(!isFrameVisible)}
+              isLandscape={isMobileLandscape}
+            />
+          </motion.div>
+        </div>
       </main>
 
       <motion.div
