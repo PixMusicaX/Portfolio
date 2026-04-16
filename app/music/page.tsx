@@ -106,9 +106,9 @@ export default function MusicPage() {
     <div className="min-h-[100dvh] bg-white text-zinc-900 font-[family-name:var(--font-outfit)] selection:bg-purple-200 relative overflow-hidden">
       <MusicBackground />
       <GaseousDivider
-        hoveredSide={(isSidebarHovered || !isGlassVisible) ? "left" : null}
+        hoveredSide="left"
         variant="music"
-        className={`z-[1] ${(isSidebarHovered || !isGlassVisible) ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-45'}`}
+        className="z-[1] transition-opacity duration-300 ease-in opacity-70"
       />
 
 
@@ -120,7 +120,7 @@ export default function MusicPage() {
       >
 
         {/* Parabolic Light Leak — hidden on mobile to prevent content overlap */}
-        <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-purple-500/10 shadow-[20px_0_50px_rgba(168,85,247,0.15)] backdrop-blur-sm z-[-1] hidden md:block" />
+        <div className="absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/20 border-r border-white/20 shadow-xl backdrop-blur-xl z-[-1] hidden md:block" />
 
         <button
           onClick={handleBackToPortal}
@@ -148,7 +148,7 @@ export default function MusicPage() {
           {/* Header Section */}
           <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start pt-10 md:pt-20 pb-25 md:pb-36 relative">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
-              <div className="inline-block px-4 py-1 mb-6 rounded-full bg-purple-100 text-purple-600 text-xs font-bold tracking-widest uppercase">
+              <div className="inline-block px-4 py-1 mb-6 rounded-full bg-white/20 backdrop-blur-xl border border-white/20 shadow-sm text-purple-600 text-xs font-bold tracking-widest uppercase">
                 Sonic Architecture & Synthesis
               </div>
               <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-2 leading-tight">
@@ -171,28 +171,28 @@ export default function MusicPage() {
                 Blending <MusicShimmer>Classical</MusicShimmer> Instruments with Modern <MusicShimmer>Electronic</MusicShimmer> Synthesis to create immersive beats and soundscapes.
               </p>
 
-              <div className="flex flex-wrap items-center gap-4 mt-10">
-                <a href="https://www.youtube.com/@PiXMusicaX" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-red-100 hover:text-red-600 transition-colors shadow-sm" title="YouTube (PiX MusicaX)">
-                  <SiYoutube size={22} />
+              <div className="flex flex-wrap items-center gap-8 mt-10">
+                <a href="https://www.youtube.com/@PiXMusicaX" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-red-600 transition-all hover:-translate-y-1" title="YouTube (PiX MusicaX)">
+                  <SiYoutube size={24} />
                 </a>
-                <a href="https://www.youtube.com/@ThemeAlter-ow2zb" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-blue-100 hover:text-blue-600 transition-colors shadow-sm" title="YouTube (Theme/Alter)">
-                  <SiYoutube size={22} />
+                <a href="https://www.youtube.com/@ThemeAlter-ow2zb" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-blue-600 transition-all hover:-translate-y-1" title="YouTube (Theme/Alter)">
+                  <SiYoutube size={24} />
                 </a>
-                <a href="https://open.spotify.com/artist/3h2hxcu6jLk7T4quHavrdj" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-green-100 hover:text-green-600 transition-colors shadow-sm" title="Spotify">
-                  <SiSpotify size={22} />
+                <a href="https://open.spotify.com/artist/3h2hxcu6jLk7T4quHavrdj" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-green-600 transition-all hover:-translate-y-1" title="Spotify">
+                  <SiSpotify size={24} />
                 </a>
-                <a href="https://music.apple.com/us/artist/pix-musicax/1511497563" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-pink-100 hover:text-pink-600 transition-colors shadow-sm" title="Apple Music">
-                  <SiApplemusic size={22} />
+                <a href="https://music.apple.com/us/artist/pix-musicax/1511497563" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-pink-600 transition-all hover:-translate-y-1" title="Apple Music">
+                  <SiApplemusic size={24} />
                 </a>
-                <a href="https://www.instagram.com/_pix.aki_/?__d=1%2B" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-zinc-100 hover:bg-purple-100 hover:text-purple-600 transition-colors shadow-sm" title="Instagram">
-                  <SiInstagram size={22} />
+                <a href="https://www.instagram.com/_pix.aki_/?__d=1%2B" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-purple-600 transition-all hover:-translate-y-1" title="Instagram">
+                  <SiInstagram size={24} />
                 </a>
                 <a
                   href="mailto:pinakipps21@gmail.com"
-                  className="p-3 rounded-full bg-zinc-100 hover:bg-red-100 hover:text-rose-600 transition-colors shadow-sm"
+                  className="text-zinc-500 hover:text-rose-600 transition-all hover:-translate-y-1"
                   title="Email"
                 >
-                  <Mail size={22} strokeWidth={2} />
+                  <Mail size={24} strokeWidth={2} />
                 </a>
               </div>
 
@@ -258,63 +258,63 @@ export default function MusicPage() {
                     title: "Waltz",
                     desc: "Sweeping, orchestral ¾ time signatures blending classical elegance with dark acoustic atmospheres.",
                     route: "/music/waltz",
-                    color: "from-blue-100 to-sky-100",
+                    color: "from-blue-500/20 to-sky-500/10",
                     badge: "Acoustic"
                   },
                   {
                     title: "Synthwave",
                     desc: "Nostalgic 80s analog synthesizers paired with driving, retro-futuristic arpeggios and grooves.",
                     route: "/music/synthwave",
-                    color: "from-purple-100 to-fuchsia-100",
+                    color: "from-purple-500/20 to-fuchsia-500/10",
                     badge: "Analog"
                   },
                   {
                     title: "Battle Soundtracks",
                     desc: "Intense, cinematic scoring featuring massive brass, tight percussion, and adrenaline-inducing themes.",
                     route: "/music/battle-soundtracks",
-                    color: "from-red-100 to-rose-100",
+                    color: "from-red-500/20 to-rose-500/10",
                     badge: "Orchestral"
                   },
                   {
                     title: "Electronic",
                     desc: "Modern digital synthesis featuring deep sub-basses, crisp sonics, and immaculate sound design.",
                     route: "/music/electronic",
-                    color: "from-zinc-100 to-zinc-200",
+                    color: "from-zinc-500/20 to-zinc-500/10",
                     badge: "Digital"
                   },
                   {
                     title: "Fusion",
                     desc: "Genre-defying sonic experiments merging genres with modern production techniques.",
                     route: "/music/fusion",
-                    color: "from-amber-100 to-orange-100",
+                    color: "from-amber-500/20 to-orange-500/10",
                     badge: "Hybrid"
                   },
                   {
                     title: "Acoustic",
                     desc: "Raw, intimate performances captured with warmth — fingerpicked strings or natural resonance.",
                     route: "/music/acoustic",
-                    color: "from-emerald-100 to-green-100",
+                    color: "from-emerald-500/20 to-green-500/10",
                     badge: "Organic"
                   },
                   {
                     title: "Anime",
                     desc: "High-energy opening themes and emotional ballads inspired by Japanese animation scoring.",
                     route: "/music/anime",
-                    color: "from-pink-100 to-rose-100",
+                    color: "from-pink-500/20 to-rose-500/10",
                     badge: "Mixed"
                   },
                   {
                     title: "Orchestral",
                     desc: "Full symphonic arrangements with sweeping strings, bold brass, and symphonic pianos.",
                     route: "/music/orchestral",
-                    color: "from-indigo-100 to-violet-100",
+                    color: "from-indigo-500/20 to-violet-500/10",
                     badge: "Classical"
                   },
                   {
                     title: "Legacy Stuff",
                     desc: "Archived experiments and early explorations from the formative years of my sonic journey.",
                     route: "/music/legacy-stuff",
-                    color: "from-teal-100 to-cyan-100",
+                    color: "from-teal-500/20 to-cyan-500/10",
                     badge: "Archive"
                   },
                 ].map((genre, i) => {
@@ -335,13 +335,13 @@ export default function MusicPage() {
                         y: isTransitioning ? -8 : 0
                       }}
                       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                      className={`block p-8 rounded-3xl bg-gradient-to-br ${genre.color} border border-white/50 backdrop-blur-md shadow-sm group ${isTransitioning ? 'shadow-2xl z-50 relative' : 'cursor-pointer'}`}
+                      className={`block p-8 rounded-3xl bg-gradient-to-br ${genre.color} border border-white/20 backdrop-blur-xl shadow-sm group ${isTransitioning ? 'shadow-2xl z-50 relative' : 'cursor-pointer'}`}
                     >
                       <div className="flex justify-between items-start mb-12">
                         <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
                           <ArrowRight size={24} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
                         </div>
-                        <span className="font-mono text-xs font-bold uppercase tracking-widest text-zinc-500 bg-white/50 px-3 py-1 rounded-full">{genre.badge}</span>
+                        <span className="font-mono text-xs font-bold uppercase tracking-widest text-zinc-500 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10">{genre.badge}</span>
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold mb-3 text-zinc-900">{genre.title}</h3>

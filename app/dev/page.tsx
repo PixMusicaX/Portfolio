@@ -30,10 +30,10 @@ const LanguageCard = ({ lang, icon: IconComponent, glowColor, link }: { lang: st
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className="flex items-center justify-center w-16 h-16 rounded-2xl border border-zinc-800 bg-zinc-950/70 transition-all duration-300"
+        className="flex items-center justify-center w-16 h-16 rounded-2xl border border-white/10 bg-zinc-900/30 backdrop-blur-xl transition-all duration-300"
         style={{
-          borderColor: isHovered ? 'rgba(255, 255, 255, 0.2)' : 'rgb(39, 39, 42)',
-          backgroundColor: isHovered ? 'rgba(24, 24, 27, 0.95)' : 'rgba(9, 9, 11, 0.7)',
+          borderColor: isHovered ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+          backgroundColor: isHovered ? 'rgba(24, 24, 27, 0.95)' : 'rgba(24, 24, 27, 0.3)',
           boxShadow: isHovered ? `0 0 30px ${glowColor}` : 'none'
         }}
       >
@@ -41,10 +41,10 @@ const LanguageCard = ({ lang, icon: IconComponent, glowColor, link }: { lang: st
           <IconComponent size={28} style={{ color: isHovered ? glowColor : 'white', transition: 'color 300ms' }} />
         ) : (
           <div
-            className="w-8 h-8 rounded bg-zinc-700/50 flex items-center justify-center text-xs font-semibold transition-all duration-300"
+            className="w-8 h-8 rounded bg-white/5 backdrop-blur-md flex items-center justify-center text-xs font-semibold transition-all duration-300"
             style={{
               color: isHovered ? glowColor : 'rgb(161, 161, 170)',
-              backgroundColor: isHovered ? `${glowColor}20` : 'rgba(113, 113, 122, 0.5)'
+              backgroundColor: isHovered ? `${glowColor}20` : 'rgba(255, 255, 255, 0.05)'
             }}
           >
             {lang.charAt(0).toUpperCase()}
@@ -175,10 +175,10 @@ export default function DeveloperPage() {
     <div className="min-h-[100dvh] bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
       <DevBackground />
       <GaseousDivider
-        hoveredSide={(isSidebarHovered || !isGlassVisible) ? "right" : null}
+        hoveredSide="right"
         variant="dev"
         align="right"
-        className={`z-[1] transition-opacity duration-700 ease-in-out ${(isSidebarHovered || !isGlassVisible) ? 'opacity-70' : 'opacity-45'}`}>
+        className="z-[1] transition-opacity duration-700 ease-in-out opacity-70">
       </GaseousDivider>
 
       <motion.nav
@@ -187,7 +187,7 @@ export default function DeveloperPage() {
         transition={{ duration: 1, delay: 0.2 }}
         className="fixed right-0 top-0 bottom-0 w-16 max-md:w-14 z-50 flex flex-col items-center justify-center pointer-events-none"
       >
-        <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-black/40 border-l border-white/5 shadow-[-20px_0_50px_rgba(255,255,255,0.05)] backdrop-blur-sm z-[-1] hidden md:block" />
+        <div className="absolute top-[-10%] bottom-[-10%] right-[-100px] w-[160px] rounded-[50%] bg-zinc-900/30 border-l border-white/10 shadow-2xl backdrop-blur-xl z-[-1] hidden md:block" />
 
         <button
           onClick={handleBackToPortal}
@@ -234,10 +234,10 @@ export default function DeveloperPage() {
               className="relative z-10"
             >
               <div className="flex flex-col gap-1 mb-1">
-                <button
-                  id="mute-toggle"
-                  onClick={handleMuteToggle}
-                  className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:border-zinc-600 transition-all duration-300 cursor-pointer">
+                  <button
+                    id="mute-toggle"
+                    onClick={handleMuteToggle}
+                    className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={isMuted ? "muted" : "unmuted"}
@@ -253,7 +253,7 @@ export default function DeveloperPage() {
                   {isMuted ? "Unmute" : "Mute"}
                 </button>
 
-                <div className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400">
+                <div className="flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-xs font-mono text-zinc-400">
                   <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                   Currently Building Software
                 </div>
@@ -316,7 +316,7 @@ export default function DeveloperPage() {
                           element?.scrollIntoView({ behavior: "smooth" });
                         }
                       }}
-                      className="flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 hover:border-zinc-600 transition-all duration-300 cursor-pointer leading-none"
+                      className="flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-[11px] font-mono text-zinc-400 hover:text-zinc-100 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer leading-none"
                     >
                       {section.label}
                       {section.link && <ExternalLink size={10} className="opacity-50" />}
@@ -453,7 +453,7 @@ export default function DeveloperPage() {
                 ].map((project, i) => (
                   <div
                     key={i}
-                    className="group flex flex-col h-full p-8 md:p-10 rounded-3xl bg-zinc-900/30 backdrop-blur-xl border border-white/10 hover:border-white/20 hover:bg-zinc-900/50 shadow-lg shadow-black/30 transition-all duration-300"
+                    className="group flex flex-col h-full p-8 md:p-10 rounded-3xl bg-zinc-900/30 backdrop-blur-xl border border-white/10 hover:border-white/20 hover:bg-zinc-900/50 shadow-2xl transition-all duration-300"
                   >
                     <div>
                       <div className="flex justify-between items-start mb-2">
@@ -533,14 +533,14 @@ export default function DeveloperPage() {
                     <div className={`absolute w-3.5 h-3.5 rounded-full -left-[1.75px] top-1.5 inset-y-0 transform -translate-x-1/2 transition-all duration-300 border-2 ${job.company === "LTM" ? "border-orange-500 bg-orange-500/20 group-hover:bg-orange-500 group-hover:shadow-[0_0_20px_rgba(249,115,22,0.8)]" : job.company === "Kreat Inc." ? "border-purple-500 bg-purple-500/20 group-hover:bg-purple-500 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.8)]" : "border-zinc-600 bg-zinc-600/20 group-hover:bg-white group-hover:border-white group-hover:shadow-[0_0_15px_rgba(255,255,255,0.5)]"}`} />
                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
                       <h3 className={`text-lg font-bold text-white transition-colors duration-300 ${job.company === "LTM" ? "group-hover:text-orange-400" : job.company === "Kreat Inc." ? "group-hover:text-purple-400" : "group-hover:text-indigo-400"}`}>{job.role}</h3>
-                      <span className="text-sm font-mono text-zinc-500 bg-zinc-900/50 px-2 py-1 rounded border border-zinc-800">{job.period}</span>
+                      <span className="text-sm font-mono text-zinc-500 bg-zinc-900/30 backdrop-blur-xl px-2 py-1 rounded border border-white/10">{job.period}</span>
                     </div>
                     <p className="text-zinc-300 font-medium mb-3">{job.company}</p>
                     <p className="text-zinc-500 text-sm leading-relaxed max-w-2xl mb-4">{job.desc}</p>
                     {job.skills && (
                       <div className="flex flex-wrap gap-2 mt-4">
                         {job.skills.map((skill, idx) => (
-                          <span key={idx} className="px-2 py-1 text-[10px] uppercase tracking-widest font-mono rounded bg-black border border-zinc-800 text-zinc-400 group-hover:border-zinc-600 group-hover:text-zinc-300 transition-colors">{skill}</span>
+                          <span key={idx} className="px-2 py-1 text-[10px] uppercase tracking-widest font-mono rounded bg-zinc-900/30 backdrop-blur-xl border border-white/10 text-zinc-400 group-hover:border-white/20 group-hover:text-zinc-300 transition-colors">{skill}</span>
                         ))}
                       </div>
                     )}
@@ -568,7 +568,7 @@ export default function DeveloperPage() {
                     key={edu.id}
                     onMouseEnter={() => setHoveredEdu(edu.id)}
                     onMouseLeave={() => setHoveredEdu(null)}
-                    className="group p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800 hover:bg-zinc-800/80 transition-all duration-300 backdrop-blur-md cursor-pointer"
+                    className="group p-6 rounded-2xl bg-zinc-900/30 border border-white/10 hover:bg-zinc-900/50 transition-all duration-300 backdrop-blur-xl cursor-pointer"
                   >
                     <div className="flex justify-between items-start mb-2 relative">
                       <h4 className="text-lg font-medium text-white group-hover:text-green-400 transition-colors">{edu.title}</h4>
@@ -633,7 +633,7 @@ export default function DeveloperPage() {
 
                         <div className="flex flex-wrap gap-2 mt-4">
                           {pub.tags.map((tag) => (
-                            <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-500">
+                            <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900/30 backdrop-blur-xl border border-white/10 text-zinc-500">
                               {tag}
                             </span>
                           ))}
@@ -641,7 +641,7 @@ export default function DeveloperPage() {
                       </div>
 
                       <div className="flex items-center gap-3 shrink-0">
-                        <span className="text-sm font-mono text-zinc-500 bg-zinc-900/50 px-2 py-1 rounded border border-zinc-800">
+                        <span className="text-sm font-mono text-zinc-500 bg-zinc-900/30 backdrop-blur-xl px-2 py-1 rounded border border-white/10">
                           {pub.date}
                         </span>
                         <a

@@ -36,9 +36,9 @@ export default function BattleSoundtracksPage() {
               <button
                 key={track.id}
                 onClick={() => setActiveTrack(track.id)}
-                className={`w-56 md:w-72 h-16 md:h-20 flex flex-col items-center justify-center rounded-2xl uppercase tracking-[0.25em] font-medium text-xs md:text-sm transition-all duration-300 border backdrop-blur-md ${isActive
+                className={`w-56 md:w-72 h-16 md:h-20 flex flex-col items-center justify-center rounded-2xl uppercase tracking-[0.25em] font-medium text-xs md:text-sm transition-all duration-300 border backdrop-blur-xl ${isActive
                   ? 'bg-white text-rose-700 border-white shadow-[0_10px_40px_rgba(225,29,72,0.15)] scale-105 z-10'
-                  : 'bg-white/10 text-rose-900/60 border-white/20 hover:bg-white/30 hover:text-rose-800 hover:shadow-lg hover:-translate-y-1'
+                  : 'bg-white/20 text-rose-900/60 border-white/20 hover:bg-white/30 hover:text-rose-800 hover:shadow-lg hover:-translate-y-1'
                   }`}
               >
                 <span className={isActive ? 'font-bold' : ''}>{track.title}</span>

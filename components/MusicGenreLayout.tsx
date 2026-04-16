@@ -75,7 +75,7 @@ export function MusicGenreLayout({
       )}
 
       <nav className="w-16 fixed left-0 top-0 bottom-0 flex flex-col justify-center items-center z-40 pointer-events-none">
-        <div className={`absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/40 border-r border-white/10 shadow-[20px_0_50px_rgba(0,0,0,0.05)] backdrop-blur-sm z-[-1] ${isGlassVisible ? 'block' : 'hidden'}`} />
+        <div className={`absolute top-[-10%] bottom-[-10%] left-[-100px] w-[160px] rounded-[50%] bg-white/20 border-r border-white/20 shadow-xl backdrop-blur-xl z-[-1] ${isGlassVisible ? 'block' : 'hidden'}`} />
         <Link
           href="/music#genres"
           className="group flex flex-col items-center gap-6 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase transition-all duration-300 pointer-events-auto"
@@ -127,7 +127,7 @@ export function MusicGenreLayout({
           >
             <div
               className={`w-full max-w-4xl border rounded-[2rem] p-4 md:p-6 transition-all duration-500 pointer-events-auto ${isFrameVisible
-                  ? 'bg-white/20 backdrop-blur-2xl shadow-[0_-20px_40px_rgba(0,0,0,0.02)]'
+                  ? 'bg-white/20 backdrop-blur-xl shadow-xl'
                   : 'bg-white/0 border-transparent shadow-none backdrop-blur-none'
                 }`}
               style={{ borderColor: isFrameVisible ? `${themeColor}40` : 'transparent' }}
