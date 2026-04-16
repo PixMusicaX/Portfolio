@@ -341,7 +341,7 @@ export default function MusicPage() {
                         <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
                           <ArrowRight size={24} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
                         </div>
-                        <span className="font-mono text-xs font-bold uppercase tracking-widest text-zinc-500 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10">{genre.badge}</span>
+                        <span className="font-mono text-xs font-bold uppercase tracking-widest text-zinc-500 bg-white/20 backdrop-blur-xl px-3 py-1 rounded-full border border-white/20">{genre.badge}</span>
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold mb-3 text-zinc-900">{genre.title}</h3>
