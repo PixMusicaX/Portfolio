@@ -49,6 +49,36 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
   const [isDraggingSeek, setIsDraggingSeek] = useState(false);
   const [isDraggingVolume, setIsDraggingVolume] = useState(false);
 
+  // Web Audio refs for iOS volume support
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
+
+  const initAudioCtx = () => {
+    if (audioCtxRef.current) return;
+    
+    try {
+      const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
+      const ctx = new AudioContextClass();
+      const gainNode = ctx.createGain();
+      
+      if (audioRef.current) {
+        const source = ctx.createMediaElementSource(audioRef.current);
+        source.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        audioCtxRef.current = ctx;
+        gainNodeRef.current = gainNode;
+        sourceNodeRef.current = source;
+        
+        // Initial volume sync
+        gainNode.gain.value = isMuted ? 0 : volume;
+      }
+    } catch (err) {
+      console.error("Failed to initialize Web Audio API:", err);
+    }
+  };
+
   // Sync with prop-driven track selection
   useEffect(() => {
     if (activeTrackId) {
@@ -69,10 +99,19 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
   }, [currentTrackIndex]); // eslint-disable-line
 
   useEffect(() => {
-    const handleGlobalMove = (e: MouseEvent) => {
+    const getEventX = (e: MouseEvent | TouchEvent) => {
+      if ('touches' in e && e.touches.length > 0) {
+        return e.touches[0].clientX;
+      } else if ('clientX' in e) {
+        return (e as MouseEvent).clientX;
+      }
+      return 0;
+    };
+
+    const handleGlobalMove = (e: MouseEvent | TouchEvent) => {
       if (isDraggingSeek && progressBarRef.current && audioRef.current) {
         const rect = progressBarRef.current.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
+        const clickX = getEventX(e) - rect.left;
         const percentage = Math.max(0, Math.min(1, clickX / rect.width));
         const newTime = percentage * (audioRef.current.duration || 0);
         audioRef.current.currentTime = newTime;
@@ -80,7 +119,7 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
       }
       if (isDraggingVolume && volumeBarRef.current) {
         const rect = volumeBarRef.current.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
+        const clickX = getEventX(e) - rect.left;
         const newVolume = Math.max(0, Math.min(1, clickX / rect.width));
         setVolume(newVolume);
         setIsMuted(false);
@@ -95,10 +134,14 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
     if (isDraggingSeek || isDraggingVolume) {
       window.addEventListener("mousemove", handleGlobalMove);
       window.addEventListener("mouseup", handleGlobalUp);
+      window.addEventListener("touchmove", handleGlobalMove, { passive: false });
+      window.addEventListener("touchend", handleGlobalUp);
     }
     return () => {
       window.removeEventListener("mousemove", handleGlobalMove);
       window.removeEventListener("mouseup", handleGlobalUp);
+      window.removeEventListener("touchmove", handleGlobalMove);
+      window.removeEventListener("touchend", handleGlobalUp);
     };
   }, [isDraggingSeek, isDraggingVolume]);
 
@@ -115,12 +158,22 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
 
   useEffect(() => {
     if (audioRef.current) {
+      // Audio.volume is still set for non-iOS or desktop
       audioRef.current.volume = isMuted ? 0 : volume;
+    }
+    // Web Audio GainNode for iOS and advanced volume control
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.setTargetAtTime(isMuted ? 0 : volume, audioCtxRef.current?.currentTime || 0, 0.01);
     }
   }, [volume, isMuted]);
 
-  const togglePlay = (e: React.MouseEvent) => {
+  const togglePlay = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
+    initAudioCtx();
+    if (audioCtxRef.current?.state === 'suspended') {
+      audioCtxRef.current.resume();
+    }
+
     if (currentTrackIndex === -1) {
       setCurrentTrackIndex(0);
       setIsPlaying(true);
@@ -168,12 +221,14 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
     setCurrentTrackIndex((prev) => (prev - 1 + tracks.length) % tracks.length);
   };
 
-  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    initAudioCtx();
     if (!progressBarRef.current || !audioRef.current) return;
 
     const rect = progressBarRef.current.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
+    const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+    const clickX = clientX - rect.left;
     const percentage = clickX / rect.width;
     const newTime = percentage * duration;
 
@@ -189,11 +244,13 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
     }
   };
 
-  const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    initAudioCtx();
     if (!volumeBarRef.current) return;
     const rect = volumeBarRef.current.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
+    const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+    const clickX = clientX - rect.left;
     const newVolume = Math.max(0, Math.min(1, clickX / rect.width));
     setVolume(newVolume);
     setIsMuted(false);
@@ -236,8 +293,9 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
 
       {/* Seek Tracker */}
       <div 
-        className="w-full max-w-2xl py-4 cursor-pointer group mb-1 md:mb-2" 
+        className="w-full max-w-2xl py-4 cursor-pointer group mb-1 md:mb-2 touch-none" 
         onMouseDown={handleSeek}
+        onTouchStart={handleSeek}
       >
         <div ref={progressBarRef} className={`h-[2px] w-full ${THEME_MAP[theme].barBg} relative rounded-full overflow-hidden`}>
           <div
@@ -287,7 +345,8 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
           <div 
             ref={volumeBarRef}
             onMouseDown={handleVolumeClick}
-            className="py-4 px-2 cursor-pointer group/vol flex items-center"
+            onTouchStart={handleVolumeClick}
+            className="py-4 px-2 cursor-pointer group/vol flex items-center touch-none"
           >
             <div className={`w-32 md:w-40 h-[2px] ${THEME_MAP[theme].barBg} relative rounded-full`}>
               <div 

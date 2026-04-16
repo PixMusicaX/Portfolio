@@ -9,7 +9,7 @@ const TRACKS: Track[] = [
   { id: "1", title: "Overture", src: "/audio/orchestral/track01.mp3", tag: "Fast" },
   { id: "2", title: "Castle", src: "/audio/orchestral/track02.mp3", tag: "Slow" },
   { id: "3", title: "Haunting", src: "/audio/orchestral/track03.mp3", tag: "Emotional" },
-  { id: "4", title: "Finale", src: "/audio/orchestral/track04.mp3", tag: "Complete" },
+  { id: "4", title: "Finale", src: "/audio/orchestral/track04.mp3", tag: "Original" },
 ];
 
 export default function OrchestralPage() {

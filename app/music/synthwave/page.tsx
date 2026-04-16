@@ -8,7 +8,7 @@ import { Track } from "@/components/CustomAudioPlayer";
 const TRACKS: Track[] = [
   { id: "1", title: "Trainer Battle", src: "/audio/synthwave/track01.mp3", tag: "Pokemon" },
   { id: "2", title: "Underwater", src: "/audio/synthwave/track02.mp3", tag: "Dark" },
-  { id: "3", title: "Jungle", src: "/audio/synthwave/track03.mp3", tag: "Fusion" }
+  { id: "3", title: "Rainforest", src: "/audio/synthwave/track03.mp3", tag: "Fusion" }
 ];
 
 export default function SynthwavePage() {
