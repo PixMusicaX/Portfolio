@@ -106,9 +106,9 @@ export default function MusicPage() {
     <div className="min-h-[100dvh] bg-white text-zinc-900 font-[family-name:var(--font-outfit)] selection:bg-purple-200 relative overflow-hidden">
       <MusicBackground />
       <GaseousDivider
-        hoveredSide={(isSidebarHovered || !isGlassVisible) ? "left" : null}
+        hoveredSide="left"
         variant="music"
-        className={`z-[1] ${(isSidebarHovered || !isGlassVisible) ? 'transition-opacity duration-300 ease-in opacity-70' : 'transition-opacity duration-700 ease-out opacity-45'}`}
+        className="z-[1] opacity-70"
       />
 
 

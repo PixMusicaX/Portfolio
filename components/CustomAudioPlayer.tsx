@@ -56,21 +56,21 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
 
   const initAudioCtx = () => {
     if (audioCtxRef.current) return;
-    
+
     try {
       const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
       const ctx = new AudioContextClass();
       const gainNode = ctx.createGain();
-      
+
       if (audioRef.current) {
         const source = ctx.createMediaElementSource(audioRef.current);
         source.connect(gainNode);
         gainNode.connect(ctx.destination);
-        
+
         audioCtxRef.current = ctx;
         gainNodeRef.current = gainNode;
         sourceNodeRef.current = source;
-        
+
         // Initial volume sync
         gainNode.gain.value = isMuted ? 0 : volume;
       }
@@ -279,7 +279,7 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
       />
 
       {/* Typography - Now triggers frame toggle */}
-      <div 
+      <div
         className="text-center space-y-2 h-[48px] md:h-[60px] flex items-center justify-center mb-6 md:mb-8 cursor-pointer group/title select-none"
         onClick={(e) => {
           e.stopPropagation();
@@ -287,13 +287,13 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
         }}
       >
         <h2 className={`text-2xl md:text-4xl font-light tracking-widest uppercase transition-opacity group-hover/title:opacity-100 ${THEME_MAP[theme].title} ${currentTrackIndex === -1 ? 'opacity-40' : 'opacity-100'}`}>
-          {currentTrackIndex === -1 ? "Select a track to begin" : (currentTrack?.title || "Loading...")}
+          {currentTrackIndex === -1 ? "Select a track" : (currentTrack?.title || "Loading...")}
         </h2>
       </div>
 
       {/* Seek Tracker */}
-      <div 
-        className="w-full max-w-2xl py-4 cursor-pointer group mb-1 md:mb-2 touch-none" 
+      <div
+        className="w-full max-w-2xl py-4 cursor-pointer group mb-1 md:mb-2 touch-none"
         onMouseDown={handleSeek}
         onTouchStart={handleSeek}
       >
@@ -336,20 +336,20 @@ export function CustomAudioPlayer({ tracks, onTrackChange, activeTrackId, onPlay
 
         {/* Volume Control - Positioned below buttons */}
         <div className="flex items-center justify-center gap-3 opacity-100">
-          <button 
-            onClick={() => setIsMuted(!isMuted)} 
+          <button
+            onClick={() => setIsMuted(!isMuted)}
             className={`${THEME_MAP[theme].controlsActive}`}
           >
             {isMuted || volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}
           </button>
-          <div 
+          <div
             ref={volumeBarRef}
             onMouseDown={handleVolumeClick}
             onTouchStart={handleVolumeClick}
             className="py-4 px-2 cursor-pointer group/vol flex items-center touch-none"
           >
             <div className={`w-32 md:w-40 h-[2px] ${THEME_MAP[theme].barBg} relative rounded-full`}>
-              <div 
+              <div
                 className={`absolute top-0 left-0 h-full ${THEME_MAP[theme].barFill} ${THEME_MAP[theme].barHover}`}
                 style={{ width: `${(isMuted ? 0 : volume) * 100}%` }}
               />

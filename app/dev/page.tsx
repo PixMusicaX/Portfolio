@@ -175,10 +175,10 @@ export default function DeveloperPage() {
     <div className="min-h-[100dvh] bg-black text-zinc-300 font-[family-name:var(--font-inter)] selection:bg-white selection:text-black relative overflow-hidden">
       <DevBackground />
       <GaseousDivider
-        hoveredSide={(isSidebarHovered || !isGlassVisible) ? "right" : null}
+        hoveredSide="right"
         variant="dev"
         align="right"
-        className={`z-[1] transition-opacity duration-700 ease-in-out ${(isSidebarHovered || !isGlassVisible) ? 'opacity-70' : 'opacity-45'}`}>
+        className="z-[1] opacity-70">
       </GaseousDivider>
 
       <motion.nav
