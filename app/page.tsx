@@ -9,6 +9,18 @@ import { DevBackground, MusicBackground } from "@/components/Backgrounds";
 import { GaseousDivider } from '@/components/GaseousDivider';
 import { useAudio } from "@/components/AudioProvider";
 
+const ShimmerText = ({ children, variant = "dev", className = "" }: { children: React.ReactNode, variant?: "dev" | "music", className?: string }) => {
+  const gradient = variant === "dev"
+    ? "bg-[linear-gradient(110deg,#a1a1aa,49%,#fff,50%,#a1a1aa)]"
+    : "bg-[linear-gradient(110deg,#9333ea,45%,#f97316,49%,rgba(255,255,255,0.8),51%,#9333ea,55%,#f97316)]";
+
+  return (
+    <span className={`inline-block animate-shimmer bg-clip-text text-transparent bg-[length:200%_100%] ${gradient} ${className}`}>
+      {children}
+    </span>
+  );
+};
+
 export default function Home() {
   const [hoveredSide, setHoveredSide] = useState<"left" | "right" | null>(null);
   const [selectedSide, setSelectedSide] = useState<"left" | "right" | null>(null);
@@ -63,7 +75,9 @@ export default function Home() {
     }
   }, [hoveredSide, selectedSide, setAudioState]);
 
-  // Desktop mouse tracking (unchanged)
+  // --- Interaction Logics ---
+
+  // Desktop mouse tracking
   useEffect(() => {
     if (isMobile) return;
     if (selectedSide) return;
@@ -145,7 +159,7 @@ export default function Home() {
     if (!touchStartY || !touchEndY) return;
     const dy = touchStartY - touchEndY;
     const dx = touchStartX && touchEndX ? touchStartX - touchEndX : 0;
-    
+
     const isUpSwipe = dy > minSwipeDistance;
     const isDownSwipe = dy < -minSwipeDistance;
     const isLeftSwipe = dx > minSwipeDistance;
@@ -158,20 +172,20 @@ export default function Home() {
     if (isLandscape) {
       // LANDSCAPE: Left (Dev) / Right (Music)
       if (isLeftSwipe || isUpSwipe) {
-          targetSide = "right";
-          path = "/music";
+        targetSide = "right";
+        path = "/music";
       } else if (isRightSwipe || isDownSwipe) {
-          targetSide = "left";
-          path = "/dev";
+        targetSide = "left";
+        path = "/dev";
       }
     } else {
       // PORTRAIT: Top (Dev) / Bottom (Music)
       if (isUpSwipe) {
-          targetSide = "right";
-          path = "/music";
+        targetSide = "right";
+        path = "/music";
       } else if (isDownSwipe) {
-          targetSide = "left";
-          path = "/dev";
+        targetSide = "left";
+        path = "/dev";
       }
     }
 
@@ -189,7 +203,9 @@ export default function Home() {
     }
   };
 
-  // --- MOBILE LAYOUT (Portrait) ---
+  // --- Layout Renders ---
+
+  // Portrait Mobile Layout
   if ((isMobile && !isLandscape)) {
     return (
       <div
@@ -225,8 +241,8 @@ export default function Home() {
             className="text-white flex flex-col items-center z-10 px-6 pointer-events-none"
           >
             <Code2 size={40} className="mb-3 opacity-80" />
-            <h1 className="text-3xl font-bold tracking-tighter mb-2 bg-gradient-to-r from-white via-zinc-400 to-white bg-clip-text text-transparent text-center">
-              Software Developer
+            <h1 className="text-3xl font-bold tracking-tighter mb-2 text-center leading-tight drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+              <ShimmerText variant="dev">Software Developer</ShimmerText>
             </h1>
             <p className="text-zinc-400 text-sm text-center max-w-xs">
               Building elegant, scalable, and robust web applications.
@@ -271,7 +287,7 @@ export default function Home() {
             className="text-black flex flex-col items-center z-10 px-6 pointer-events-none"
           >
             <Music4 size={40} className="mb-3 text-purple-600" />
-            <h1 className="text-3xl font-bold tracking-tight mb-2 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent pb-1 text-center">
+            <h1 className="text-3xl font-bold tracking-tight mb-2 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent pb-1 text-center leading-tight drop-shadow-[0_0_8px_rgba(168,85,247,0.2)]">
               Music Producer
             </h1>
             <p className="text-zinc-600 text-sm text-center max-w-xs font-medium">
@@ -290,7 +306,7 @@ export default function Home() {
           )}
         </motion.div>
 
-        {/* FIX 3: Added bg-black/0, cursor-pointer, and increased height to 120px to force mobile tap registration */}
+        {/* Invisible tap area for de-selecting hover states */}
         {hoveredSide && !selectedSide && (
           <div
             className="absolute left-0 w-full h-[120px] z-[100] cursor-pointer bg-black/0"
@@ -326,9 +342,9 @@ export default function Home() {
     );
   }
 
-  // --- DESKTOP LAYOUT (unchanged) ---
+  // Desktop and Tablet Landscape Layout
   return (
-    <div 
+    <div
       className="flex h-screen w-full overflow-hidden bg-black font-[family-name:var(--font-inter)]"
       style={{ overscrollBehaviorY: 'contain' }} // Prevent pull-to-refresh
       onTouchStart={isMobile ? onTouchStart : undefined}
@@ -365,9 +381,9 @@ export default function Home() {
           <motion.h1
             animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 bg-gradient-to-r from-white via-zinc-400 to-white bg-clip-text text-transparent text-center"
+            className="text-4xl md:text-6xl font-bold tracking-tighter mb-6 text-center leading-tight drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
           >
-            Software Developer
+            <ShimmerText variant="dev">Software Developer</ShimmerText>
           </motion.h1>
           <p className="text-zinc-400 max-w-sm text-center">
             Building elegant, scalable, and robust web applications with modern technologies.
@@ -415,7 +431,7 @@ export default function Home() {
           <motion.h1
             animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-            className="text-4xl md:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent pb-2 text-center"
+            className="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent pb-2 text-center leading-tight drop-shadow-[0_0_12px_rgba(168,85,247,0.25)]"
           >
             Music Producer
           </motion.h1>

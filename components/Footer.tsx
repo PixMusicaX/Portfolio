@@ -39,7 +39,7 @@ const Footer = ({ variant = 'dev' }: FooterProps) => {
           <span className="text-zinc-700">•</span>
 
           <span className={isMusic ? 'text-zinc-600' : 'text-zinc-400'}>
-            By Pinaki
+            By {isMusic ? 'PiX' : 'Pinaki'}
           </span>
         </div>
 

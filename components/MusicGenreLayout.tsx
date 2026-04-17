@@ -44,6 +44,7 @@ export function MusicGenreLayout({
   const [isMobileLandscape, setIsMobileLandscape] = useState(false);
 
   useEffect(() => {
+    // Reset background audio state on mount
     setAudioState("silent");
   }, [setAudioState]);
 
@@ -66,6 +67,8 @@ export function MusicGenreLayout({
       landscapeMedia.removeEventListener("change", handleMediaChange);
     };
   }, []);
+
+  // Responsive Layout Calculations
 
   return (
     <div className={`fixed inset-0 overflow-hidden flex font-[family-name:var(--font-outfit)] ${rootBgColor}`}>
@@ -100,7 +103,7 @@ export function MusicGenreLayout({
         </Link>
       </nav>
 
-      {/* Main Content Area */}
+      {/* Content and Layout Sections */}
       <main className={`flex-1 relative z-20 overflow-y-auto pl-14 md:pl-20 pr-4 md:pr-10 ${isMobileLandscape ? 'flex flex-row items-start pt-10 pb-10 gap-8' : 'flex flex-col items-center justify-start py-12 md:py-20'}`}>
         
         {/* Left Column: Header + Tracks */}

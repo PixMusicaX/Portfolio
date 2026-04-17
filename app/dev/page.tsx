@@ -225,6 +225,7 @@ export default function DeveloperPage() {
       >
         <div className="max-w-4xl mx-auto px-6 pr-20 relative z-10 w-full">
 
+          {/* Hero Section */}
           <section className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start pt-10 md:pt-20 pb-20 md:pb-32 relative">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -260,7 +261,7 @@ export default function DeveloperPage() {
               </div>
 
               <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-2 relative leading-tight">
-                Full Stack + AI 
+                Full Stack + AI
                 {/* The Icon Wrapper */}
                 <span className="inline-block align-middle ml-4 text-zinc-800">
                   <Terminal
@@ -343,6 +344,7 @@ export default function DeveloperPage() {
             </motion.div>
           </section>
 
+          {/* Personal Summary Section */}
           <section id="about" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50 relative">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }} className="relative z-10 w-full">
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">About Me</h2>
@@ -356,7 +358,7 @@ export default function DeveloperPage() {
                 </p>
 
                 <p>
-                  Work aside, I enjoy travelling, exploring new tech and music production. Putting inspirations into <ShimmerText>Real-World solutions</ShimmerText>. 🚀
+                  Work aside, I enjoy travelling, good food, exploring new tech and music production. Putting inspirations into <ShimmerText>Real-World solutions</ShimmerText>. 🚀
                 </p>
 
                 <p>
@@ -365,6 +367,7 @@ export default function DeveloperPage() {
               </div>
 
               <div className="max-w-3xl">
+                {/* Technologies and Tools */}
                 <h3 className="text-xl font-medium text-white mb-4 border-b border-zinc-800 pb-4">Tools and Frameworks</h3>
                 <div className="flex flex-wrap gap-6 mb-6">
                   {[
@@ -520,6 +523,7 @@ export default function DeveloperPage() {
             </motion.div>
           </section>
 
+          {/* Professional Experience Section */}
           <section id="experience" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-20 border-t border-zinc-900/50">
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.8 }}>
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">Work Experience</h2>
@@ -550,6 +554,7 @@ export default function DeveloperPage() {
             </motion.div>
           </section>
 
+          {/* Academic Background Section */}
           <section id="education" className="min-h-screen w-full flex flex-col justify-start md:justify-center snap-start py-14 md:py-20 border-t border-zinc-900/50 relative">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -591,6 +596,7 @@ export default function DeveloperPage() {
               transition={{ duration: 0.8 }}
               className="relative z-10 w-full max-w-4xl mx-auto"
             >
+              {/* Research Publications */}
               <h2 className="text-2xl font-semibold text-white mb-8 border-b border-zinc-800 pb-4">Research & Publications</h2>
 
               <div className="space-y-10">

@@ -11,11 +11,10 @@ interface DividerProps {
 
 export const GaseousDivider = ({ hoveredSide, variant = "default", className = "", align = "left" }: DividerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // ✅ FIX 1: Use a ref to track hoveredSide inside the rAF loop — avoids Safari dataset lag
+  // Synchronize state with animation loop using refs to avoid performance lag
   const hoveredSideRef = useRef(hoveredSide);
   const isTurbulent = hoveredSide !== null;
 
-  // ✅ FIX 2: Keep the ref in sync with the prop on every render
   useEffect(() => {
     hoveredSideRef.current = hoveredSide;
   }, [hoveredSide]);
@@ -46,6 +45,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
 
     resize(); // Initial resize
 
+    // Fractal Brownian Motion for noise generation
     function fbm(y: number, t: number, octaves: number) {
       let v = 0, a = 1, f = 1, tot = 0;
       for (let i = 0; i < octaves; i++) {
@@ -67,7 +67,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
       const cx = W / 2;
       const dpr = window.devicePixelRatio || 1;
 
-      // ✅ FIX 1 applied: read from ref, not from document.body.dataset
+      // Main draw loop
       const currentHoveredSide = hoveredSideRef.current ?? "none";
 
       ctx.save();
@@ -392,10 +392,7 @@ export const GaseousDivider = ({ hoveredSide, variant = "default", className = "
     };
   }, [align, variant]);
 
-  // ✅ FIX 3: Remove the dataset side-effect entirely — no longer needed
-  // (deleted the useEffect that set document.body.dataset.hoveredSide)
-
-  // ✅ FIX 4: Force GPU compositing layer on Safari — prevents mix-blend-difference being dropped
+  // Alignment and GPU acceleration styles
   const alignStyle = align === "left"
     ? { left: 0, transform: 'translateX(-50%)', top: '-10%', bottom: '-10%', width: 800 }
     : align === "right"

@@ -43,16 +43,14 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Web Audio Context References for Sample-Accurate Seamless Looping
   const audioCtxRef = useRef<AudioContext | null>(null);
   const buffersRef = useRef<{ [key: string]: AudioBuffer }>({});
   const gainNodesRef = useRef<{ [key: string]: GainNode }>({});
   
-  // Store the scheduler interval ID to ensure cleanup
   const schedulerIntervalRef = useRef<any>(null);
   const isEnteringRef = useRef(false);
 
-  // Initialize and Buffer tracks into memory purely on client-side
+  // Preload audio tracks into memory
   useEffect(() => {
     // Instantiate low-level audio engine
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
@@ -70,7 +68,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
         // Isolate volume control for this specific mathematical loop
         const gainNode = ctx.createGain();
-        gainNode.gain.value = 0; // Absolute zero initial matrix
+        gainNode.gain.value = 0; // Initial mute
         gainNode.connect(ctx.destination);
         gainNodesRef.current[key] = gainNode;
       } catch (err) {
@@ -88,7 +86,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Frame-perfect Crossfading Loop manually tracking the GainNodes
+  // Manage crossfading between states using requestAnimationFrame
   useEffect(() => {
     if (!hasEntered || !audioCtxRef.current) return;
 
@@ -97,14 +95,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     // Tone down maximum hardware amplitude directly by cutting global ceiling to 60%
     const MASTER_VOL = 0.6;
     
-    // Dynamically calculate mathematical fade duration logic intervals:
-    // 3s for initial entry, 1.2s for room/page transitions, 0.8s for side-hovers
+    // Calculate fade durations based on transition type
     const isInitialEntry = audioState === 'initial';
     const isPageTransition = audioState.startsWith('full-');
     
     const fadeDurationSeconds = isInitialEntry ? 3 : isPageTransition ? 1.2 : 0.8;
     
-    // We assume an average 60Hz monitor dispatch rate for smooth interpolation calculations
     const STEPS_PER_SECOND = 60;
     const frameStepValue = MASTER_VOL / (fadeDurationSeconds * STEPS_PER_SECOND);
 
@@ -132,7 +128,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     
     isEnteringRef.current = true;
     
-    // Unlock Context securely against Chromium anti-autoplay engine
+    // Resume context for browser autoplay compliance
     if (audioCtxRef.current.state === 'suspended') {
       await audioCtxRef.current.resume();
     }
@@ -147,9 +143,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     const OVERLAP_MS = 0.15; // 150ms fade overlap to melt tracks seamlessly
     const LOOP_DURATION = masterBuffer.duration - OVERLAP_MS;
     
-    // Web Audio engine starts scheduling 100ms in the mathematical future
     let nextStartTime = ctx.currentTime + 0.1;
-    const LOOKAHEAD_WINDOW = 2.0; // Queue 2 whole seconds in CPU future to bypass browser tab throttling
+    const LOOKAHEAD_WINDOW = 2.0; // Queue 2s of audio to prevent jitter
 
     const scheduleQueue = () => {
       // If the next loop event enters the time horizon, queue it!
@@ -178,7 +173,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           source.stop(endTime);
         });
 
-        // Push chronological clock boundary identically 
+        // Increment scheduling time
         nextStartTime += LOOP_DURATION;
       }
     };
@@ -189,8 +184,6 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     schedulerIntervalRef.current = setInterval(scheduleQueue, 1000);
 
     setHasEntered(true);
-    // Note: isEnteringRef.current remains true to prevent ever re-entering the async loop redundantly
-    // since setHasEntered(true) update might take a render cycle to reflect.
 
     // Apply strict location routing commands dynamically
     if (pathname === '/dev') {
