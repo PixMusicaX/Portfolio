@@ -45,7 +45,7 @@ const Footer = ({ variant = 'dev' }: FooterProps) => {
 
         <div className="flex flex-col items-center gap-2">
           <p className="text-[9px] font-mono uppercase tracking-widest text-zinc-500">
-            {isMusic ? 'Sonic Architecture' : '22.58° N, 88.41° E'} • {new Date().getFullYear()}
+            {isMusic ? 'Sonic Architecture' : '22.58° N, 88.41° E'} • {new Date().toLocaleString('en-US', { month: 'short', year: 'numeric' })}
           </p>
           
           {visits !== null && (
