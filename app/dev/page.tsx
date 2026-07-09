@@ -421,15 +421,15 @@ export default function DeveloperPage() {
                     link: "https://github.com/Techtoniic/bajaj-ai-assistant-python"
                   },
                   {
-                    name: "Derma-Prediction",
-                    date: "Feb 2025 - Apr 2025",
-                    role: "Full Stack AI Developer",
-                    desc: "AI-powered skin condition assessment web app.",
-                    problem: "Users lack accessible tools for early skin condition analysis without visiting specialists.",
-                    solution: "Developed a full-stack app integrating ML image models and LLM insights using Hugging Face and Google Bard, with secure authentication and payments.",
-                    result: "Delivered an end-to-end platform with real-time analysis; nominated for Springer Nature publication.",
-                    tech: ["ReactJS", "Node.js", "MongoDB", "Hugging Face", "Magic SDK", "Razorpay"],
-                    link: "https://github.com/PixMusicaX/Derma-Prediction"
+                    name: "AlBDO",
+                    date: "2025 - Present",
+                    role: "Lead Developer",
+                    desc: "Rust-Native DOM Rendering Compiler.",
+                    problem: "Heavy JavaScript rendering pipelines and garbage-collection overhead cause performance bottlenecks in traditional web applications.",
+                    solution: "Built a Rust-native framework compiling JSX to a binary instruction stream over WebTransport, embedded QuickJS for server-side evaluation, and authored bakabox opcode executor.",
+                    result: "Eliminated client-side JS runtime for static/semi-static content, cutting wire payload size by 3–5× and main-thread GC activity by over 50%.",
+                    tech: ["Rust", "TypeScript", "JavaScript", "WebTransport", "QuickJS", "DOM"],
+                    link: "https://albdo.dev/"
                   },
                   {
                     name: "Online Exam Proctor",
